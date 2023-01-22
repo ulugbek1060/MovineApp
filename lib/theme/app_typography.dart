@@ -9,8 +9,8 @@ class AppTypography {
   );
   static const headline2 = TextStyle(
     color: AppColors.onPrimaryColor,
-    fontSize: 20,
-    fontWeight: FontWeight.normal,
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
   );
   static const titleLarge = TextStyle(
     color: AppColors.onPrimaryColor,
@@ -18,12 +18,12 @@ class AppTypography {
     fontWeight: FontWeight.normal,
   );
   static const bodyText1 = TextStyle(
-    color: AppColors.onSurfaceColor,
+    color: AppColors.highEmphosized,
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );
   static const bodyText2 = TextStyle(
-    color: AppColors.onPrimaryColor,
+    color: AppColors.mediumEmphosized,
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );

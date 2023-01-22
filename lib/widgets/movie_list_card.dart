@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
-class MovieCard extends StatelessWidget {
+class MovieListCard extends StatelessWidget {
   final Function() onTap;
-  final String contentImae;
+  final String contentImage;
   final double width;
   final double height;
   final double padding;
   final String movieName;
   final int movieId;
 
-  const MovieCard({
+  const MovieListCard({
     this.padding = 8,
     this.width = 150,
     this.height = 200,
     required this.movieName,
     required this.movieId,
     required this.onTap,
-    required this.contentImae,
+    required this.contentImage,
     super.key,
   });
 
@@ -33,17 +33,14 @@ class MovieCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Stack(
             children: [
-              Hero(
-                tag: movieId,
-                child: Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Image.asset(
-                    contentImae,
-                    fit: BoxFit.cover,
-                  ),
+              Positioned(
+                left: 0,
+                top: 0,
+                bottom: 0,
+                right: 0,
+                child: Image.asset(
+                  contentImage,
+                  fit: BoxFit.cover,
                 ),
               ),
               Positioned(

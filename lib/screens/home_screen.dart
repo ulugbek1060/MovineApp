@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/screens/detail_screen.dart';
-import 'package:movie_app/screens/movie_card.dart';
+import 'package:movie_app/strings.dart';
+import 'package:movie_app/widgets/home_bottom_slider.dart';
 import 'package:movie_app/theme/app_typography.dart';
-import 'dart:math' as math;
+import 'package:movie_app/widgets/home_top_movies.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -64,27 +65,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                 vertical: height * 0.03,
               ),
               child: const Text(
-                'Top Movies Everywhere',
+                topMovies,
                 style: AppTypography.titleLarge,
               ),
             ),
 
             // height = 0.97 -> 0.67
-            SizedBox(
+            HomeTopMoviesList(
               height: height * 0.3,
               width: double.infinity,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: contents.length,
-                itemBuilder: (context, index) {
-                  return MovieCard(
-                    onTap: _onMoveTapped,
-                    contentImae: contents.values.elementAt(index),
-                    movieName: 'Star Wars: The Last Jedi',
-                    movieId: contents.keys.elementAt(index),
-                  );
-                },
-              ),
+              onTap: _onMoveTapped,
             ),
 
             // height = 0.67 -> 0.64
@@ -100,55 +90,14 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
 
             // height = 0.64 -> 0.14
-            SizedBox(
-              width: double.infinity,
-              child: _buildBottomSlider(
-                height: height * 0.5,
-                width: width * 0.1,
-              ),
+            HomeBottomSlider(
+              height: height * 0.5,
+              width: width * 0.1,
+              controller: _bottomPageController,
+              contents: contents.values.toList(),
+              onTap: _onMoveTapped,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomSlider({
-    required double height,
-    required double width,
-  }) {
-    return Container(
-      height: height,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: AspectRatio(
-        aspectRatio: 0.85,
-        child: PageView.builder(
-          controller: _bottomPageController,
-          itemCount: contents.length,
-          itemBuilder: (context, index) {
-            return AnimatedBuilder(
-              animation: _bottomPageController,
-              builder: (_, child) {
-                double value = 0.0;
-                if (_bottomPageController.position.hasContentDimensions) {
-                  var page = _bottomPageController.page ?? 1;
-                  value = index.toDouble() - page;
-                  value = (value * 0.038).clamp(-1, 1);
-                }
-                return Transform.rotate(
-                  angle: math.pi * value,
-                  child: MovieCard(
-                    padding: 16,
-                    width: width,
-                    onTap: _onMoveTapped,
-                    contentImae: contents.values.elementAt(index),
-                    movieName: 'Star Wars: The Last Jedi',
-                    movieId: contents.keys.elementAt(index),
-                  ),
-                );
-              },
-            );
-          },
         ),
       ),
     );

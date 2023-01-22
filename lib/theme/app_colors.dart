@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const gradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color.fromARGB(26, 252, 252, 252),
+        Color.fromARGB(0, 255, 255, 255),
+      ]);
+
   static const primarySwatch = MaterialColor(
     0xFF15141F,
     <int, Color>{
@@ -27,6 +35,6 @@ class AppColors {
   static const onSurfaceColor = Color(0xFF211F30);
   static const errorColor = Color(0xFFF44336);
   static const onErrorColor = Color(0xFFFFFFFF);
-  static const highEmphosized = Color.fromARGB(255, 7, 7, 7);
-  static const mediumEmphosized = Color(0xFFBBBBBB);
+  static const highEmphosized = Color(0xFFFFFFFF);
+  static const mediumEmphosized = Color(0xFFBCBCBC);
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/screens/home_screen.dart';
 import 'package:movie_app/screens/movie_screen.dart';
 import 'package:movie_app/screens/profile_screen.dart';
+import 'package:movie_app/theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -11,33 +13,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  var page = 0;
-
-  final Map<BottomNavigationBarItem, Widget> bottomItems = const {
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ): HomeWidget(),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.play_arrow),
-      label: 'Movies',
-    ): MovieScreen(),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'Profile',
-    ): ProfileScreen(),
-  };
+  var screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final screens = _getBottomNavigation();
     return Scaffold(
-      body: bottomItems.values.elementAt(page),
+      body: screens.values.elementAt(screenIndex),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0.0,
-        currentIndex: page,
+        currentIndex: screenIndex,
         onTap: (index) {
           setState(() {
-            page = index;
+            screenIndex = index;
           });
         },
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -45,8 +33,47 @@ class _MainScreenState extends State<MainScreen> {
         unselectedItemColor: Colors.grey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: bottomItems.keys.toList(),
+        items: screens.keys.toList(),
       ),
     );
+  }
+
+  Map<BottomNavigationBarItem, Widget> _getBottomNavigation() {
+    final Map<BottomNavigationBarItem, Widget> bottomItems = {
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          width: 18.0,
+          'assets/images/home.svg',
+          fit: BoxFit.scaleDown,
+          color: screenIndex == 0
+              ? AppColors.secondaryColor
+              : Colors.grey.withAlpha(150),
+        ),
+        label: 'Home',
+      ): const HomeWidget(),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          width: 18.0,
+          'assets/images/play.svg',
+          fit: BoxFit.scaleDown,
+          color: screenIndex == 1
+              ? AppColors.secondaryColor
+              : Colors.grey.withAlpha(150),
+        ),
+        label: 'Movies',
+      ): const MovieScreen(),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          width: 18.0,
+          'assets/images/user.svg',
+          fit: BoxFit.scaleDown,
+          color: screenIndex == 2
+              ? AppColors.secondaryColor
+              : Colors.grey.withAlpha(150),
+        ),
+        label: 'Profile',
+      ): const ProfileScreen(),
+    };
+    return bottomItems;
   }
 }

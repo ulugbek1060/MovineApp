@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/screens/movies_list_widget.dart';
+import 'package:movie_app/widgets/movies_list_widget.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -16,12 +16,21 @@ class _MovieScreenState extends State<MovieScreen>
   late TabController _tabController;
 
   final Map<Tab, Widget> tabs = {
-    const Tab(text: 'Lates'): const MoviesListWidget(moviesType: 'Lates'),
-    const Tab(text: 'Now Playing'):
-        const MoviesListWidget(moviesType: 'Now Playing'),
-    const Tab(text: 'Upcoming'): const MoviesListWidget(moviesType: 'Upcoming'),
-    const Tab(text: 'Popular'): const MoviesListWidget(moviesType: 'Popular'),
-    const Tab(text: 'Top Rate'): const MoviesListWidget(moviesType: 'Top Rate')
+    const Tab(text: 'Lates'): const MoviesListWidget(
+      moviesType: 'Lates',
+    ),
+    const Tab(text: 'Now Playing'): const MoviesListWidget(
+      moviesType: 'Now Playing',
+    ),
+    const Tab(text: 'Upcoming'): const MoviesListWidget(
+      moviesType: 'Upcoming',
+    ),
+    const Tab(text: 'Popular'): const MoviesListWidget(
+      moviesType: 'Popular',
+    ),
+    const Tab(text: 'Top Rate'): const MoviesListWidget(
+      moviesType: 'Top Rate',
+    )
   };
 
   @override
@@ -47,6 +56,7 @@ class _MovieScreenState extends State<MovieScreen>
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
     final height = mediaQuery.size.height - mediaQuery.padding.top - 70;
+
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: SafeArea(
@@ -63,42 +73,12 @@ class _MovieScreenState extends State<MovieScreen>
                 style: AppTypography.titleLarge,
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: TextField(
-                controller: _searchController,
-                style: AppTypography.labelMedium,
-                cursorColor: Colors.white.withOpacity(0.2),
-                decoration: InputDecoration(
-                  filled: true,
-                  contentPadding: const EdgeInsets.all(4),
-                  fillColor: theme.colorScheme.surface,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  hintStyle: AppTypography.labelMedium.copyWith(
-                    color: Colors.grey,
-                  ),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: SvgPicture.asset('assets/images/ic-search.svg'),
-                  ),
-                  hintText: 'Search...',
-                ),
-              ),
+            _searchBar(
+              horizontalPadding: width * 0.03,
+              backgroundColor: theme.colorScheme.surface,
             ),
             SizedBox(height: height * 0.02),
-            TabBar(
-              isScrollable: true,
-              controller: _tabController,
-              indicator: TabIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              labelColor: Theme.of(context).colorScheme.secondary,
-              unselectedLabelColor: Colors.white.withOpacity(0.8),
-              tabs: tabs.keys.toList(),
-            ),
+            _tabBar(),
             SizedBox(height: height * 0.01),
             Expanded(
               child: TabBarView(
@@ -109,6 +89,50 @@ class _MovieScreenState extends State<MovieScreen>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _searchBar({
+    required double horizontalPadding,
+    required Color backgroundColor,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: TextField(
+        controller: _searchController,
+        style: AppTypography.labelMedium,
+        cursorColor: Colors.white.withOpacity(0.2),
+        decoration: InputDecoration(
+          filled: true,
+          contentPadding: const EdgeInsets.all(4),
+          fillColor: backgroundColor,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          hintStyle: AppTypography.labelMedium.copyWith(
+            color: Colors.grey,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(8),
+            child: SvgPicture.asset('assets/images/ic-search.svg'),
+          ),
+          hintText: 'Search...',
+        ),
+      ),
+    );
+  }
+
+  Widget _tabBar() {
+    return TabBar(
+      isScrollable: true,
+      controller: _tabController,
+      indicator: TabIndicator(
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      labelColor: Theme.of(context).colorScheme.secondary,
+      unselectedLabelColor: Colors.white.withOpacity(0.8),
+      tabs: tabs.keys.toList(),
     );
   }
 }

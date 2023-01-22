@@ -41,8 +41,11 @@ dependencies:
   equatable: ^2.0.5
   flutter_svg: ^1.1.6
   animated_text_kit: ^4.2.2
-  bottom_sheet_scaffold: ^0.1.3
   solid_bottom_sheet: ^0.1.10
+  readmore: ^2.2.0
+  expansion_tile_card: ^2.0.0
+  blurrycontainer: ^1.0.2
+  shared_preferences: ^2.0.17
   
 
 dev_dependencies:
@@ -72,6 +75,11 @@ flutter:
     - assets/images/on-boarding.png
     - assets/images/logo.svg
     - assets/images/ic-search.svg
+    - assets/images/ic-time.svg
+    - assets/images/ic-star.svg
+    - assets/images/home.svg
+    - assets/images/play.svg
+    - assets/images/user.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

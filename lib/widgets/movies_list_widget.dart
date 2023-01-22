@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/screens/movie_card.dart';
+import 'package:movie_app/widgets/movie_list_card.dart';
 
 class MoviesListWidget extends StatelessWidget {
   const MoviesListWidget({
@@ -10,76 +10,77 @@ class MoviesListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final dummyList = [
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Star Wars: The Last Jedi',
         movieId: 12,
       ),
-      MovieCard(
+      MovieListCard(
         onTap: () {},
-        contentImae: 'assets/images/on-boarding.png',
+        contentImage: 'assets/images/on-boarding.png',
         movieName: 'Star Wars: The Last Jedi',
         movieId: 12,
       ),
@@ -88,8 +89,8 @@ class MoviesListWidget extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: width > 400 ? 3 : 2,
         ),
         itemCount: dummyList.length,
         itemBuilder: (_, index) {

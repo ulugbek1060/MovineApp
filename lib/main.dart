@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/screens/detail_screen.dart';
-import 'package:movie_app/screens/home_screen.dart';
-import 'package:movie_app/screens/main_screen.dart';
-import 'package:movie_app/screens/on_boarding_widget.dart';
-import 'package:movie_app/screens/splash_screen.dart';
-import 'package:movie_app/theme/app_theme.dart';
+import 'package:movie_app/bootstrap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.themeData,
-      debugShowCheckedModeBanner: false,
-      home: const MainScreen(),
-      routes: {
-        DetailScreen.routeName: (_) => const DetailScreen(),
-      },
-    );
-  }
+  bootstrap(
+    sharedPref: await SharedPreferences.getInstance(),
+  );
 }

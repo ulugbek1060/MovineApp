@@ -1,5 +1,5 @@
-const welcomText = 'Welcome to Mova';
-const welcomContent =
+const welcomeText = 'Welcome to Mova';
+const welcomeContent =
     'The best movie streaming app of the century to make your days great!';
 const getStarted = 'Get Started';
 const topMovies = 'Top Movies';

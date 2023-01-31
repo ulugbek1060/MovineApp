@@ -46,6 +46,9 @@ dependencies:
   expansion_tile_card: ^2.0.0
   blurrycontainer: ^1.0.2
   shared_preferences: ^2.0.17
+  movies_data:
+    path: packages/movies_data
+  iconly: ^1.0.1
   
 
 dev_dependencies:

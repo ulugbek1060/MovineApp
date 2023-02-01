@@ -23,28 +23,24 @@ class MoviePageCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.all(16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            height: height,
-            width: width,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(movieItem.posterPath),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _ratingText(movieItem.rate),
-                _bottomTitle(movieItem.title),
-              ],
-            ),
+        height: height,
+        width: width,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(movieItem.posterPath),
+            fit: BoxFit.cover,
           ),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            _ratingText(movieItem.rate),
+            _bottomTitle(movieItem.title),
+          ],
         ),
       ),
     );
@@ -54,7 +50,7 @@ class MoviePageCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(200),
+        color: Colors.black.withAlpha(150),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -83,7 +79,7 @@ class MoviePageCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(200),
+        color: Colors.black.withAlpha(150),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(

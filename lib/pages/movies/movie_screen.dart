@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/widgets/movies_list_widget.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -15,28 +14,10 @@ class _MovieScreenState extends State<MovieScreen>
   late TextEditingController _searchController;
   late TabController _tabController;
 
-  final Map<Tab, Widget> tabs = {
-    const Tab(text: 'Lates'): const MoviesListWidget(
-      moviesType: 'Lates',
-    ),
-    const Tab(text: 'Now Playing'): const MoviesListWidget(
-      moviesType: 'Now Playing',
-    ),
-    const Tab(text: 'Upcoming'): const MoviesListWidget(
-      moviesType: 'Upcoming',
-    ),
-    const Tab(text: 'Popular'): const MoviesListWidget(
-      moviesType: 'Popular',
-    ),
-    const Tab(text: 'Top Rate'): const MoviesListWidget(
-      moviesType: 'Top Rate',
-    )
-  };
-
   @override
   void initState() {
     _tabController = TabController(
-      length: tabs.length,
+      length: 0,
       vsync: this,
     );
     _searchController = TextEditingController();
@@ -83,7 +64,7 @@ class _MovieScreenState extends State<MovieScreen>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: tabs.values.toList(),
+                children: [Container()],
               ),
             ),
           ],
@@ -132,7 +113,7 @@ class _MovieScreenState extends State<MovieScreen>
       ),
       labelColor: Theme.of(context).colorScheme.secondary,
       unselectedLabelColor: Colors.white.withOpacity(0.8),
-      tabs: tabs.keys.toList(),
+      tabs: [],
     );
   }
 }

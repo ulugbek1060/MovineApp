@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/pages/home/widgets/movie_list_card.dart';
 import 'package:movie_app/utils/strings.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_shape.dart';
@@ -204,14 +203,7 @@ class _DetailScreenState extends State<DetailScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: contents.length,
         itemBuilder: (_, index) {
-          return MovieListCard(
-            height: contentHeight,
-            width: contentWidth,
-            movieId: '12',
-            movieName: movies.elementAt(index),
-            onTap: _onMoveTapped,
-            contentImage: movies.elementAt(index),
-          );
+          return Container();
         },
       ),
     );

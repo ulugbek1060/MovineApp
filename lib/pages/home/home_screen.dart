@@ -28,7 +28,7 @@ class HomeWidget extends StatelessWidget {
                 vertical: height * 0.03,
               ),
               child: const Text(
-                topMovies,
+                'Now Playing',
                 style: AppTypography.titleLarge,
               ),
             ),
@@ -46,7 +46,7 @@ class HomeWidget extends StatelessWidget {
                 vertical: height * 0.03,
               ),
               child: const Text(
-                'Trending',
+                'Upcoming',
                 style: AppTypography.titleLarge,
               ),
             ),

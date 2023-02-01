@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/home/bloc/movies_bloc.dart';
-import 'package:movie_app/pages/home/widgets/movie_list_card.dart';
+import 'package:movie_app/pages/home/widgets/top_movie_card.dart';
 import 'package:movies_data/movies_data.dart';
 
 class TopSlideWidget extends StatelessWidget {
@@ -82,11 +82,11 @@ class _MoviesList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: movies.length,
             itemBuilder: (context, index) {
-              return MovieListCard(
-                onTap: onTap,
-                contentImage: movies[index].posterPath,
-                movieName: movies[index].title,
-                movieId: movies[index].id,
+              return TopMovieCard(
+                onTap: (){},
+                width: height * 0.6,
+                height: height,
+                movieItem: movies[index],
               );
             },
           ),

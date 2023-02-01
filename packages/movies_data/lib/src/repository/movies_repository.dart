@@ -8,7 +8,7 @@ const upcoming = 'upcoming';
 const latest = 'latest';
 const nowPlaying = 'now_playing';
 const popular = 'popular';
-const imageUrl = 'https://image.tmdb.org/t/p/w500/';
+const imageUrl = 'https://image.tmdb.org/t/p/w500';
 
 enum MovieType { TOP_RATED, UPCOMING, LATEST, NOW_PLAYING, POPULAR }
 
@@ -100,16 +100,14 @@ class MoviesRepository {
 
   Future<MoviesList> getSimilarMovies({
     required String movieId,
-    required int page,
   }) async {
     try {
       final movies = await movieApiService.getSimilarMovies(
         movieId: movieId,
-        page: page,
       );
 
       final convertedMovies = movies.results!.map(
-        (element) => MovieItem(
+            (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
@@ -120,7 +118,7 @@ class MoviesRepository {
 
       return MoviesList(
         movies: convertedMovies.toList(),
-        page: page,
+        page: 0,
         totalPages: movies.totalPages,
       );
     } catch (error) {

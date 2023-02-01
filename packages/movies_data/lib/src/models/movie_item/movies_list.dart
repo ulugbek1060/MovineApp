@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'movie_item.dart';
 
-class MoviesList {
+class MoviesList extends Equatable {
   final List<MovieItem>? movies;
   final int? page;
   final int? totalPages;
@@ -25,4 +27,11 @@ class MoviesList {
         'totalPages': totalPages,
         'page': page,
       }.toString();
+
+  @override
+  List<Object?> get props => [
+        movies,
+        page,
+        totalPages,
+      ];
 }

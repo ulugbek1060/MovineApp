@@ -1,23 +1,41 @@
 part of 'detail_movie_bloc.dart';
 
-class DetailMovieState {
+class DetailMovieState extends Equatable {
+  final MovieDetail? movie;
+  final List<MovieItem>? movies;
   final bool isLoading;
   final Object? error;
-  final MovieDetail? movie;
 
-  DetailMovieState({required this.isLoading, this.error, this.movie});
+  const DetailMovieState({
+    required this.isLoading,
+    this.movies,
+    this.error,
+    this.movie,
+  });
 
-  DetailMovieState.initialState() : this(isLoading: false);
+  const DetailMovieState.initialState() : this(isLoading: false);
 
   DetailMovieState copyWith({
-    required bool? isLoading,
-    required Object? error,
-    required MovieDetail? movie,
+    bool? isLoading,
+    List<MovieItem>? movies,
+    Object? error,
+    MovieDetail? movie,
   }) {
     return DetailMovieState(
       movie: movie ?? this.movie,
+      movies: movies ?? this.movies,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
     );
   }
+
+  @override
+  List<Object?> get props => [movie, movies, isLoading, error];
+
+  @override
+  String toString() => {
+        'isLoading': isLoading,
+        'movie': movie,
+        'error': error,
+      }.toString();
 }

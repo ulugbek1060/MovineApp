@@ -1,4 +1,6 @@
-class GenreItem {
+import 'package:equatable/equatable.dart';
+
+class GenreItem extends Equatable {
   final int id;
   final String name;
 
@@ -12,4 +14,7 @@ class GenreItem {
         'id': id,
         'name': name,
       }.toString();
+
+  @override
+  List<Object?> get props => [id, name];
 }

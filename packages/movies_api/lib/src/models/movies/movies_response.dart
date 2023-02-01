@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:movies_api/src/models/movies/dates.dart';
 
 import 'movies_data.dart';
 
-class MoviesResponse {
+class MoviesResponse extends Equatable {
   late final Dates? dates;
   late final int? page;
   late final List<MovieData>? results;
@@ -43,4 +44,13 @@ class MoviesResponse {
     data['total_results'] = totalResults;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        dates,
+        page,
+        results,
+        totalPages,
+        totalResults,
+      ];
 }

@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 part 'belongs_to_collection.dart';
 
 part 'genres_of_movie.dart';
@@ -8,7 +10,7 @@ part 'production_countries.dart';
 
 part 'spoken_languages.dart';
 
-class MovieDetailResponse {
+class MovieDetailResponse extends Equatable {
   late final bool? adult;
   late final String? backdropPath;
   late final BelongsToCollection? belongsToCollection;
@@ -155,4 +157,33 @@ class MovieDetailResponse {
     data['vote_count'] = voteCount;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        belongsToCollection,
+        budget,
+        genres,
+        homepage,
+        id,
+        imdbId,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        posterPath,
+        productionCompanies,
+        productionCountries,
+        releaseDate,
+        revenue,
+        runtime,
+        spokenLanguages,
+        status,
+        tagline,
+        title,
+        video,
+        voteAverage,
+        voteCount,
+      ];
 }

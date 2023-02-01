@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'video_data.dart';
 
-class VideosResponse {
+class VideosResponse extends Equatable {
   late final int? id;
   late final List<Results>? results;
 
@@ -27,4 +29,7 @@ class VideosResponse {
     }
     return map;
   }
+
+  @override
+  List<Object?> get props => [id, results];
 }

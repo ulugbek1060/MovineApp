@@ -1,4 +1,6 @@
-class MovieItem {
+import 'package:equatable/equatable.dart';
+
+class MovieItem extends Equatable {
   final String id;
   final String title;
   final String rate;
@@ -21,4 +23,13 @@ class MovieItem {
         'language': language,
         'posterPath': posterPath,
       }.toString();
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        rate,
+        language,
+        posterPath,
+      ];
 }

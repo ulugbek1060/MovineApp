@@ -1,10 +1,10 @@
 part of 'movie_detail_response.dart';
 
-class GenreOfMovie {
-  late final int? id;
-  late final String? name;
+class GenreOfMovie extends Equatable {
+  final int? id;
+  final String? name;
 
-  GenreOfMovie({
+  const GenreOfMovie({
     this.id,
     this.name,
   });
@@ -19,4 +19,7 @@ class GenreOfMovie {
     data['name'] = name;
     return data;
   }
+
+  @override
+  List<Object?> get props => [id, name];
 }

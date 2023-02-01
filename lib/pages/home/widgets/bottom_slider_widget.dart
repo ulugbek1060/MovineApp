@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/movies_bloc.dart';
 import 'package:movie_app/pages/home/widgets/bottom_movie_card.dart';
 import 'package:movies_data/movies_data.dart';
@@ -125,7 +126,9 @@ class _SliderWidget extends StatelessWidget {
             movieItem:movie,
             width: width,
             height: height,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(DetailPage.route(movie.id));
+            },
           ),
         );
       },

@@ -1,16 +1,18 @@
-class Results {
-  late final String? iso6391;
-  late final String? iso31661;
-  late final String? name;
-  late final String? key;
-  late final String? site;
-  late final int? size;
-  late final String? type;
-  late final bool? official;
-  late final String? publishedAt;
-  late final String? id;
+import 'package:equatable/equatable.dart';
 
-  Results({
+class Results extends Equatable {
+  final String? iso6391;
+  final String? iso31661;
+  final String? name;
+  final String? key;
+  final String? site;
+  final int? size;
+  final String? type;
+  final bool? official;
+  final String? publishedAt;
+  final String? id;
+
+  const Results({
     required this.iso6391,
     required this.iso31661,
     required this.name,
@@ -35,7 +37,6 @@ class Results {
         publishedAt = json['published_at'],
         id = json['id'];
 
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['iso_639_1'] = iso6391;
@@ -50,4 +51,18 @@ class Results {
     map['id'] = id;
     return map;
   }
+
+  @override
+  List<Object?> get props => [
+        iso6391,
+        iso31661,
+        name,
+        key,
+        site,
+        size,
+        type,
+        official,
+        publishedAt,
+        id,
+      ];
 }

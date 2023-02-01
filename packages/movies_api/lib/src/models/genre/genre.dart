@@ -1,8 +1,10 @@
-class Genre {
-  late final int id;
-  late final String name;
+import 'package:equatable/equatable.dart';
 
-  Genre({
+class Genre extends Equatable {
+  final int id;
+  final String name;
+
+  const Genre({
     required this.id,
     required this.name,
   });
@@ -17,4 +19,7 @@ class Genre {
     map['name'] = name;
     return map;
   }
+
+  @override
+  List<Object?> get props => [id, name];
 }

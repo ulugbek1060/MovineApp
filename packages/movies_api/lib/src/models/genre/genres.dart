@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'genre.dart';
 
-class Genres {
-  late final List<Genre>? genres;
+class Genres extends Equatable {
+  late List<Genre>? genres;
 
   Genres({required this.genres});
 
@@ -21,4 +23,7 @@ class Genres {
     }
     return map;
   }
+
+  @override
+  List<Object?> get props => [genres];
 }

@@ -1,4 +1,6 @@
-class Videos {
+import 'package:equatable/equatable.dart';
+
+class Videos extends Equatable {
   final String id;
   final List<VideoItem> videos;
 
@@ -12,9 +14,12 @@ class Videos {
         'id': id,
         'videos': videos,
       }.toString();
+
+  @override
+  List<Object?> get props => [id, videos];
 }
 
-class VideoItem {
+class VideoItem extends Equatable{
   final String id;
   final String size;
   final String key;
@@ -31,4 +36,7 @@ class VideoItem {
         'key': key,
         'size': size,
       }.toString();
+
+  @override
+  List<Object?> get props => [id, key, size];
 }

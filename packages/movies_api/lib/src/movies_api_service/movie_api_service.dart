@@ -14,7 +14,6 @@ abstract class MovieApiService {
   /// Fetches similar movies by chosen movieId
   Future<MoviesResponse> getSimilarMovies({
     required String movieId,
-    required int page,
     String language,
   });
 

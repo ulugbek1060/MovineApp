@@ -1,13 +1,12 @@
 part of 'movie_detail_response.dart';
 
-class ProductionCompanies {
+class ProductionCompanies extends Equatable {
+  final int? id;
+  final String? logoPath;
+  final String? name;
+  final String? originCountry;
 
-  late final int? id;
-  late final String? logoPath;
-  late final String? name;
-  late final String? originCountry;
-
-  ProductionCompanies({
+  const ProductionCompanies({
     this.id,
     this.logoPath,
     this.name,
@@ -21,11 +20,14 @@ class ProductionCompanies {
         originCountry = json['origin_country'];
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['logo_path'] = this.logoPath;
-    data['name'] = this.name;
-    data['origin_country'] = this.originCountry;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['logo_path'] = logoPath;
+    data['name'] = name;
+    data['origin_country'] = originCountry;
     return data;
   }
+
+  @override
+  List<Object?> get props => [id, logoPath, name, originCountry];
 }

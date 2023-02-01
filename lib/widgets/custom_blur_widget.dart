@@ -31,7 +31,7 @@ class CustomBluerWidget extends StatelessWidget {
         elevation: 0,
         color: const Color(0x20FFFFFF),
         padding: EdgeInsets.all(padding),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: child,
       ),
     );

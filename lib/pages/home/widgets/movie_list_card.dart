@@ -8,7 +8,7 @@ class MovieListCard extends StatelessWidget {
   final double height;
   final double padding;
   final String movieName;
-  final int movieId;
+  final String movieId;
 
   const MovieListCard({
     this.padding = 8,
@@ -38,7 +38,7 @@ class MovieListCard extends StatelessWidget {
                 top: 0,
                 bottom: 0,
                 right: 0,
-                child: Image.asset(
+                child: Image.network(
                   contentImage,
                   fit: BoxFit.cover,
                 ),

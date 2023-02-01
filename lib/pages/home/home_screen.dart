@@ -1,48 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/pages/detail/detail_screen.dart';
+import 'package:movie_app/pages/home/widgets/bottom_slider_widget.dart';
+import 'package:movie_app/pages/home/widgets/top_slider_widget.dart';
 import 'package:movie_app/utils/strings.dart';
-import 'package:movie_app/widgets/home_bottom_slider.dart';
 import 'package:movie_app/theme/app_typography.dart';
-import 'package:movie_app/widgets/home_top_movies.dart';
 
-class HomeWidget extends StatefulWidget {
+class HomeWidget extends StatelessWidget {
   const HomeWidget({super.key});
-
-  @override
-  State<HomeWidget> createState() => _HomeWidgetState();
-}
-
-class _HomeWidgetState extends State<HomeWidget> {
-  late PageController _bottomPageController;
-
-  @override
-  void initState() {
-    _bottomPageController = PageController(
-      // small partition left and right
-      viewportFraction: 0.7,
-      initialPage: 1,
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _bottomPageController.dispose();
-    super.dispose();
-  }
-
-  final Map<int, String> contents = {
-    12: 'assets/images/on-boarding.png',
-    11: 'assets/images/on-boarding.png',
-    10: 'assets/images/on-boarding.png',
-    8: 'assets/images/on-boarding.png',
-    9: 'assets/images/on-boarding.png',
-    6: 'assets/images/on-boarding.png',
-  };
-
-  void _onMoveTapped() {
-    Navigator.of(context).pushNamed(DetailScreen.routeName);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +33,13 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
 
-            // height = 0.97 -> 0.67
-            HomeTopMoviesList(
-              height: height * 0.3,
+            // height = 0.97 -> 0.77
+            TopSlideWidget(
+              height: height * 0.2,
               width: double.infinity,
-              onTap: _onMoveTapped,
             ),
 
-            // height = 0.67 -> 0.64
+            // height = 0.77 -> 0.64
             Container(
               margin: EdgeInsets.symmetric(
                 horizontal: width * 0.05,
@@ -89,13 +51,10 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
 
-            // height = 0.64 -> 0.14
-            HomeBottomSlider(
-              height: height * 0.5,
+            // height = 0.74 -> 0.14
+            BottomSliderWidget(
+              height: height * 0.6,
               width: width * 0.1,
-              controller: _bottomPageController,
-              contents: contents.values.toList(),
-              onTap: _onMoveTapped,
             ),
           ],
         ),

@@ -49,6 +49,7 @@ dependencies:
   movies_data:
     path: packages/movies_data
   iconly: ^1.0.1
+  infinite_scroll_pagination: ^3.2.0
   
 
 dev_dependencies:

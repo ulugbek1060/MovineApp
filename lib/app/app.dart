@@ -19,11 +19,11 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late final AuthRepository authRepository;
-  late final MovieRepository movieRepository;
+  late final MoviesRepository movieRepository;
 
   @override
   void initState() {
-    movieRepository = MovieRepository();
+    movieRepository = MoviesRepository();
     authRepository = AuthRepository(sharedPreferences: widget.sharedPref);
     super.initState();
   }
@@ -39,7 +39,7 @@ class _AppState extends State<App> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
-        RepositoryProvider<MovieRepository>(create: (_) => movieRepository),
+        RepositoryProvider<MoviesRepository>(create: (_) => movieRepository),
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(authRepository: authRepository),

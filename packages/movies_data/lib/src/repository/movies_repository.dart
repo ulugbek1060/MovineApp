@@ -1,5 +1,6 @@
 import 'package:movies_api/movies_api.dart';
 import 'package:movies_data/src/models/models.dart';
+import 'package:movies_data/src/models/movie_item/movies_list.dart';
 import 'package:movies_data/src/service/movie_api_service_impl.dart';
 
 const topRated = 'top_rated';
@@ -28,10 +29,10 @@ extension GetMovieType on MovieType {
   }
 }
 
-class MovieRepository {
+class MoviesRepository {
   final MovieApiService movieApiService = MovieApiServiceImpl();
 
-  Future<MovieItemEntity> getMoviesByType({
+  Future<MoviesList> getMoviesByType({
     required int page,
     required MovieType type,
   }) async {
@@ -47,65 +48,57 @@ class MovieRepository {
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           language: element.originalLanguage.toString(),
-          posterPath: element.posterPath.toString(),
+          posterPath: imageUrl + element.posterPath.toString(),
         ),
       );
 
-      return MovieItemEntity(
+      return MoviesList(
         movies: convertedMovies.toList(),
         page: page,
         totalPages: movies.totalPages,
       );
     } catch (error) {
-      return MovieItemEntity(error: error);
+      throw error;
     }
   }
 
-  Future<MovieDetailEntity> getMovieDetail(String movieId) async {
+  Future<MovieDetail> getMovieDetail(String movieId) async {
     try {
       final movie = await movieApiService.getMovieDetail(movieId: movieId);
-      return MovieDetailEntity(
-        movieDetail: MovieDetail(
-          id: movie.id.toString(),
-          title: movie.originalTitle.toString(),
-          poserPath: movie.posterPath.toString(),
-          backdropPath: movie.backdropPath.toString(),
-          quality: '4k',
-          duration: movie.runtime.toString(),
-          rating: movie.voteAverage.toString(),
-          releaseData: movie.releaseDate.toString(),
-          genres: movie.genres!.map((e) => e.name.toString()).toList(),
-          overview: movie.overview.toString(),
-          language: movie.originalLanguage.toString(),
-        ),
-        error: null,
+      return MovieDetail(
+        id: movie.id.toString(),
+        title: movie.originalTitle.toString(),
+        poserPath: imageUrl + movie.posterPath.toString(),
+        backdropPath: imageUrl + movie.backdropPath.toString(),
+        quality: '4k',
+        duration: movie.runtime.toString(),
+        rating: movie.voteAverage.toString(),
+        releaseData: movie.releaseDate.toString(),
+        genres: movie.genres!.map((e) => e.name.toString()).toList(),
+        overview: movie.overview.toString(),
+        language: movie.originalLanguage.toString(),
       );
     } catch (error) {
-      return MovieDetailEntity(
-        error: error,
-      );
+      throw error;
     }
   }
 
-  Future<GenreEntity> getGenres() async {
+  Future<List<GenreItem>> getGenres() async {
     try {
       final genresResult = await movieApiService.getAllGenres();
 
-      return GenreEntity(
-        genres: genresResult.genres!
-            .map((e) => GenreItem(
-                  id: e.id,
-                  name: e.name,
-                ))
-            .toList(),
-        error: null,
-      );
+      return genresResult.genres!
+          .map((e) => GenreItem(
+                id: e.id,
+                name: e.name,
+              ))
+          .toList();
     } catch (error) {
-      return GenreEntity(error: error);
+      throw error;
     }
   }
 
-  Future<MovieItemEntity> getSimilarMovies({
+  Future<MoviesList> getSimilarMovies({
     required String movieId,
     required int page,
   }) async {
@@ -121,37 +114,35 @@ class MovieRepository {
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           language: element.originalLanguage.toString(),
-          posterPath: element.posterPath.toString(),
+          posterPath: imageUrl + element.posterPath.toString(),
         ),
       );
 
-      return MovieItemEntity(
+      return MoviesList(
         movies: convertedMovies.toList(),
         page: page,
         totalPages: movies.totalPages,
       );
     } catch (error) {
-      return MovieItemEntity(error: error);
+      throw error;
     }
   }
 
-  Future<VideosEntity> getVideosByMovieId({required String movieId}) async {
+  Future<Videos> getVideosByMovieId({required String movieId}) async {
     try {
       final videos = await movieApiService.getVideoDataById(movieId: movieId);
-      return VideosEntity(
-        videos: Videos(
-          id: videos.id.toString(),
-          videos: videos.results!
-              .map((e) => VideoItem(
-                    id: e.id.toString(),
-                    size: e.size.toString(),
-                    key: e.key.toString(),
-                  ))
-              .toList(),
-        ),
+      return Videos(
+        id: videos.id.toString(),
+        videos: videos.results!
+            .map((e) => VideoItem(
+                  id: e.id.toString(),
+                  size: e.size.toString(),
+                  key: e.key.toString(),
+                ))
+            .toList(),
       );
     } catch (error) {
-      return VideosEntity(error: error);
+      throw error;
     }
   }
 }

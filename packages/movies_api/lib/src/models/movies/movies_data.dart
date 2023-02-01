@@ -2,17 +2,17 @@ class MovieData {
   late final bool? adult;
   late final String? backdropPath;
   late final List<int>? genreIds;
-  late final int? id;
+  late final String? id;
   late final String? originalLanguage;
   late final String? originalTitle;
   late final String? overview;
-  late final double? popularity;
+  late final String? popularity;
   late final String? posterPath;
   late final String? releaseDate;
   late final String? title;
   late final bool? video;
-  late final double? voteAverage;
-  late final int? voteCount;
+  late final String? voteAverage;
+  late final String? voteCount;
 
   MovieData({
     this.adult,
@@ -35,17 +35,17 @@ class MovieData {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();
-    id = json['id'];
+    id = json['id'].toString();
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
-    popularity = json['popularity'];
+    popularity = json['popularity'].toString();
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
     title = json['title'];
     video = json['video'];
-    voteAverage = json['vote_average'];
-    voteCount = json['vote_count'];
+    voteAverage = json['vote_average'].toString();
+    voteCount = json['vote_count'].toString();
   }
 
   Map<String, dynamic> toJson() {

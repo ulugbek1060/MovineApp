@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/widgets/movie_list_card.dart';
+import 'package:movie_app/pages/home/widgets/movie_list_card.dart';
 
 class MoviesListWidget extends StatelessWidget {
   const MoviesListWidget({
@@ -16,73 +16,73 @@ class MoviesListWidget extends StatelessWidget {
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Knives Out (2019)',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Star Wars: The Last Jedi',
-        movieId: 12,
+        movieId: '12',
       ),
       MovieListCard(
         onTap: () {},
         contentImage: 'assets/images/on-boarding.png',
         movieName: 'Star Wars: The Last Jedi',
-        movieId: 12,
+        movieId: '12',
       ),
     ];
     return SizedBox(

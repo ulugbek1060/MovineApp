@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/movies_bloc.dart';
 import 'package:movie_app/pages/home/widgets/top_movie_card.dart';
 import 'package:movies_data/movies_data.dart';
@@ -14,8 +15,6 @@ class TopSlideWidget extends StatelessWidget {
     required this.width,
   });
 
-  void onTap() {}
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -25,7 +24,6 @@ class TopSlideWidget extends StatelessWidget {
       child: _MoviesList(
         height: height,
         width: width,
-        onTap: onTap,
       ),
     );
   }
@@ -34,14 +32,16 @@ class TopSlideWidget extends StatelessWidget {
 class _MoviesList extends StatelessWidget {
   final double height;
   final double width;
-  final void Function() onTap;
 
   const _MoviesList({
-    super.key,
+    Key? key,
     required this.height,
     required this.width,
-    required this.onTap,
-  });
+  }) : super(key: key);
+
+  void navigate(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +82,14 @@ class _MoviesList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: movies.length,
             itemBuilder: (context, index) {
+              final movie = movies[index];
               return TopMovieCard(
-                onTap: (){},
+                onTap: () {
+                  navigate(context, movie.id);
+                },
                 width: height * 0.6,
                 height: height,
-                movieItem: movies[index],
+                movieItem: movie,
               );
             },
           ),

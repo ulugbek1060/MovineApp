@@ -17,11 +17,14 @@ class TopMovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      margin: const EdgeInsets.all(6),
-      child: _cardItem(movieItem),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: height,
+        width: width,
+        margin: const EdgeInsets.all(6),
+        child: _cardItem(movieItem),
+      ),
     );
   }
 

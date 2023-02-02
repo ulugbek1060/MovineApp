@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/home/home_screen.dart';
-import 'package:movie_app/pages/movies/movie_screen.dart';
+import 'package:movie_app/pages/movies/movies_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const HomeWidget(),
-    const MovieScreen(),
+    const MoviesPage(),
     const ProfileScreen(),
   ];
 

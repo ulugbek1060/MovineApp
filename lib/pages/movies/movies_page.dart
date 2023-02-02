@@ -1,126 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/theme/app_typography.dart';
+import 'package:movies_data/movies_data.dart';
 
-class MovieScreen extends StatefulWidget {
-  const MovieScreen({super.key});
+import 'widgets/movies_tab_bar_view_widget.dart';
+
+class MoviesPage extends StatefulWidget {
+  const MoviesPage({Key? key}) : super(key: key);
 
   @override
-  State<MovieScreen> createState() => _MovieScreenState();
+  State<MoviesPage> createState() => _MoviesPageState();
 }
 
-class _MovieScreenState extends State<MovieScreen>
-    with SingleTickerProviderStateMixin {
-  late TextEditingController _searchController;
-  late TabController _tabController;
+class _MoviesPageState extends State<MoviesPage> {
+  late List<MovieType> types;
 
   @override
   void initState() {
-    _tabController = TabController(
-      length: 0,
-      vsync: this,
-    );
-    _searchController = TextEditingController();
+    types = [
+      MovieType.NOW_PLAYING,
+      MovieType.UPCOMING,
+      MovieType.POPULAR,
+      MovieType.TOP_RATED,
+    ];
     super.initState();
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    _searchController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: types.length,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        body: _MoviesNestedScrollView(types: types),
+      ),
+    );
   }
+}
+
+class _MoviesNestedScrollView extends StatelessWidget {
+  final List<MovieType> types;
+
+  const _MoviesNestedScrollView({
+    Key? key,
+    required this.types,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    final width = mediaQuery.size.width;
-    final height = mediaQuery.size.height - mediaQuery.padding.top - 70;
-
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: width * 0.05,
-                vertical: height * 0.03,
-              ),
-              child: const Text(
-                'Top Movies Everywhere',
-                style: AppTypography.titleLarge,
-              ),
-            ),
-            _searchBar(
-              horizontalPadding: width * 0.03,
-              backgroundColor: theme.colorScheme.surface,
-            ),
-            SizedBox(height: height * 0.02),
-            _tabBar(),
-            SizedBox(height: height * 0.01),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [Container()],
-              ),
-            ),
-          ],
-        ),
-      ),
+    return NestedScrollView(
+      floatHeaderSlivers: true,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            pinned: true,
+            floating: true,
+            snap: true,
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            ],
+            title: const Text('Find Movies'),
+            bottom: _getTabs(context: context),
+          )
+        ];
+      },
+      body: _getTabBarView(),
     );
   }
 
-  Widget _searchBar({
-    required double horizontalPadding,
-    required Color backgroundColor,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: TextField(
-        controller: _searchController,
-        style: AppTypography.labelMedium,
-        cursorColor: Colors.white.withOpacity(0.2),
-        decoration: InputDecoration(
-          filled: true,
-          contentPadding: const EdgeInsets.all(4),
-          fillColor: backgroundColor,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          hintStyle: AppTypography.labelMedium.copyWith(
-            color: Colors.grey,
-          ),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(8),
-            child: SvgPicture.asset('assets/images/ic-search.svg'),
-          ),
-          hintText: 'Search...',
-        ),
-      ),
-    );
-  }
-
-  Widget _tabBar() {
+  PreferredSizeWidget _getTabs({required BuildContext context}) {
     return TabBar(
       isScrollable: true,
-      controller: _tabController,
       indicator: TabIndicator(
         color: Theme.of(context).colorScheme.secondary,
       ),
-      labelColor: Theme.of(context).colorScheme.secondary,
-      unselectedLabelColor: Colors.white.withOpacity(0.8),
-      tabs: [],
+      tabs: types
+          .map((type) => Tab(
+                text: type.getTypeText,
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _getTabBarView() {
+    return TabBarView(
+      children: types
+          .map((type) => PageOfTabWidget(
+                type: type,
+              ))
+          .toList(),
     );
   }
 }
 
 class TabIndicator extends Decoration {
   const TabIndicator({required this.color});
+
   final Color color;
+
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return TabPainter(color: color);
@@ -129,7 +104,9 @@ class TabIndicator extends Decoration {
 
 class TabPainter extends BoxPainter {
   const TabPainter({required this.color});
+
   final Color color;
+
   @override
   void paint(
     Canvas canvas,
@@ -142,7 +119,7 @@ class TabPainter extends BoxPainter {
     paint.style = PaintingStyle.fill;
     paint.isAntiAlias = true;
 
-    /*  
+    /*
 
       print('Height: ${configuration.size!.height}');
       print('Width: ${configuration.size!.width}');
@@ -168,7 +145,7 @@ class TabPainter extends BoxPainter {
                                                           |        cneter       |              |
                                                           ----------------------*---------------
                                                                                 B
-                                                                   B => | y = config.size.height 
+                                                                   B => | y = config.size.height
                                                                         | x = offsetX + (config.size.width / 2)
     */
     final configWidth = configuration.size?.width ?? 1.0;

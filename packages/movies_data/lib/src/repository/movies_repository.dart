@@ -27,6 +27,21 @@ extension GetMovieType on MovieType {
         return 'popular';
     }
   }
+
+  String get getTypeText {
+    switch (this) {
+      case MovieType.TOP_RATED:
+        return 'Top rated';
+      case MovieType.UPCOMING:
+        return 'Upcoming';
+      case MovieType.LATEST:
+        return 'Latest';
+      case MovieType.NOW_PLAYING:
+        return 'Now playing';
+      case MovieType.POPULAR:
+        return 'Popular';
+    }
+  }
 }
 
 class MoviesRepository {
@@ -107,7 +122,7 @@ class MoviesRepository {
       );
 
       final convertedMovies = movies.results!.map(
-            (element) => MovieItem(
+        (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),

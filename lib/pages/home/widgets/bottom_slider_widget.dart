@@ -66,6 +66,10 @@ class _SliderWidget extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
+  void navigate(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MoviesBloc, MoviesState>(
@@ -85,11 +89,12 @@ class _SliderWidget extends StatelessWidget {
             height: height,
             width: double.infinity,
             child: const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
             ),
           );
         }
-
         return Container(
           width: double.infinity,
           height: height,
@@ -110,7 +115,12 @@ class _SliderWidget extends StatelessWidget {
     );
   }
 
-  Widget _pageItemBuilder(BuildContext context, int index, MovieItem movie, controller) {
+  Widget _pageItemBuilder(
+    BuildContext context,
+    int index,
+    MovieItem movie,
+    controller,
+  ) {
     return AnimatedBuilder(
       animation: controller,
       builder: (_, child) {
@@ -123,11 +133,11 @@ class _SliderWidget extends StatelessWidget {
         return Transform.rotate(
           angle: math.pi * value,
           child: MoviePageCard(
-            movieItem:movie,
+            movieItem: movie,
             width: width,
             height: height,
             onTap: () {
-              Navigator.of(context).push(DetailPage.route(movie.id));
+              navigate(context, movie.id);
             },
           ),
         );

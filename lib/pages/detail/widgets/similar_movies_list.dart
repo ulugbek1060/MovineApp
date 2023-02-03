@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
-import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/detail/widgets/movie_item_card.dart';
+import 'package:movie_app/theme/app_colors.dart';
 
-class SimilarMoviesWidget extends StatelessWidget {
-  final double height;
+class SimilarMoviesList extends StatelessWidget {
+  final double size;
+  final void Function(String movieId) navigate;
 
-  const SimilarMoviesWidget({
+  const SimilarMoviesList({
     Key? key,
-    required this.height,
+    required this.size,
+    required this.navigate,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class SimilarMoviesWidget extends StatelessWidget {
         if (state.isLoading) {
           return const Center(
             child: CircularProgressIndicator(
-              color: Colors.white,
+              color: AppColors.secondaryColor,
             ),
           );
         }
@@ -36,11 +38,12 @@ class SimilarMoviesWidget extends StatelessWidget {
             itemBuilder: (_, index) {
               final movie = state.movies![index];
               return MovieItemCard(
-                width: height * 0.6,
-                height: height,
+                key: Key(movie.id),
+                height: size,
+                width: size * 0.5,
                 movieItem: movie,
                 onTap: () {
-                  Navigator.of(context).push(DetailPage.route(movie.id));
+                  navigate(movie.id);
                 },
               );
             },

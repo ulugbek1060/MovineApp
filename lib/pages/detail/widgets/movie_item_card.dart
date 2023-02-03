@@ -9,8 +9,8 @@ class MovieItemCard extends StatelessWidget {
 
   const MovieItemCard({
     Key? key,
-    required this.width,
     required this.height,
+    required this.width,
     required this.movieItem,
     required this.onTap,
   }) : super(key: key);
@@ -20,8 +20,6 @@ class MovieItemCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: height,
-        width: width,
         margin: const EdgeInsets.all(6),
         child: _cardItem(movieItem),
       ),
@@ -30,6 +28,8 @@ class MovieItemCard extends StatelessWidget {
 
   Widget _cardItem(MovieItem movieItem) {
     return Container(
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(movieItem.posterPath),

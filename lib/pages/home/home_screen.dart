@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/home/widgets/bottom_slider_widget.dart';
 import 'package:movie_app/pages/home/widgets/top_slider_widget.dart';
-import 'package:movie_app/utils/strings.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class HomeWidget extends StatelessWidget {

@@ -15,13 +15,12 @@ class MovieGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(movie.posterPath),
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: InkWell(
         onTap: onTap,
@@ -40,8 +39,8 @@ class MovieGridItem extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.black.withAlpha(150),
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               )),
           child: Text(
             title,

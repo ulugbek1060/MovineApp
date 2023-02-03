@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/pages/movies/widgets/movies_page_view.dart';
 import 'package:movies_data/movies_data.dart';
-
-import 'widgets/movies_tab_bar_view_widget.dart';
 
 class MoviesPage extends StatefulWidget {
   const MoviesPage({Key? key}) : super(key: key);
@@ -62,7 +61,7 @@ class _MoviesNestedScrollView extends StatelessWidget {
           )
         ];
       },
-      body: _getTabBarView(),
+      body: MoviesPageView(types: types),
     );
   }
 
@@ -75,16 +74,6 @@ class _MoviesNestedScrollView extends StatelessWidget {
       tabs: types
           .map((type) => Tab(
                 text: type.getTypeText,
-              ))
-          .toList(),
-    );
-  }
-
-  Widget _getTabBarView() {
-    return TabBarView(
-      children: types
-          .map((type) => PageOfTabWidget(
-                type: type,
               ))
           .toList(),
     );

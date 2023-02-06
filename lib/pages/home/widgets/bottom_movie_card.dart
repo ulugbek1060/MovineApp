@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/theme/app_icons.dart';
+import 'package:iconly/iconly.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -56,11 +55,7 @@ class MoviePageCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            width: 18.0,
-            AppIcons.star,
-            color: Colors.amber,
-          ),
+          const Icon(IconlyBold.star, color: Colors.amber),
           const SizedBox(width: 5),
           Text(
             rating,

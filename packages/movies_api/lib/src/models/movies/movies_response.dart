@@ -4,32 +4,19 @@ import 'package:movies_api/src/models/movies/dates.dart';
 import 'movies_data.dart';
 
 class MoviesResponse extends Equatable {
-  late final Dates? dates;
-  late final int? page;
-  late final List<MovieData>? results;
-  late final int? totalPages;
-  late final int? totalResults;
+  final Dates? dates;
+  final int? page;
+  final List<MovieData>? results;
+  final int? totalPages;
+  final int? totalResults;
 
-  MoviesResponse({
+  const MoviesResponse({
     this.dates,
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
-
-  MoviesResponse.fromJson(Map<String, dynamic> json) {
-    dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null;
-    page = json['page'];
-    if (json['results'] != null) {
-      results = <MovieData>[];
-      json['results'].forEach((v) {
-        results!.add(MovieData.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    totalResults = json['total_results'];
-  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -44,6 +31,15 @@ class MoviesResponse extends Equatable {
     data['total_results'] = totalResults;
     return data;
   }
+
+  MoviesResponse.fromJson(Map<String, dynamic> json)
+      : dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null,
+        page = json['page'],
+        results = (json['results'] as List<dynamic>)
+            .map((e) => MovieData.fromJson(e))
+            .toList(),
+        totalPages = json['total_pages'],
+        totalResults = json['total_results'];
 
   @override
   List<Object?> get props => [

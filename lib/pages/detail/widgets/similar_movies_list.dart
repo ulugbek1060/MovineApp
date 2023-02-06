@@ -5,12 +5,10 @@ import 'package:movie_app/pages/detail/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_colors.dart';
 
 class SimilarMoviesList extends StatelessWidget {
-  final double size;
   final void Function(String movieId) navigate;
 
   const SimilarMoviesList({
     Key? key,
-    required this.size,
     required this.navigate,
   }) : super(key: key);
 
@@ -19,34 +17,28 @@ class SimilarMoviesList extends StatelessWidget {
     return BlocBuilder<DetailMovieBloc, DetailMovieState>(
       buildWhen: (prev, current) => prev.movies != current.movies,
       builder: (context, state) {
-        if (state.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.secondaryColor,
-            ),
-          );
-        }
-        if (state.movies == null) {
+        final movies = state.movies;
+        if (movies == null) {
           return Container();
         }
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          color: Theme.of(context).primaryColor,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: state.movies!.length,
-            itemBuilder: (_, index) {
-              final movie = state.movies![index];
+        return SliverGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 100 / 150,
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final movie = movies[index];
               return MovieItemCard(
-                key: Key(movie.id),
-                height: size,
-                width: size * 0.5,
                 movieItem: movie,
                 onTap: () {
                   navigate(movie.id);
                 },
               );
             },
+            childCount: state.movies!.length,
           ),
         );
       },

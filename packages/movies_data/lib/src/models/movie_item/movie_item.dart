@@ -4,14 +4,12 @@ class MovieItem extends Equatable {
   final String id;
   final String title;
   final String rate;
-  final String language;
   final String posterPath;
 
   MovieItem({
     required this.id,
     required this.title,
     required this.rate,
-    required this.language,
     required this.posterPath,
   });
 
@@ -20,7 +18,6 @@ class MovieItem extends Equatable {
         'id': id,
         'title': title,
         'rate': rate,
-        'language': language,
         'posterPath': posterPath,
       }.toString();
 
@@ -29,7 +26,6 @@ class MovieItem extends Equatable {
         id,
         title,
         rate,
-        language,
         posterPath,
       ];
 }

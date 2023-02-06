@@ -1,4 +1,5 @@
 import 'package:movies_api/movies_api.dart';
+import 'package:movies_data/movies_data.dart';
 import 'package:movies_data/src/models/models.dart';
 import 'package:movies_data/src/models/movie_item/movies_list.dart';
 import 'package:movies_data/src/service/movie_api_service_impl.dart';
@@ -62,16 +63,37 @@ class MoviesRepository {
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
-          language: element.originalLanguage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
         ),
       );
 
-      return MoviesList(
-        movies: convertedMovies.toList(),
+      return MoviesList(movies: convertedMovies.toList(), page: page);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<MoviesList> getMoviesByQuery({
+    String? query,
+    required int page,
+  }) async {
+
+    try {
+      final movies = await movieApiService.getMoviesByQuery(
+        query: query,
         page: page,
-        totalPages: movies.totalPages,
       );
+
+      final convertedMovies = movies.results!.map(
+        (element) => MovieItem(
+          id: element.id.toString(),
+          title: element.title.toString(),
+          rate: element.voteAverage.toString(),
+          posterPath: imageUrl + element.posterPath.toString(),
+        ),
+      );
+
+      return MoviesList(movies: convertedMovies.toList(), page: page);
     } catch (error) {
       throw error;
     }
@@ -103,10 +125,7 @@ class MoviesRepository {
       final genresResult = await movieApiService.getAllGenres();
 
       return genresResult.genres!
-          .map((e) => GenreItem(
-                id: e.id,
-                name: e.name,
-              ))
+          .map((e) => GenreItem(id: e.id, name: e.name))
           .toList();
     } catch (error) {
       throw error;
@@ -126,16 +145,11 @@ class MoviesRepository {
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
-          language: element.originalLanguage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
         ),
       );
 
-      return MoviesList(
-        movies: convertedMovies.toList(),
-        page: 0,
-        totalPages: movies.totalPages,
-      );
+      return MoviesList(movies: convertedMovies.toList(), page: 0);
     } catch (error) {
       throw error;
     }

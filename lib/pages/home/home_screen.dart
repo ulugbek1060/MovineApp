@@ -8,12 +8,11 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final width = mediaQuery.size.width;
     final height = mediaQuery.size.height - mediaQuery.padding.top - 70;
     return Container(
-      color: theme.colorScheme.background,
+      color:  Theme.of(context).colorScheme.background,
       width: double.infinity,
       height: double.infinity,
       child: SafeArea(

@@ -35,6 +35,6 @@ class AppColors {
   static const onSurfaceColor = Color(0xFF211F30);
   static const errorColor = Color(0xFFF44336);
   static const onErrorColor = Color(0xFFFFFFFF);
-  static const highEmphosized = Color(0xFFFFFFFF);
-  static const mediumEmphosized = Color(0xFFBCBCBC);
+  static const highEmphasized = Color(0xFFFFFFFF);
+  static const mediumEmphasized = Color(0xFFBCBCBC);
 }

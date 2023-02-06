@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
 import 'package:movie_app/pages/detail/widgets/similar_movies_list.dart';
 import 'package:movie_app/theme/app_colors.dart';
@@ -49,6 +50,7 @@ class MovieDetailView extends StatelessWidget {
       builder: (context, state) {
         final movie = state.movie;
 
+        ///TODO:Need to initialize progress indicator
         if (state.isLoading) {
           return const Center(
             child: CircularProgressIndicator(
@@ -56,13 +58,15 @@ class MovieDetailView extends StatelessWidget {
             ),
           );
         }
+
+        ///TODO: create error widget
         if (state.error != null && movie == null) {
           return Container(
             child: Text('Fail'),
           );
         }
 
-        // movie must not be null
+        ///TODO: movie must not be null
         if (movie != null) {
           return CustomScrollView(
             slivers: [
@@ -71,7 +75,6 @@ class MovieDetailView extends StatelessWidget {
                 top: 25,
                 left: 20,
                 right: 20,
-                bottom: 0,
                 child: _timeAndRating(
                   time: movie.duration,
                   rating: movie.rating,
@@ -81,7 +84,6 @@ class MovieDetailView extends StatelessWidget {
                 top: 16,
                 left: 20,
                 right: 20,
-                bottom: 0,
                 child: _releaseDateAndGenre(
                   releaseDate: movie.releaseData,
                   genres: movie.genres,
@@ -91,7 +93,6 @@ class MovieDetailView extends StatelessWidget {
                 top: 16,
                 left: 20,
                 right: 20,
-                bottom: 0,
                 child: Text(
                   movie.overview,
                   style: AppTypography.bodyText2.copyWith(
@@ -99,21 +100,19 @@ class MovieDetailView extends StatelessWidget {
                   ),
                 ),
               ),
-              SliverPaddingContainer(
-                top: 8,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: SizedBox(
-                  height: 200,
-                  child: SimilarMoviesList(
-                    size: 200,
-                    navigate: (movieId) {
-                      navigate(context, movieId);
-                    },
-                  ),
+              SliverPadding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
                 ),
-              ),
+                sliver: SimilarMoviesList(
+                  navigate: (movieId) {
+                    navigate(context, movieId);
+                  },
+                ),
+              )
             ],
           );
         } else {
@@ -129,14 +128,14 @@ class MovieDetailView extends StatelessWidget {
   }) {
     return Row(
       children: [
-        SvgPicture.asset('assets/images/ic-time.svg'),
+        const Icon(IconlyBold.time_circle, color: Colors.blue, size: 18),
         const SizedBox(width: 10),
         Text(
           '$time minutes',
           style: AppTypography.bodyText2,
         ),
         const SizedBox(width: 10),
-        SvgPicture.asset('assets/images/ic-star.svg'),
+        const Icon(IconlyBold.star, color: Colors.amber, size: 18),
         const SizedBox(width: 10),
         Text(
           '$rating (IMDb)',
@@ -148,7 +147,7 @@ class MovieDetailView extends StatelessWidget {
 
   Widget _releaseDateAndGenre({
     required List<String> genres,
-    String releaseDate = '',
+    required String releaseDate,
   }) {
     return SizedBox(
       width: double.infinity,
@@ -195,36 +194,34 @@ class MovieDetailView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  runAlignment: WrapAlignment.end,
-                  children: genres
-                      .map(
-                        (text) => Container(
-                          // margin: const EdgeInsets.only(top: 4, right: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white.withAlpha(20),
-                            ),
-                            borderRadius:
-                                BorderRadius.circular(AppShape.normalShaper),
-                            gradient: AppColors.gradient,
-                          ),
-                          child: Text(
-                            text,
-                            style: AppTypography.bodyText1,
-                          ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                runAlignment: WrapAlignment.end,
+                children: genres
+                    .map(
+                      (text) => Container(
+                        // margin: const EdgeInsets.only(top: 4, right: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
                         ),
-                      )
-                      .toList(),
-                ),
-              )
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white.withAlpha(20),
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(AppShape.normalShaper),
+                          gradient: AppColors.gradient,
+                        ),
+                        child: Text(
+                          text,
+                          style: AppTypography.bodyText1,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
             ],
           ),
         ],
@@ -241,10 +238,10 @@ class SliverPaddingContainer extends SliverToBoxAdapter {
 
   SliverPaddingContainer({
     super.key,
-    this.top = 16,
-    this.right = 16,
-    this.bottom = 16,
-    this.left = 16,
+    this.top = 0,
+    this.right = 0,
+    this.bottom = 0,
+    this.left = 0,
     required Widget child,
   }) : super(
           child: Padding(
@@ -278,8 +275,7 @@ class CustomSliverAppbar extends SliverAppBar {
               ),
               child: Image.network(movie.poserPath, fit: BoxFit.cover),
             ),
-            centerTitle: false,
-            titlePadding: const EdgeInsets.all(12),
+            centerTitle: true,
             title: Text(movie.title, overflow: TextOverflow.ellipsis),
           ),
         );

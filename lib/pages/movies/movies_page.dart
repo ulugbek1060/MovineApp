@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/pages/movies/widgets/movies_page_view.dart';
+import 'package:movie_app/pages/movies/widgets/movies_grid_list.dart';
+import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesPage extends StatefulWidget {
@@ -38,6 +39,10 @@ class _MoviesPageState extends State<MoviesPage> {
 class _MoviesNestedScrollView extends StatelessWidget {
   final List<MovieType> types;
 
+  void navigate(BuildContext context) {
+    Navigator.of(context).push(SearchPage.route());
+  }
+
   const _MoviesNestedScrollView({
     Key? key,
     required this.types,
@@ -54,14 +59,21 @@ class _MoviesNestedScrollView extends StatelessWidget {
             floating: true,
             snap: true,
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+              IconButton(
+                onPressed: () {
+                  navigate(context);
+                },
+                icon: const Icon(Icons.search),
+              )
             ],
             title: const Text('Find Movies'),
             bottom: _getTabs(context: context),
           )
         ];
       },
-      body: MoviesPageView(types: types),
+      body: TabBarView(
+        children: types.map((type) => MoviesGridView(type: type)).toList(),
+      ),
     );
   }
 
@@ -71,11 +83,7 @@ class _MoviesNestedScrollView extends StatelessWidget {
       indicator: TabIndicator(
         color: Theme.of(context).colorScheme.secondary,
       ),
-      tabs: types
-          .map((type) => Tab(
-                text: type.getTypeText,
-              ))
-          .toList(),
+      tabs: types.map((type) => Tab(text: type.getTypeText)).toList(),
     );
   }
 }
@@ -109,7 +117,6 @@ class TabPainter extends BoxPainter {
     paint.isAntiAlias = true;
 
     /*
-
       print('Height: ${configuration.size!.height}');
       print('Width: ${configuration.size!.width}');
       print('Offset X: ${offset.dx}');
@@ -131,7 +138,7 @@ class TabPainter extends BoxPainter {
       A                                                 A *----------------------              | y = 48
     y = config.size.height - (config.size.height * 0.1)   |                     |              |
     x = offsetX                                           |          *          |              |
-                                                          |        cneter       |              |
+                                                          |        center       |              |
                                                           ----------------------*---------------
                                                                                 B
                                                                    B => | y = config.size.height

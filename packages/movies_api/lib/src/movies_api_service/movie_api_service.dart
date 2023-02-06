@@ -17,6 +17,14 @@ abstract class MovieApiService {
     String language,
   });
 
+  /// Fetches movies by query.
+  /// Function for searching
+  Future<MoviesResponse> getMoviesByQuery({
+    String? query,
+    required int page,
+    String language,
+  });
+
   ///
   /// Fetches movie by ID
   Future<MovieDetailResponse> getMovieDetail({

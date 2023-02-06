@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:movie_app/pages/movies/widgets/movie_grid_item.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
+import 'package:movie_app/pages/widgets/movie_grid_item.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
@@ -63,6 +64,10 @@ class _MoviesGridViewState extends State<MoviesGridView> {
     super.dispose();
   }
 
+  void navigate(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
+
   @override
   Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
@@ -80,7 +85,9 @@ class _MoviesGridViewState extends State<MoviesGridView> {
           builderDelegate: PagedChildBuilderDelegate<MovieItem>(
             itemBuilder: (context, movie, index) => MovieGridItem(
               key: Key(movie.id),
-              onTap: () {},
+              onTap: () {
+                navigate(context, movie.id);
+              },
               movie: movie,
             ),
             firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(

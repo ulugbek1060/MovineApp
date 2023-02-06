@@ -18,12 +18,12 @@ class AppTypography {
     fontWeight: FontWeight.normal,
   );
   static const bodyText1 = TextStyle(
-    color: AppColors.highEmphosized,
+    color: AppColors.highEmphasized,
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );
   static const bodyText2 = TextStyle(
-    color: AppColors.mediumEmphosized,
+    color: AppColors.mediumEmphasized,
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
   );

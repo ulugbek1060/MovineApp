@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/app/bloc/authentication_bloc.dart';
 import 'package:movie_app/pages/main/main_page.dart';
-import 'package:movie_app/pages/onboarding/view/on_boarding_page.dart';
+import 'package:movie_app/pages/onboarding/on_boarding_page.dart';
 import 'package:movie_app/pages/splash/splash_screen.dart';
 import 'package:movie_app/theme/app_theme.dart';
 import 'package:movies_data/movies_data.dart';

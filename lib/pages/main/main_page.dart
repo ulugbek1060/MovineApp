@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/pages/favorites/favorites_page.dart';
 import 'package:movie_app/pages/home/home_screen.dart';
 import 'package:movie_app/pages/movies/movies_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
@@ -21,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomeWidget(),
     const MoviesPage(),
+    const FavoritesPage(),
     const ProfileScreen(),
   ];
 
@@ -32,6 +34,10 @@ class _MainPageState extends State<MainPage> {
     const BottomNavigationBarItem(
       icon: Icon(IconlyBold.play),
       label: 'Movies',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(IconlyBold.bookmark),
+      label: 'Favorites',
     ),
     const BottomNavigationBarItem(
       icon: Icon(IconlyBold.user_2),
@@ -56,6 +62,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0.0,
         currentIndex: _selectedIndex,
         onTap: _setIndex,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).colorScheme.background,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         unselectedItemColor: Colors.grey,

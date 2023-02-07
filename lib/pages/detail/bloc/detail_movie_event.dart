@@ -5,9 +5,14 @@ abstract class DetailMovieEvent {
   const DetailMovieEvent();
 }
 
-class FetchedMovieDetailEvent extends DetailMovieEvent {
+class FetchedMovieEvent extends DetailMovieEvent {
   final String movieId;
 
-  const FetchedMovieDetailEvent({required this.movieId});
+  const FetchedMovieEvent({required this.movieId});
 }
 
+class BookmarkEvent extends DetailMovieEvent {
+  final MovieItem item;
+
+  const BookmarkEvent({required this.item});
+}

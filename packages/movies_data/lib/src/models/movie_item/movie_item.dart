@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:storage_api/storage_api.dart';
 
 class MovieItem extends Equatable {
   final String id;
@@ -12,6 +13,12 @@ class MovieItem extends Equatable {
     required this.rate,
     required this.posterPath,
   });
+
+  MovieItem.fromStorage(MovieItemEntity entity)
+      : this.id = entity.id,
+        this.title = entity.title,
+        this.posterPath = entity.posterPath,
+        this.rate = entity.rating;
 
   @override
   String toString() => {

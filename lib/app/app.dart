@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:movie_app/app/bloc/authentication_bloc.dart';
 import 'package:movie_app/pages/main/main_page.dart';
 import 'package:movie_app/pages/onboarding/on_boarding_page.dart';
@@ -10,8 +11,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatefulWidget {
   final SharedPreferences sharedPref;
+  final BoxCollection boxCollection;
 
-  const App({super.key, required this.sharedPref});
+  const App({
+    super.key,
+    required this.sharedPref,
+    required this.boxCollection,
+  });
 
   @override
   State<App> createState() => _AppState();
@@ -20,17 +26,20 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   late final AuthRepository authRepository;
   late final MoviesRepository movieRepository;
+  late final StorageRepository storageRepository;
 
   @override
   void initState() {
-    movieRepository = MoviesRepository();
     authRepository = AuthRepository(sharedPreferences: widget.sharedPref);
+    storageRepository = StorageRepository(boxCollection: widget.boxCollection);
+    movieRepository = MoviesRepository();
     super.initState();
   }
 
   @override
   void dispose() {
     authRepository.dispose();
+    storageRepository.close();
     super.dispose();
   }
 
@@ -39,6 +48,7 @@ class _AppState extends State<App> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
+        RepositoryProvider<StorageRepository>(create: (_) => storageRepository),
         RepositoryProvider<MoviesRepository>(create: (_) => movieRepository),
       ],
       child: BlocProvider(

@@ -20,8 +20,11 @@ class DetailPage extends StatelessWidget {
     required this.movieId,
   }) : super(key: key);
 
-  MoviesRepository repository(BuildContext context) =>
+  MoviesRepository movieRepository(BuildContext context) =>
       RepositoryProvider.of<MoviesRepository>(context);
+
+  StorageRepository storageRepository(BuildContext context) =>
+      RepositoryProvider.of<StorageRepository>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,9 @@ class DetailPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: BlocProvider(
         create: (_) => DetailMovieBloc(
-          moviesRepository: repository(context),
-        )..add(FetchedMovieDetailEvent(movieId: movieId)),
+            moviesRepository: movieRepository(context),
+            storageRepository: storageRepository(context))
+          ..add(FetchedMovieEvent(movieId: movieId)),
         child: const MovieDetailView(),
       ),
     );
@@ -42,6 +46,10 @@ class MovieDetailView extends StatelessWidget {
 
   void navigate(BuildContext context, String movieId) {
     Navigator.of(context).push(DetailPage.route(movieId));
+  }
+
+  void addToFavorite(BuildContext context, MovieItem item) {
+    context.read<DetailMovieBloc>().add(BookmarkEvent(item: item));
   }
 
   @override
@@ -70,7 +78,27 @@ class MovieDetailView extends StatelessWidget {
         if (movie != null) {
           return CustomScrollView(
             slivers: [
-              CustomSliverAppbar(movie: movie),
+              CustomSliverAppbar(
+                movie: movie,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      addToFavorite(
+                        context,
+                        MovieItem(
+                          id: movie.id,
+                          title: movie.title,
+                          rate: movie.rating,
+                          posterPath: movie.poserPath,
+                        ),
+                      );
+                    },
+                    icon: state.isMarked
+                        ? const Icon(Icons.bookmark)
+                        : const Icon(Icons.bookmark_border),
+                  )
+                ],
+              ),
               SliverPaddingContainer(
                 top: 25,
                 left: 20,
@@ -259,19 +287,23 @@ class SliverPaddingContainer extends SliverToBoxAdapter {
 class CustomSliverAppbar extends SliverAppBar {
   final MovieDetail movie;
 
-  CustomSliverAppbar({super.key, required this.movie})
-      : super(
+  CustomSliverAppbar({
+    super.key,
+    required this.movie,
+    required List<Widget> actions,
+  }) : super(
           expandedHeight: 300,
           pinned: true,
           elevation: 0,
+          actions: actions,
           flexibleSpace: FlexibleSpaceBar(
             background: DecoratedBox(
               position: DecorationPosition.foreground,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [Colors.teal[800]!, Colors.transparent]),
+                    end: Alignment.topCenter,
+                    colors: [AppColors.primaryColor, Colors.transparent]),
               ),
               child: Image.network(movie.poserPath, fit: BoxFit.cover),
             ),

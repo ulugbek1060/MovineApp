@@ -14,12 +14,23 @@ class OnBoardingPage extends StatelessWidget {
     return MaterialPageRoute(builder: (context) => const OnBoardingPage());
   }
 
+  AuthRepository authRepository(BuildContext context) =>
+      RepositoryProvider.of<AuthRepository>(context);
+
+  StorageRepository storageRepository(BuildContext context) =>
+      RepositoryProvider.of<StorageRepository>(context);
+
+  MoviesRepository moviesRepository(BuildContext context) =>
+      RepositoryProvider.of<MoviesRepository>(context);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
         create: (_) => RegisterBloc(
-          authRepository: RepositoryProvider.of<AuthRepository>(context),
+          authRepository: authRepository(context),
+          moviesRepository: moviesRepository(context),
+          storageRepository: storageRepository(context),
         ),
         child: _OnBoardingView(),
       ),
@@ -80,7 +91,7 @@ class _OnBoardingView extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          context.read<RegisterBloc>().add(RegisterSubmitted());
+          context.read<RegisterBloc>().add(FinishRegisterEvent());
         },
         style: AppTheme.raisedButtonStyle,
         child: const Text(

@@ -1,4 +1,4 @@
 library moies_api;
 
 export 'package:movies_api/src/models/models.dart';
-export 'package:movies_api/src/movies_api_service/movie_api_service.dart';
+export 'package:movies_api/src/movies_api_service/movie_api.dart';

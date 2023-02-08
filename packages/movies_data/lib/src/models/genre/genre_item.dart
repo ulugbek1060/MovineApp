@@ -1,20 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class GenreItem extends Equatable {
-  final int id;
+  final String id;
   final String name;
+  final bool isSelected;
 
   GenreItem({
     required this.id,
     required this.name,
+    this.isSelected = false,
   });
 
   @override
-  String toString() => {
-        'id': id,
-        'name': name,
-      }.toString();
-
-  @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [id, name, isSelected];
 }

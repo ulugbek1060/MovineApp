@@ -21,11 +21,11 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       if (hasMarked) {
         repository.deleteMovie(event.movie.id);
       } else {
-        repository.saveTodo(event.movie);
+        repository.saveMovies(event.movie);
       }
     });
 
-    _moviesStatusSubscription = repository.getMovies().listen((list) {
+    _moviesStatusSubscription = repository.getSavedMovies().listen((list) {
       emit(state.copyWith(movies: list));
     });
   }

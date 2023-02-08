@@ -3,11 +3,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:movies_api/src/models/genre/genres.dart';
+import 'package:movies_data/movies_data.dart';
 
 const base_url = 'api.themoviedb.org';
-const apiKey = '7f442ff583bfb38f84caafd113cbccc';
+const apiKey = '7f442ff583bfb38f84caafd113cbccc0';
 
-class MovieApiServiceImpl extends MovieApiService {
+extension Logger<T> on Uri {
+  void logging() {
+    logger(this.toString());
+  }
+}
+
+class MovieApiServiceImpl extends MovieApi {
   @override
   Future<MoviesResponse> getMovieByType({
     required String type,
@@ -20,6 +27,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'page': '$page',
     };
     var url = Uri.https(base_url, '/3/movie/$type', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -41,6 +49,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'language': language,
     };
     var url = Uri.https(base_url, '/3/movie/$movieId/similar', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -66,6 +75,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'page': '$page',
     };
     var url = Uri.https(base_url, '/3/search/movie', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -87,6 +97,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'language': language,
     };
     var url = Uri.https(base_url, '/3/movie/$movieId', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -105,6 +116,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'language': language,
     };
     var url = Uri.https(base_url, '/3/genre/movie/list', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -126,6 +138,7 @@ class MovieApiServiceImpl extends MovieApiService {
       'language': language,
     };
     var url = Uri.https(base_url, '/3/movie/$movieId/videos', queries);
+    url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;

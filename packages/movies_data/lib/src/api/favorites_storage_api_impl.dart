@@ -3,8 +3,8 @@ import 'package:movies_data/movies_data.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:storage_api/storage_api.dart';
 
-class StorageServiceImpl extends StorageService {
-  StorageServiceImpl({
+class FavoritesStorageApiImpl extends FavoritesStorageApi {
+  FavoritesStorageApiImpl({
     required this.boxCollection,
     required this.collectionName,
   }) {

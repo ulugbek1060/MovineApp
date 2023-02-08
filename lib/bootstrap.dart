@@ -8,9 +8,6 @@ import 'package:movie_app/app/app.dart';
 import 'package:movie_app/app/app_bloc_observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const databaseName = 'movies.db';
-const collectionFavorites = 'favorites.box';
-
 void bootstrap({
   required SharedPreferences sharedPref,
   required BoxCollection boxCollection,

@@ -1,8 +1,8 @@
 import 'package:storage_api/src/models/movie_item_entity.dart';
 
-abstract class StorageService {
+abstract class FavoritesStorageApi {
   /// {@macro storage_api}
-  const StorageService();
+  const FavoritesStorageApi();
 
   /// Provides a [Stream] of all movies.
   Stream<List<MovieItemEntity>> getMovies();
@@ -30,5 +30,4 @@ abstract class StorageService {
   void close();
 }
 
-/// Error thrown when a [Movie] with a given id is not found.
 class MovieNotFoundException implements Exception {}

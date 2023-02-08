@@ -2,7 +2,7 @@ import 'package:movies_api/movies_api.dart';
 import 'package:movies_data/movies_data.dart';
 import 'package:movies_data/src/models/models.dart';
 import 'package:movies_data/src/models/movie_item/movies_list.dart';
-import 'package:movies_data/src/service/movie_api_service_impl.dart';
+import 'package:movies_data/src/api/movie_api_impl.dart';
 
 const topRated = 'top_rated';
 const upcoming = 'upcoming';
@@ -46,7 +46,7 @@ extension GetMovieType on MovieType {
 }
 
 class MoviesRepository {
-  final MovieApiService movieApiService = MovieApiServiceImpl();
+  final MovieApi movieApiService = MovieApiServiceImpl();
 
   Future<MoviesList> getMoviesByType({
     required int page,
@@ -77,7 +77,6 @@ class MoviesRepository {
     String? query,
     required int page,
   }) async {
-
     try {
       final movies = await movieApiService.getMoviesByQuery(
         query: query,
@@ -122,11 +121,12 @@ class MoviesRepository {
 
   Future<List<GenreItem>> getGenres() async {
     try {
-      final genresResult = await movieApiService.getAllGenres();
+      final result = await movieApiService.getAllGenres();
 
-      return genresResult.genres!
+      return result.genres!
           .map((e) => GenreItem(id: e.id, name: e.name))
           .toList();
+
     } catch (error) {
       throw error;
     }

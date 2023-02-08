@@ -1,7 +1,7 @@
 import 'package:movies_api/src/models/genre/genres.dart';
 import 'package:movies_api/src/models/models.dart';
 
-abstract class MovieApiService {
+abstract class MovieApi {
   ///
   /// The interface for Movies that provides access to movies list
   Future<MoviesResponse> getMovieByType({

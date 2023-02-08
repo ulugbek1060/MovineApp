@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Genre extends Equatable {
-  final int id;
+  final String id;
   final String name;
 
   const Genre({
@@ -10,8 +10,8 @@ class Genre extends Equatable {
   });
 
   Genre.fromJson(dynamic json)
-      : id = json['id'],
-        name = json['name'];
+      : id = json['id'].toString(),
+        name = json['name'].toString();
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

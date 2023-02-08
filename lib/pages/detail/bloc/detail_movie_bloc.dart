@@ -58,7 +58,7 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       emit(state.copyWith(isMarked: false));
     } else {
       logger('save');
-      storageRepository.saveTodo(event.item);
+      storageRepository.saveMovies(event.item);
       emit(state.copyWith(isMarked: true));
     }
   }

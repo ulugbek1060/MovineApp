@@ -12,20 +12,18 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Theme.of(context).colorScheme.background,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/images/logo.svg'),
-              const SizedBox(width: 15),
-              const Text(
-                'Movie',
-                style: AppTypography.headline1,
-              )
-            ],
-          ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/images/logo.svg'),
+            const SizedBox(width: 15),
+            const Text(
+              'Movie',
+              style: AppTypography.headline1,
+            )
+          ],
         ),
       ),
     );

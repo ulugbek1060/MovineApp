@@ -43,6 +43,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Future<void> _onFetchGenresEvent(
       FetchGenresEvent event, Emitter<RegisterState> emit) async {
     emit(state.copyWith(isLoading: true));
+
+    await Future.delayed(const Duration(seconds: 3));
+
     try {
       // from remote
       final genres = await moviesRepository.getGenres();

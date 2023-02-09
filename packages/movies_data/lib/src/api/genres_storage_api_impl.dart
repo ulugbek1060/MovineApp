@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:storage_api/storage_api.dart';
@@ -14,16 +16,33 @@ class GenresStorageApiImpl extends GenresStorageApi {
   late CollectionBox genresCollection;
   final _genresStreamController = BehaviorSubject<Set<GenreEntity>>.seeded({});
 
+  /// if no selected and list is not empty then select 3 items randomly
   void _init(String collectionName) async {
     genresCollection = await boxCollection.openBox(collectionName);
     final map = await genresCollection.getAllValues();
     if (map.isNotEmpty) {
-      final genres = <GenreEntity>{};
+      final genres = <GenreEntity>[];
+
+      var counter = 0;
+
       map.values.forEach((e) {
+        if (e['is_selected']) {
+          counter++;
+        }
         genres.add(GenreEntity(
             name: e['name'], id: e['id'], isSelected: e['is_selected']));
       });
-      _genresStreamController.add(genres);
+
+      if (counter == 0) {
+        for (var i = 0; i < 3; i++) {
+          final index = Random().nextInt(genres.length);
+          final value = genres[index].changeFlag();
+          await genresCollection.put(value.id, value.toJson());
+          genres[index] = value;
+        }
+      }
+
+      _genresStreamController.add(genres.toSet());
     } else {
       _genresStreamController.add({});
     }
@@ -35,6 +54,7 @@ class GenresStorageApiImpl extends GenresStorageApi {
   @override
   Future<void> saveListOfGenres(Set<GenreEntity> genres) async {
     final values = _genresStreamController.value;
+
     final ids = values.map((e) => e.id);
     final newValues = <GenreEntity>{};
     genres.forEach((genre) {

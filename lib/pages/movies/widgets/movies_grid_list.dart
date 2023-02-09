@@ -21,22 +21,19 @@ class MoviesGridView extends StatefulWidget {
 
 class _MoviesGridViewState extends State<MoviesGridView> {
   static const _pageSize = 20;
-  final PagingController<int, MovieItem> _pagingController =
-      PagingController(firstPageKey: 1);
+  late PagingController<int, MovieItem> _pagingController;
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController = PagingController(firstPageKey: 1)
+      ..addPageRequestListener((pageKey) {
+        _fetchPage(pageKey);
+      });
     super.initState();
   }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      // await Future.delayed(const Duration(seconds: 3));
-      // throw Exception('not Found dsdsdsdd');
-
       final repository = RepositoryProvider.of<MoviesRepository>(context);
 
       final result = await repository.getMoviesByType(
@@ -120,8 +117,6 @@ class _MoviesGridViewState extends State<MoviesGridView> {
         ),
       );
 }
-
-class _NewPageErrorIndicator {}
 
 class _FirstPageErrorIndicator extends StatelessWidget {
   final Object error;

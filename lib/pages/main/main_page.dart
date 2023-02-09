@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/favorites/favorites_page.dart';
-import 'package:movie_app/pages/home/home_screen.dart';
+import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/movies/movies_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
 
@@ -20,10 +20,10 @@ class _MainPageState extends State<MainPage> {
   var _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const HomeWidget(),
-    const MoviesPage(),
+    const HomePage(),
+     Container(),
     const FavoritesPage(),
-    const ProfileScreen(),
+    const ProfilePage(),
   ];
 
   final List<BottomNavigationBarItem> _bottomItems = [
@@ -54,6 +54,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,

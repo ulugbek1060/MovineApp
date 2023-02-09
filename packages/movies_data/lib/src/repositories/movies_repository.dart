@@ -53,12 +53,12 @@ class MoviesRepository {
     required MovieType type,
   }) async {
     try {
-      final movies = await movieApiService.getMovieByType(
+      final result = await movieApiService.getMovieByType(
         type: type.getType,
         page: page,
       );
 
-      final convertedMovies = movies.results!.map(
+      final movies = result.results!.map(
         (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
@@ -67,7 +67,7 @@ class MoviesRepository {
         ),
       );
 
-      return MoviesList(movies: convertedMovies.toList(), page: page);
+      return MoviesList(movies: movies.toList(), page: page);
     } catch (error) {
       throw error;
     }
@@ -126,7 +126,6 @@ class MoviesRepository {
       return result.genres!
           .map((e) => GenreItem(id: e.id, name: e.name))
           .toList();
-
     } catch (error) {
       throw error;
     }

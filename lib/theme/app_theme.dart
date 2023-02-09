@@ -27,9 +27,10 @@ class AppTheme {
   );
 
   static final outlineButtonStyle = OutlinedButton.styleFrom(
+    side: const BorderSide(color: AppColors.onPrimaryColor, width: 2),
     padding: const EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2)),
+      borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
   );
 

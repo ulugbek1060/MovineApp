@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:movie_app/app/bloc/authentication_bloc.dart';
-import 'package:movie_app/pages/onboarding/genres_selection_page.dart';
+import 'package:movie_app/pages/initialpages/page/genres_selection_page.dart';
+import 'package:movie_app/pages/initialpages/page/welcome_page.dart';
+import 'package:movie_app/pages/main/main_page.dart';
+import 'package:movie_app/pages/splash/splash_screen.dart';
 import 'package:movie_app/theme/app_theme.dart';
 import 'package:movies_data/movies_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,29 +86,29 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.unknown:
-                // _navigator.pushAndRemoveUntil<void>(
-                //   SplashPage.route(),
-                //   (route) => false,
-                // );
+                _navigator.pushAndRemoveUntil<void>(
+                  SplashPage.route(),
+                  (route) => false,
+                );
                 break;
               case AuthenticationStatus.unauthenticated:
-                // _navigator.pushAndRemoveUntil<void>(
-                //   OnBoardingPage.route(),
-                //   (route) => false,
-                // );
+                _navigator.pushAndRemoveUntil<void>(
+                  OnBoardingPage.route(),
+                  (route) => false,
+                );
                 break;
               case AuthenticationStatus.authenticated:
-                // _navigator.pushAndRemoveUntil<void>(
-                //   MainPage.route(),
-                //   (route) => false,
-                // );
+                _navigator.pushAndRemoveUntil<void>(
+                  MainPage.route(),
+                  (route) => false,
+                );
                 break;
             }
           },
           child: child,
         );
       },
-      onGenerateRoute: (_) => GenresSelectionPage.route(),
+      onGenerateRoute: (_) => SplashPage.route(),
     );
   }
 }

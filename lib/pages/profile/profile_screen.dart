@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/pages/settings/settings_page.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   void navigate(BuildContext context) {
     Navigator.of(context).push(SettingsPage.route());

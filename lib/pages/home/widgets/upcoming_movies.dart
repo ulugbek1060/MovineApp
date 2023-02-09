@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
-import 'package:movie_app/pages/home/widgets/movies_item_page.dart';
+import 'package:movie_app/pages/widgets/movies_item_page.dart';
 
 class UpcomingMovies extends StatefulWidget {
   const UpcomingMovies({super.key});
@@ -53,7 +53,7 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
           itemCount: movies.length,
           itemBuilder: (context, index) {
             final movie = movies[index];
-            return MovieCardItem(
+            return MovieItemPage(
               onPressed: () {
                 navigateToDetail(context, movies[index].id);
               },

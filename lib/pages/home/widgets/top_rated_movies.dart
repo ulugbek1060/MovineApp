@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
 import 'package:movie_app/pages/home/movies_page.dart';
-import 'package:movie_app/pages/home/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/strings.dart' show populars, seeAll, top_rated;
 import 'package:movies_data/movies_data.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/search/bloc/search_bloc.dart';
 import 'package:movie_app/pages/search/widgets/search_bar.dart';
-import 'package:movie_app/pages/widgets/movie_grid_item.dart';
+import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movies_data/movies_data.dart';
 
 class SearchPage extends StatelessWidget {
@@ -102,11 +102,11 @@ class _SearchViewState extends State<_SearchView> {
               ),
               itemBuilder: (context, index) {
                 final movie = movies[index];
-                return MovieGridItem(
-                  onTap: () {
-                    _navigate(context, movie.id);
-                  },
-                  movie: movie,
+                return MovieItemCard(
+                  title: movie.title,
+                  rate: movie.rate,
+                  posterPath: movie.posterPath,
+                  onPressed: () {},
                 );
               },
             ),

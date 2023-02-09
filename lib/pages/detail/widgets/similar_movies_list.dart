@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
-import 'package:movie_app/pages/detail/widgets/movie_item_card.dart';
-import 'package:movie_app/theme/app_colors.dart';
+import 'package:movie_app/pages/widgets/movie_item_card.dart';
 
 class SimilarMoviesList extends StatelessWidget {
   final void Function(String movieId) navigate;
@@ -32,8 +31,10 @@ class SimilarMoviesList extends StatelessWidget {
             (context, index) {
               final movie = movies[index];
               return MovieItemCard(
-                movieItem: movie,
-                onTap: () {
+                title: movie.title,
+                rate: movie.rate,
+                posterPath: movie.posterPath,
+                onPressed: () {
                   navigate(movie.id);
                 },
               );

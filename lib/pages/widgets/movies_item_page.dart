@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
-class MovieCardItem extends StatelessWidget {
+class MovieItemPage extends StatelessWidget {
   final void Function() onPressed;
   final void Function() onBookmarkPressed;
   final String title;
   final String posterPath;
   final String rating;
 
-  const MovieCardItem({
+  const MovieItemPage({
     Key? key,
     required this.title,
     required this.rating,

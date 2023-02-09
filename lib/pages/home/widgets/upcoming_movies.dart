@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
-import 'package:movie_app/theme/app_colors.dart';
-import 'package:movie_app/theme/app_typography.dart';
+import 'package:movie_app/pages/home/widgets/movies_item_page.dart';
 
 class UpcomingMovies extends StatefulWidget {
   const UpcomingMovies({super.key});
@@ -25,6 +24,10 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  void navigateToDetail(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
   }
 
   @override
@@ -50,8 +53,10 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
           itemCount: movies.length,
           itemBuilder: (context, index) {
             final movie = movies[index];
-            return _MovieCardItem(
-              onPressed: () {},
+            return MovieCardItem(
+              onPressed: () {
+                navigateToDetail(context, movies[index].id);
+              },
               onBookmarkPressed: () {},
               title: movie.title,
               posterPath: movie.posterPath,
@@ -60,91 +65,6 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
           },
         );
       },
-    );
-  }
-}
-
-class _MovieCardItem extends StatelessWidget {
-  final void Function() onPressed;
-  final void Function() onBookmarkPressed;
-  final String title;
-  final String posterPath;
-  final String rating;
-
-  const _MovieCardItem({
-    Key? key,
-    required this.title,
-    required this.rating,
-    required this.posterPath,
-    required this.onPressed,
-    required this.onBookmarkPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Stack(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: CachedNetworkImage(
-              imageUrl: posterPath,
-              placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-              )),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.transparent, AppColors.primaryColor]),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(20),
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTypography.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.play_circle),
-                      label: const Text('Play'),
-                      style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
-                    ),
-                    const SizedBox(width: 12),
-                    OutlinedButton.icon(
-                      onPressed: onBookmarkPressed,
-                      icon: const Icon(Icons.add,
-                          color: AppColors.onPrimaryColor),
-                      label:
-                          const Text('My List', style: AppTypography.bodyText1),
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

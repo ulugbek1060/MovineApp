@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/favorites/favorites_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
-import 'package:movie_app/pages/movies/movies_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
+import 'package:movie_app/utils/strings.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -21,28 +21,9 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-     Container(),
+    Container(),
     const FavoritesPage(),
     const ProfilePage(),
-  ];
-
-  final List<BottomNavigationBarItem> _bottomItems = [
-    const BottomNavigationBarItem(
-      icon: Icon(IconlyBold.home),
-      label: 'Home',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(IconlyBold.play),
-      label: 'Movies',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(IconlyBold.bookmark),
-      label: 'Favorites',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(IconlyBold.user_2),
-      label: 'Profile',
-    )
   ];
 
   void _setIndex(int index) {
@@ -67,9 +48,33 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: _bottomItems,
+        showSelectedLabels: true,
+        items: [
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 0
+                ? const Icon(IconlyBold.home)
+                : const Icon(IconlyLight.home),
+            label: home,
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 1
+                ? const Icon(IconlyBold.discovery)
+                : const Icon(IconlyLight.discovery),
+            label: explore,
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 2
+                ? const Icon(IconlyBold.bookmark)
+                : const Icon(IconlyLight.bookmark),
+            label: myList,
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 3
+                ? const Icon(IconlyBold.user_2)
+                : const Icon(IconlyLight.user),
+            label: profile,
+          )
+        ],
       ),
     );
   }

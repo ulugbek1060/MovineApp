@@ -12,3 +12,7 @@ const continui = 'Continue';
 const seeAll =  'See all';
 const populars =  'Popular';
 const top_rated =  'Top rated movies';
+const home =  'Home';
+const explore =  'Explore';
+const myList =  'My List';
+const profile =  'Profile';

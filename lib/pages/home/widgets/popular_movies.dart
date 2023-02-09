@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
 import 'package:movie_app/pages/home/movies_page.dart';
 import 'package:movie_app/pages/home/widgets/movie_item_card.dart';
@@ -12,9 +13,14 @@ class PopularMovies extends StatelessWidget {
 
   const PopularMovies({Key? key, required this.size}) : super(key: key);
 
-  void navigate(BuildContext context) {
-    Navigator.of(context).push(MoviesPage.route(MovieType.POPULAR));
+  void navigateToAllMovies(BuildContext context) {
+    Navigator.of(context).push(MoviesPage.route(MovieType.NOW_PLAYING));
   }
+
+  void navigateToDetail(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class PopularMovies extends StatelessWidget {
               const Text(populars, style: AppTypography.labelLarge),
               GestureDetector(
                   onTap: () {
-                    navigate(context);
+                    navigateToAllMovies(context);
                   },
                   child: const Text(seeAll, style: AppTypography.bodyText1))
             ],
@@ -73,7 +79,9 @@ class PopularMovies extends StatelessWidget {
                     height: size,
                     width: size * 0.8,
                     child: MovieItemCard(
-                        onPressed: () {},
+                        onPressed: () {
+                          navigateToDetail(context, movies[index].id);
+                        },
                         posterPath: movies[index].posterPath,
                         title: movies[index].title,
                         rate: movies[index].rate),

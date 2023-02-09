@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/theme/app_typography.dart';
 
 class MovieItemCard extends StatelessWidget {
   const MovieItemCard(
@@ -36,6 +37,16 @@ class MovieItemCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.all(6.0),
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Theme.of(context).colorScheme.secondary),
+                child: Text(rate, style: AppTypography.labelSmall),
+              ),
+            )
           ],
         ),
       ),

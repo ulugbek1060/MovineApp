@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/favorites/bloc/favorites_bloc.dart';
+import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movies_data/movies_data.dart';
 
 class FavoritesPage extends StatelessWidget {
@@ -36,60 +37,18 @@ class _FavoritesView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 100 / 150,
-              ),
-              itemCount: state.movies.length,
-              itemBuilder: (context, index) {
-                final movie = state.movies[index];
-                return FavoriteMovieItem(
-                  movieItem: movie,
-                  onTap: () {},
-                );
-              },
-            ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 100 / 150,
+                ),
+                itemCount: state.movies.length,
+                itemBuilder: (context, index) =>
+                    MovieItemCard(movie: state.movies[index])),
           ),
         );
       },
-    );
-  }
-}
-
-class FavoriteMovieItem extends StatelessWidget {
-  final MovieItem movieItem;
-  final void Function() onTap;
-
-  const FavoriteMovieItem({
-    Key? key,
-    required this.movieItem,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.all(6),
-        child: _cardItem(movieItem),
-      ),
-    );
-  }
-
-  Widget _cardItem(MovieItem movieItem) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(movieItem.posterPath),
-          fit: BoxFit.cover,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
     );
   }
 }

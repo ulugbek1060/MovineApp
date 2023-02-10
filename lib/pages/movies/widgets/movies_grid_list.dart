@@ -80,12 +80,7 @@ class _MoviesGridViewState extends State<MoviesGridView> {
           ),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MovieItem>(
-            itemBuilder: (context, movie, index) => MovieItemCard(
-              title: movie.title,
-              rate: movie.rate,
-              posterPath: movie.posterPath,
-              onPressed: () {},
-            ),
+            itemBuilder: (context, movie, index) => MovieItemCard(movie: movie),
             firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
               error: _pagingController.error,
               onTryAgain: () => _pagingController.refresh(),

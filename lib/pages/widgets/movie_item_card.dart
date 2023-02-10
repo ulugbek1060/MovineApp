@@ -1,25 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/theme/app_typography.dart';
+import 'package:movies_data/movies_data.dart';
 
 class MovieItemCard extends StatelessWidget {
-  const MovieItemCard(
-      {Key? key,
-      required this.posterPath,
-      required this.title,
-      required this.rate,
-      required this.onPressed})
-      : super(key: key);
+  const MovieItemCard({Key? key, required this.movie}) : super(key: key);
 
-  final String posterPath;
-  final String title;
-  final String rate;
-  final void Function() onPressed;
+  final MovieItem movie;
+
+  void navigate(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        navigate(context, movie.id);
+      },
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         child: Stack(
@@ -28,7 +27,7 @@ class MovieItemCard extends StatelessWidget {
               height: double.infinity,
               width: double.infinity,
               child: CachedNetworkImage(
-                imageUrl: posterPath,
+                imageUrl: movie.posterPath,
                 placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.secondary,
@@ -44,7 +43,7 @@ class MovieItemCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     color: Theme.of(context).colorScheme.secondary),
-                child: Text(rate, style: AppTypography.labelSmall),
+                child: Text(movie.rate, style: AppTypography.labelSmall),
               ),
             )
           ],

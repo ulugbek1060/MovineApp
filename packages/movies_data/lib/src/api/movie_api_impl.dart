@@ -42,6 +42,7 @@ class MovieApiServiceImpl extends MovieApi {
   @override
   Future<MoviesResponse> getSimilarMovies({
     required String movieId,
+    int? page,
     String language = 'en-US',
   }) async {
     var queries = {
@@ -49,6 +50,33 @@ class MovieApiServiceImpl extends MovieApi {
       'language': language,
     };
     var url = Uri.https(base_url, '/3/movie/$movieId/similar', queries);
+    url.logging();
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
+      return MoviesResponse.fromJson(json);
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    } else {
+      throw FailedException();
+    }
+  }
+
+  @override
+  Future<MoviesResponse> discoverMovies({
+    required int page,
+    String? genreId,
+    String? language,
+    String? year,
+  }) async {
+    var queries = {
+      'api_key': apiKey,
+      'language': language,
+      'with_genres': genreId,
+      'year': year,
+      'page': page,
+    };
+    var url = Uri.https(base_url, '/3/discover/movie', queries);
     url.logging();
     var response = await http.get(url);
     if (response.statusCode == 200) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/favorites/favorites_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
@@ -21,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    Container(),
+    const ExplorePage(),
     const FavoritesPage(),
     const ProfilePage(),
   ];

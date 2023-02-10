@@ -67,7 +67,7 @@ class MoviesRepository {
         ),
       );
 
-      return MoviesList(movies: movies.toList(), page: page);
+      return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {
       throw error;
     }
@@ -78,12 +78,12 @@ class MoviesRepository {
     required int page,
   }) async {
     try {
-      final movies = await movieApiService.getMoviesByQuery(
+      final result = await movieApiService.getMoviesByQuery(
         query: query,
         page: page,
       );
 
-      final convertedMovies = movies.results!.map(
+      final movies = result.results!.map(
         (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
@@ -92,7 +92,36 @@ class MoviesRepository {
         ),
       );
 
-      return MoviesList(movies: convertedMovies.toList(), page: page);
+      return MoviesList(movies: movies.toList(), page: result.page);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<MoviesList> discoverMovies({
+    required int page,
+    String? genreId,
+    String? language,
+    String? year,
+  }) async {
+    try {
+      final result = await movieApiService.discoverMovies(
+        page: page,
+        genreId: genreId,
+        language: language,
+        year: year,
+      );
+
+      final movies = result.results!.map(
+        (element) => MovieItem(
+          id: element.id.toString(),
+          title: element.title.toString(),
+          rate: element.voteAverage.toString(),
+          posterPath: imageUrl + element.posterPath.toString(),
+        ),
+      );
+
+      return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {
       throw error;
     }
@@ -133,13 +162,15 @@ class MoviesRepository {
 
   Future<MoviesList> getSimilarMovies({
     required String movieId,
+    int? page,
   }) async {
     try {
-      final movies = await movieApiService.getSimilarMovies(
+      final result = await movieApiService.getSimilarMovies(
         movieId: movieId,
+        page: page,
       );
 
-      final convertedMovies = movies.results!.map(
+      final movies = result.results!.map(
         (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
@@ -148,7 +179,7 @@ class MoviesRepository {
         ),
       );
 
-      return MoviesList(movies: convertedMovies.toList(), page: 0);
+      return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {
       throw error;
     }

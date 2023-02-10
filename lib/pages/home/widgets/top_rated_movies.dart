@@ -17,10 +17,6 @@ class TopRatedMovies extends StatelessWidget {
     Navigator.of(context).push(MoviesPage.route(MovieType.NOW_PLAYING));
   }
 
-  void navigateToDetail(BuildContext context, String movieId) {
-    Navigator.of(context).push(DetailPage.route(movieId));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,13 +73,7 @@ class TopRatedMovies extends StatelessWidget {
                     ),
                     height: size,
                     width: size * 0.8,
-                    child: MovieItemCard(
-                        onPressed: () {
-                          navigateToDetail(context, movies[index].id);
-                        },
-                        posterPath: movies[index].posterPath,
-                        title: movies[index].title,
-                        rate: movies[index].rate),
+                    child:  MovieItemCard(movie: movies[index]),
                   );
                 },
               );

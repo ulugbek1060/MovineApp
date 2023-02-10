@@ -28,17 +28,7 @@ class SimilarMoviesList extends StatelessWidget {
             crossAxisSpacing: 16,
           ),
           delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final movie = movies[index];
-              return MovieItemCard(
-                title: movie.title,
-                rate: movie.rate,
-                posterPath: movie.posterPath,
-                onPressed: () {
-                  navigate(movie.id);
-                },
-              );
-            },
+            (context, index) => MovieItemCard(movie: movies[index]),
             childCount: state.movies!.length,
           ),
         );

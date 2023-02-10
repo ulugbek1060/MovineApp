@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
@@ -32,9 +31,9 @@ class DetailPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: BlocProvider(
         create: (_) => DetailMovieBloc(
-            moviesRepository: movieRepository(context),
-            storageRepository: storageRepository(context))
-          ..add(FetchedMovieEvent(movieId: movieId)),
+          moviesRepository: movieRepository(context),
+          storageRepository: storageRepository(context),
+        )..add(FetchedMovieEvent(movieId: movieId)),
         child: const MovieDetailView(),
       ),
     );

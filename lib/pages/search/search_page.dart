@@ -49,10 +49,6 @@ class _SearchViewState extends State<_SearchView> {
     context.read<SearchBloc>().add(ClearItemsEvent());
   }
 
-  void _navigate(BuildContext context, String movieId) {
-    Navigator.of(context).push(DetailPage.route(movieId));
-  }
-
   @override
   void dispose() {
     _scrollController
@@ -92,24 +88,16 @@ class _SearchViewState extends State<_SearchView> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GridView.builder(
-              itemCount: movies.length,
-              controller: _scrollController,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 100 / 150,
-              ),
-              itemBuilder: (context, index) {
-                final movie = movies[index];
-                return MovieItemCard(
-                  title: movie.title,
-                  rate: movie.rate,
-                  posterPath: movie.posterPath,
-                  onPressed: () {},
-                );
-              },
-            ),
+                itemCount: movies.length,
+                controller: _scrollController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 100 / 150,
+                ),
+                itemBuilder: (context, index) =>
+                    MovieItemCard(movie: movies[index])),
           );
         },
       ),

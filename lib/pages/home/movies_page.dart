@@ -82,12 +82,8 @@ class _MoviesPageState extends State<MoviesPage> {
               ),
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<MovieItem>(
-                itemBuilder: (context, movie, index) => MovieItemCard(
-                  onPressed: () {},
-                  posterPath: movie.posterPath,
-                  title: movie.title,
-                  rate: movie.rate,
-                ),
+                itemBuilder: (context, movie, index) =>
+                    MovieItemCard(movie: movie),
                 firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
                   error: _pagingController.error,
                   onTryAgain: () => _pagingController.refresh(),

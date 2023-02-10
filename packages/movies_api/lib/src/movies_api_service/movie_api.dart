@@ -14,7 +14,15 @@ abstract class MovieApi {
   /// Fetches similar movies by chosen movieId
   Future<MoviesResponse> getSimilarMovies({
     required String movieId,
+    int? page,
     String language,
+  });
+
+  Future<MoviesResponse> discoverMovies({
+    required int page,
+    String? genreId,
+    String? language,
+    String? year,
   });
 
   /// Fetches movies by query.

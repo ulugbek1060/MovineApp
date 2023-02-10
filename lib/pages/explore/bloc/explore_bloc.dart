@@ -25,11 +25,6 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     /// internal events
     on<_EmitResponseEvent>(_onEmitResponseEvent);
     on<_EmitErrorEvent>(_onEmitErrorEvent);
-
-    // error handler
-    _streamSubscription?.onError((error) {
-      add(_EmitErrorEvent(error));
-    });
   }
 
   Future<void> _onFetchEvent(
@@ -52,6 +47,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           .asStream()
           .listen((response) {
         add(_EmitResponseEvent(response));
+      }, onError: (error) {
+        add(_EmitErrorEvent(error));
       });
     }
 
@@ -66,6 +63,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           .asStream()
           .listen((response) {
         add(_EmitResponseEvent(response));
+      }, onError: (error) {
+        add(_EmitErrorEvent(error));
       });
     }
   }
@@ -83,9 +82,14 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     _streamSubscription = repository
         .getMoviesByQuery(page: state.page, query: event.query)
         .asStream()
-        .listen((response) {
-      add(_EmitResponseEvent(response));
-    });
+        .listen(
+      (response) {
+        add(_EmitResponseEvent(response));
+      },
+      onError: (error) {
+        add(_EmitErrorEvent(error));
+      },
+    );
   }
 
   /// Function refreshes all [ExploreState] and cancelling [StreamSubscription]

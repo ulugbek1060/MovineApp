@@ -62,6 +62,15 @@ class _ExploreViewState extends State<_ExploreView> {
     return SafeArea(
       child: BlocBuilder<ExploreBloc, ExploreState>(
         builder: (context, state) {
+          if (state.error != null) {
+            return Center(
+              child: Text(
+                state.error.toString(),
+                style: AppTypography.bodyText1,
+              ),
+            );
+          }
+
           return RefreshIndicator(
             onRefresh: () async {
               context.read<ExploreBloc>().add(FetchMoviesEvent());

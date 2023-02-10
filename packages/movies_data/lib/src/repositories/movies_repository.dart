@@ -92,6 +92,8 @@ class MoviesRepository {
         ),
       );
 
+      await Future.delayed(Duration(seconds: 1));
+
       return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {
       throw error;

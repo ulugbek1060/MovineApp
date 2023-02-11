@@ -1,7 +1,6 @@
 import 'package:movies_api/movies_api.dart';
 import 'package:movies_data/movies_data.dart';
 import 'package:movies_data/src/models/models.dart';
-import 'package:movies_data/src/models/movie_item/movies_list.dart';
 import 'package:movies_data/src/api/movie_api_impl.dart';
 
 const topRated = 'top_rated';
@@ -78,6 +77,9 @@ class MoviesRepository {
     required int page,
   }) async {
     try {
+
+      await Future.delayed(Duration(seconds: 2));
+
       final result = await movieApiService.getMoviesByQuery(
         query: query,
         page: page,
@@ -92,7 +94,6 @@ class MoviesRepository {
         ),
       );
 
-      await Future.delayed(Duration(seconds: 1));
 
       return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {

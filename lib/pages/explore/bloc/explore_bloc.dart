@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
 part 'explore_event.dart';

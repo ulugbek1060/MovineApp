@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/initialpages/bloc/register_bloc.dart';
-import 'package:movie_app/pages/initialpages/widgets/genre_item_widget.dart';
+import 'package:movie_app/pages/widgets/genre_item_widget.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';

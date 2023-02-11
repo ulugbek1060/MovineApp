@@ -34,8 +34,6 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       final isMarked =
           await storageRepository.checkWhetherIsMarkedOrNot(movie.id);
 
-      logger(isMarked);
-
       emit(state.copyWith(
         isLoading: false,
         movie: movie,
@@ -53,11 +51,9 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
   ) async {
     logger(state.isMarked);
     if (state.isMarked) {
-      logger('delete');
       storageRepository.deleteMovie(event.item.id);
       emit(state.copyWith(isMarked: false));
     } else {
-      logger('save');
       storageRepository.saveMovies(event.item);
       emit(state.copyWith(isMarked: true));
     }

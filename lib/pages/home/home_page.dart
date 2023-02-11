@@ -37,7 +37,7 @@ class _HomeView extends StatelessWidget {
       slivers: [
         SliverToBoxAdapter(
           child: SizedBox(
-            height: 300,
+            height: 350,
             child: UpcomingMovies(),
           ),
         ),
@@ -56,6 +56,9 @@ class _HomeView extends StatelessWidget {
             child: TopRatedMovies(size: 200),
           ),
         ),
+        SliverToBoxAdapter(
+          child: SizedBox(height: 8),
+        )
       ],
     );
   }

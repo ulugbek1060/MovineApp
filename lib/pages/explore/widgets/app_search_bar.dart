@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
+import 'package:movie_app/pages/explore/filter/filter_dialog.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class AppSearchBar extends StatelessWidget {
   const AppSearchBar({Key? key}) : super(key: key);
 
-  void _showDialog(BuildContext context) {
-
-  }
+  void _showDialog(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const FilterDialog(),
+      );
 
   void _onSubmitQuery(BuildContext context, String value) {
     if (value.isEmpty) return;

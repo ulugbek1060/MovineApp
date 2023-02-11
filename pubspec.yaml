@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
+# Both>=2.1.0 the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
@@ -20,7 +20,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
+  flutter: ">=1.17.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,24 +36,26 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  #  shimmer: ^2.0.0
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
   equatable: ^2.0.5
   flutter_svg: ^1.1.6
   animated_text_kit: ^4.2.2
-  solid_bottom_sheet: ^0.1.10
   expansion_tile_card: ^2.0.0
   shared_preferences: ^2.0.17
   movies_data:
     path: packages/movies_data
   iconly: ^1.0.1
   infinite_scroll_pagination: ^3.2.0
-  shimmer: ^2.0.0
   bloc_concurrency: ^0.2.0
   hive: ^2.2.3
   path_provider: ^2.0.12
   cached_network_image: ^3.2.3
+  flutter_redux: ^0.10.0
+  redux: ^5.0.0
+  rxdart: ^0.27.7
   
 
 dev_dependencies:

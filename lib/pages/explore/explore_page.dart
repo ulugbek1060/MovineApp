@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
 import 'package:movie_app/pages/explore/widgets/app_search_bar.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
-import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -44,6 +42,10 @@ class _ExploreViewState extends State<_ExploreView> {
     super.dispose();
   }
 
+  Future<void> refresh() async {
+    context.read<ExploreBloc>().add(FetchMoviesEvent());
+  }
+
   void _onScroll() {
     if (_isBottom) {
       context.read<ExploreBloc>().add(FetchMoviesEvent());
@@ -62,6 +64,7 @@ class _ExploreViewState extends State<_ExploreView> {
     return SafeArea(
       child: BlocBuilder<ExploreBloc, ExploreState>(
         builder: (context, state) {
+
           if (state.error != null) {
             return Center(
               child: Text(
@@ -72,35 +75,67 @@ class _ExploreViewState extends State<_ExploreView> {
           }
 
           return RefreshIndicator(
-            onRefresh: () async {
-              context.read<ExploreBloc>().add(FetchMoviesEvent());
-            },
+            onRefresh: refresh,
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
                 const AppSearchBar(),
-                SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 100 / 150,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      childCount: state.movies.length,
-                      (context, index) =>
-                          MovieItemCard(movie: state.movies[index]),
-                    ),
-                  ),
-                ),
+                _MoviesSliverGrid(movies: state.movies),
+                _SliverProgressBar(isLoading: state.isLoading),
               ],
             ),
           );
         },
       ),
     );
+  }
+}
+
+class _MoviesSliverGrid extends StatelessWidget {
+  const _MoviesSliverGrid({Key? key, required this.movies}) : super(key: key);
+  final List<MovieItem> movies;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.all(8.0),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 100 / 150,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          childCount: movies.length,
+          (context, index) => MovieItemCard(movie: movies[index]),
+        ),
+      ),
+    );
+  }
+}
+
+class _SliverProgressBar extends StatelessWidget {
+  const _SliverProgressBar({Key? key, required this.isLoading})
+      : super(key: key);
+
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return isLoading
+        ? SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.all(8.0),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            ),
+          )
+        : const SliverToBoxAdapter(
+            child: SizedBox(),
+          );
   }
 }

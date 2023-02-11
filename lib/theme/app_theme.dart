@@ -53,5 +53,43 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
     textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+    bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: Colors.black.withOpacity(0)),
   );
 }
+
+
+
+//  static void configure(ThemeName themeName) {
+//     _themeName = themeName;
+//   }
+//
+//   ThemeData get appTheme {
+//     switch (_themeName) {
+//       case ThemeName.DARK:
+//         return _buildDarkTheme();
+//       default: // Flavor.PRO:
+//         return _buildLightTheme();
+//     }
+//   }
+
+// ThemeData _buildDarkTheme() {
+//     const Color primaryColor = const Color(0xFF3B3B48);
+//     final ThemeData base = new ThemeData.dark();
+//     return base.copyWith(
+//       primaryColor: primaryColor,
+//       buttonColor: primaryColor,
+//       indicatorColor: const Color(0xFF3F3F4C),
+//       accentColor: Colors.blueAccent,
+//       canvasColor: const Color(0xFF2B2B2B),
+//       scaffoldBackgroundColor: const Color(0xFF2E2E3B),
+//       backgroundColor: const Color(0xFF2E2E3B),
+//       errorColor: const Color(0xFFB00020),
+//       buttonTheme: const ButtonThemeData(
+//         textTheme: ButtonTextTheme.primary,
+//       ),
+//       textTheme: _buildTextTheme(base.textTheme),
+//       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
+//       accentTextTheme: _buildTextTheme(base.accentTextTheme),
+//     );
+//   }

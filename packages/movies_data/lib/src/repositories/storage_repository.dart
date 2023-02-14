@@ -29,8 +29,14 @@ class StorageRepository {
   /// Provides a [Stream] of all genres.
   Stream<List<GenreItem>> getSavedGenres() =>
       _genresStorage.getGenres().map((set) => set
-          .map((e) =>
-              GenreItem(id: e.id, name: e.name, isSelected: e.isSelected))
+          .map((e) => GenreItem(id: e.id, name: e.name, isActive: e.isActive))
+          .toList());
+
+  /// Provides a [Stream] of active genres.
+  Stream<List<GenreItem>> getActiveGenres() =>
+      _genresStorage.getGenres().map((set) => set
+          .map((e) => GenreItem(id: e.id, name: e.name, isActive: e.isActive))
+          .where((e) => e.isActive)
           .toList());
 
   /// Saves a [movie].
@@ -51,8 +57,8 @@ class StorageRepository {
       );
 
   Future<void> changeGenreFlag(GenreItem genre) async {
-    _genresStorage.changeFlag(GenreEntity(
-        name: genre.name, id: genre.id, isSelected: genre.isSelected));
+    _genresStorage.changeFlag(
+        GenreEntity(name: genre.name, id: genre.id, isActive: genre.isActive));
   }
 
   /// Deletes the movie with the given id.

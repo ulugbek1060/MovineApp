@@ -82,7 +82,7 @@ class _MainView extends StatelessWidget {
                 child: Wrap(
                   children: state.genres
                       .map((item) => GenreItemWidget(
-                          selected: item.isSelected,
+                          selected: item.isActive,
                           genre: item.name,
                           onSelected: () {
                             genreSelection(context, item);

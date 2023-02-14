@@ -26,11 +26,11 @@ class GenresStorageApiImpl extends GenresStorageApi {
       var counter = 0;
 
       map.values.forEach((e) {
-        if (e['is_selected']) {
+        if (e['is_active']) {
           counter++;
         }
         genres.add(GenreEntity(
-            name: e['name'], id: e['id'], isSelected: e['is_selected']));
+            name: e['name'], id: e['id'], isActive: e['is_active']));
       });
 
       if (counter == 0) {

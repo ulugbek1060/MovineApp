@@ -8,12 +8,9 @@ import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesGridView extends StatefulWidget {
-  final MovieType type;
+  final String genreId;
 
-  const MoviesGridView({
-    Key? key,
-    required this.type,
-  }) : super(key: key);
+  const MoviesGridView({Key? key, required this.genreId}) : super(key: key);
 
   @override
   State<MoviesGridView> createState() => _MoviesGridViewState();
@@ -36,9 +33,9 @@ class _MoviesGridViewState extends State<MoviesGridView> {
     try {
       final repository = RepositoryProvider.of<MoviesRepository>(context);
 
-      final result = await repository.getMoviesByType(
+      final result = await repository.discoverMovies(
         page: pageKey,
-        type: widget.type,
+        genreId: widget.genreId,
       );
 
       final movies = result.movies ?? [];

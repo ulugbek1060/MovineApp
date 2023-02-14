@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/movies/widgets/movies_grid_list.dart';
-import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesPage extends StatefulWidget {
@@ -11,80 +11,86 @@ class MoviesPage extends StatefulWidget {
 }
 
 class _MoviesPageState extends State<MoviesPage> {
-  late List<MovieType> types;
-
-  @override
-  void initState() {
-    types = [
-      MovieType.NOW_PLAYING,
-      MovieType.UPCOMING,
-      MovieType.POPULAR,
-      MovieType.TOP_RATED,
-    ];
-    super.initState();
+  Stream<List<GenreItem>> getActiveGenresStream(BuildContext context) {
+    return RepositoryProvider.of<StorageRepository>(context).getActiveGenres();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: types.length,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: _MoviesNestedScrollView(types: types),
+    return StreamBuilder(
+      stream: getActiveGenresStream(context),
+      builder: (context, snapshot) {
+        return _buildComponent(snapshot);
+      },
+    );
+  }
+
+  Widget _buildComponent(AsyncSnapshot<List<GenreItem>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const _ProgressIndicator();
+    } else if (snapshot.hasData) {
+      return _MainPage(genres: snapshot.data ?? []);
+    } else {
+      return const _EmptyPage();
+    }
+  }
+}
+
+class _ProgressIndicator extends StatelessWidget {
+  const _ProgressIndicator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
 }
 
-class _MoviesNestedScrollView extends StatelessWidget {
-  final List<MovieType> types;
-
-  void navigate(BuildContext context) {
-    Navigator.of(context).push(SearchPage.route());
-  }
-
-  const _MoviesNestedScrollView({
-    Key? key,
-    required this.types,
-  }) : super(key: key);
+class _MainPage extends StatelessWidget {
+  const _MainPage({Key? key, required this.genres}) : super(key: key);
+  final List<GenreItem> genres;
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-      floatHeaderSlivers: true,
-      headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            snap: true,
-            actions: [
-              IconButton(
-                onPressed: () {
-                  navigate(context);
-                },
-                icon: const Icon(Icons.search),
-              )
-            ],
-            title: const Text('Find Movies'),
-            bottom: _getTabs(context: context),
-          )
-        ];
-      },
-      body: TabBarView(
-        children: types.map((type) => MoviesGridView(type: type)).toList(),
+    return DefaultTabController(
+      length: genres.length,
+      child: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              snap: true,
+              title: const Text('Find Movies'),
+              bottom: TabBar(
+                isScrollable: true,
+                indicator: TabIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                tabs: genres.map((genre) => Tab(text: genre.name)).toList(),
+              ),
+            )
+          ];
+        },
+        body: TabBarView(
+          children:
+              genres.map((genre) => MoviesGridView(genreId: genre.id)).toList(),
+        ),
       ),
     );
   }
+}
 
-  PreferredSizeWidget _getTabs({required BuildContext context}) {
-    return TabBar(
-      isScrollable: true,
-      indicator: TabIndicator(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-      tabs: types.map((type) => Tab(text: type.getTypeText)).toList(),
-    );
+class _EmptyPage extends StatelessWidget {
+  const _EmptyPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 

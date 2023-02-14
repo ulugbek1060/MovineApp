@@ -70,11 +70,11 @@ class MovieApiServiceImpl extends MovieApi {
     String? year,
   }) async {
     var queries = {
-      'api_key': apiKey,
-      'language': language,
-      'with_genres': genreId,
-      'year': year,
-      'page': page,
+      'api_key': '$apiKey',
+      'language': '$language',
+      'with_genres': '$genreId',
+      'year': '$year',
+      'page': '$page',
     };
     var url = Uri.https(base_url, '/3/discover/movie', queries);
     url.logging();

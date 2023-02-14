@@ -3,19 +3,19 @@ import 'package:equatable/equatable.dart';
 class GenreEntity extends Equatable {
   final String name;
   final String id;
-  final bool isSelected;
+  final bool isActive;
 
   const GenreEntity({
     required this.name,
     required this.id,
-    this.isSelected = false,
+    this.isActive = false,
   });
 
   GenreEntity changeFlag() {
     return GenreEntity(
       name: name,
       id: id,
-      isSelected: !isSelected,
+      isActive: !isActive,
     );
   }
 
@@ -23,10 +23,10 @@ class GenreEntity extends Equatable {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
-    map['is_selected'] = isSelected;
+    map['is_active'] = isActive;
     return map;
   }
 
   @override
-  List<Object?> get props => [id, name, isSelected];
+  List<Object?> get props => [id, name, isActive];
 }

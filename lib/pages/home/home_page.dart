@@ -33,33 +33,42 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 350,
-            child: UpcomingMovies(),
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<HomeBloc>()
+          ..add(FetchUpcomingMoviesEvent())
+          ..add(FetchNowPlayingMoviesEvent())
+          ..add(FetchPopularMoviesEvent())
+          ..add(FetchTopRatedMoviesEvent());
+      },
+      child: const CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 350,
+              child: UpcomingMovies(),
+            ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            child: LatestMovies(size: 200),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: LatestMovies(size: 200),
+            ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            child: PopularMovies(size: 200),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: PopularMovies(size: 200),
+            ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            child: TopRatedMovies(size: 200),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: TopRatedMovies(size: 200),
+            ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(height: 8),
-        )
-      ],
+          SliverToBoxAdapter(
+            child: SizedBox(height: 8),
+          )
+        ],
+      ),
     );
   }
 }

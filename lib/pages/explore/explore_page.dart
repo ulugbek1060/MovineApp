@@ -4,6 +4,7 @@ import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
 import 'package:movie_app/pages/explore/widgets/app_search_bar.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_typography.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
 class ExplorePage extends StatelessWidget {
@@ -62,32 +63,68 @@ class _ExploreViewState extends State<_ExploreView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<ExploreBloc, ExploreState>(
+      child: BlocConsumer<ExploreBloc, ExploreState>(
+        listener: (context, state) {
+          ///TODO: Error dialog.
+        },
         builder: (context, state) {
-
-          if (state.error != null) {
-            return Center(
-              child: Text(
-                state.error.toString(),
-                style: AppTypography.bodyText1,
-              ),
-            );
-          }
-
           return RefreshIndicator(
             onRefresh: refresh,
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
                 const AppSearchBar(),
-                _MoviesSliverGrid(movies: state.movies),
-                _SliverProgressBar(isLoading: state.isLoading),
+                ..._buildComponents(state),
               ],
             ),
           );
         },
       ),
     );
+  }
+
+  List<Widget> _buildComponents(ExploreState state) {
+    if (state is ExploreByQueryState) {
+      if (state.status == Status.pending && state.page == 1) {
+        return [
+          SliverFillRemaining(
+            child: Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            )),
+          ),
+        ];
+      }
+      return [
+        _MoviesSliverGrid(movies: state.movies),
+        _SliverProgressBar(isLoading: state.status == Status.pending),
+      ];
+    } else if (state is ExploreByFilterState) {
+      if (state.status == Status.pending && state.page == 1) {
+        return [
+          SliverFillRemaining(
+            child: Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            )),
+          ),
+        ];
+      }
+      return [
+        _MoviesSliverGrid(movies: state.movies),
+        _SliverProgressBar(isLoading: state.status == Status.pending),
+      ];
+    }
+    return const [
+      SliverFillRemaining(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 80),
+            child: Text('This is a centered Text'),
+          ),
+        ),
+      ),
+    ];
   }
 }
 

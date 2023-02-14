@@ -16,7 +16,7 @@ class FilterEvent extends ExploreEvent {
 class SearchMoviesEvent extends ExploreEvent {
   SearchMoviesEvent(this.query);
 
-  final String? query;
+  final String query;
 }
 
 @immutable

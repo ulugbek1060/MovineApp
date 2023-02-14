@@ -23,7 +23,12 @@ class FavoritesStorageApiImpl extends FavoritesStorageApi {
       final movies = <MovieItemEntity>[];
       map.values.forEach((e) {
         movies.add(MovieItemEntity(
-            e['id'], e['poster_path'], e['title'], e['rating']));
+            id: e['id'],
+            posterPath: e['poster_path'],
+            title: e['title'],
+            rating: e['rating'],
+            backdropPath: e['backdrop_path'],
+        ));
       });
       _moviesStreamController.add(movies);
     } else {

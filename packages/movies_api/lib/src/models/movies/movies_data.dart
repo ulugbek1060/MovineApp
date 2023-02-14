@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class MovieData extends Equatable {
-  final String? backdropPath;
   final String? id;
+  final String? backdropPath;
   final String? originalLanguage;
   final String? overview;
   final String? posterPath;

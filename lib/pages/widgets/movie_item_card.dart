@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
@@ -32,7 +33,11 @@ class MovieItemCard extends StatelessWidget {
                     child: CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.secondary,
                 )),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) => Icon(
+                  IconlyBold.image,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 fit: BoxFit.cover,
               ),
             ),

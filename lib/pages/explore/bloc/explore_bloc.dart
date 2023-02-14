@@ -17,7 +17,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   final MoviesRepository repository;
   StreamSubscription? _streamSubscription;
 
-  ExploreBloc({required this.repository}) : super(ExploreState.initial()) {
+  ExploreBloc({required this.repository}) : super(ExploreByQueryState.initial()) {
     on<FetchMoviesEvent>(_onFetchEvent, transformer: droppable());
     on<SearchMoviesEvent>(_onSearchEvent);
     on<ClearStateEvent>(_onClearStateEvent);
@@ -30,20 +30,20 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
 
   Future<void> _onFetchEvent(
       FetchMoviesEvent event, Emitter<ExploreState> emit) async {
-    if (state.isLoading || state.hasReached) return;
-    emit(state.copyWith(isLoading: true));
+    final currentState = state;
 
-    final genre = state.filter?.genre?.value;
-    final year = state.filter?.year?.value;
-    final language = state.filter?.language?.value;
+    if (currentState is ExploreByQueryState) {
+      if (currentState.hasReached || currentState.status == Status.pending) {
+        return;
+      }
 
-    _streamSubscription?.cancel();
+      emit(currentState.copyWith(status: Status.pending));
 
-    if (state.query != null) {
+      _streamSubscription?.cancel();
       _streamSubscription = repository
           .getMoviesByQuery(
-            page: state.page,
-            query: state.query!,
+            page: currentState.page,
+            query: currentState.query!,
           )
           .asStream()
           .listen((response) {
@@ -51,12 +51,21 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       }, onError: (error) {
         add(_EmitErrorEvent(error));
       });
-    }
+    } else if (currentState is ExploreByFilterState) {
+      if (currentState.hasReached || currentState.status == Status.pending) {
+        return;
+      }
 
-    if (state.filter != null) {
+      emit(currentState.copyWith(status: Status.pending));
+
+      final genre = currentState.filter?.genre?.value;
+      final year = currentState.filter?.year?.value;
+      final language = currentState.filter?.language?.value;
+
+      _streamSubscription?.cancel();
       _streamSubscription = repository
           .discoverMovies(
-            page: state.page,
+            page: currentState.page,
             genreId: genre,
             year: year,
             language: language,
@@ -75,16 +84,17 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   Future<void> _onSearchEvent(
       SearchMoviesEvent event, Emitter<ExploreState> emit) async {
     _streamSubscription?.cancel();
-    emit(ExploreState.initial().copyWith(
-      isLoading: true,
+
+    emit(ExploreByQueryState.initial().copyWith(
+      status: Status.pending,
       query: event.query,
     ));
 
     _streamSubscription = repository
-        .getMoviesByQuery(page: state.page, query: event.query)
+        .getMoviesByQuery(page: 1, query: event.query)
         .asStream()
         .listen(
-      (response) {
+          (response) {
         add(_EmitResponseEvent(response));
       },
       onError: (error) {
@@ -98,38 +108,52 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   Future<void> _onFilterEvent(
       FilterEvent event, Emitter<ExploreState> emit) async {
     _streamSubscription?.cancel();
-    emit(ExploreState.initial().copyWith(
-      isLoading: true,
+    emit(ExploreByFilterState.initial().copyWith(
+      status: Status.pending,
       filter: event.filter,
     ));
+     ///TODO: need to implement.
   }
 
   Future<void> _onClearStateEvent(
       ClearStateEvent event, Emitter<ExploreState> emit) async {
     _streamSubscription?.cancel();
-    emit(ExploreState.initial());
+    emit(ExploreByQueryState.initial());
   }
 
   Future<void> _onEmitErrorEvent(
       _EmitErrorEvent event, Emitter<ExploreState> emit) async {
-    final error = event.error;
-    emit(state.copyWith(isLoading: false, error: error));
+    final currentState = state;
+    if (currentState is ExploreByFilterState) {
+      emit(currentState.copyWith(status: Status.error));
+    } else if (currentState is ExploreByQueryState) {
+      emit(currentState.copyWith(status: Status.error));
+    }
   }
 
   Future<void> _onEmitResponseEvent(
       _EmitResponseEvent event, Emitter<ExploreState> emit) async {
+    final currentState = state;
+
     final result = event.response;
     final movies = result.movies;
-    final nextPage = (result.page ?? state.page) + 1;
     final hasReached = movies!.length < defaultPageSize;
 
-    emit(state.copyWith(
-      isLoading: false,
-      movies: movies,
-      page: nextPage,
-      hasReached: hasReached,
-      error: null,
-    ));
+    if (currentState is ExploreByFilterState) {
+      final nextPage = (result.page ?? currentState.page) + 1;
+      emit(currentState.copyWith(
+          movies: movies,
+          status: Status.success,
+          page: nextPage,
+          hasReached: hasReached));
+    } else if (currentState is ExploreByQueryState) {
+      final nextPage = (result.page ?? currentState.page) + 1;
+      emit(currentState.copyWith(
+          movies: movies,
+          status: Status.success,
+          page: nextPage,
+          hasReached: hasReached));
+    }
   }
 
   @override

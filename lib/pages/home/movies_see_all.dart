@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconly/iconly.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
-class MoviesPage extends StatefulWidget {
-  const MoviesPage({Key? key, required this.type}) : super(key: key);
+class MoviesSeeAll extends StatefulWidget {
+  const MoviesSeeAll({Key? key, required this.type}) : super(key: key);
   final MovieType type;
 
   static Route<void> route(MovieType type) =>
-      MaterialPageRoute(builder: (_) => MoviesPage(type: type));
+      MaterialPageRoute(builder: (_) => MoviesSeeAll(type: type));
 
   @override
-  State<MoviesPage> createState() => _MoviesPageState();
+  State<MoviesSeeAll> createState() => _MoviesSeeAllState();
 }
 
-class _MoviesPageState extends State<MoviesPage> {
+class _MoviesSeeAllState extends State<MoviesSeeAll> {
   static const _pageSize = 20;
   late PagingController<int, MovieItem> _pagingController;
 
@@ -61,6 +62,12 @@ class _MoviesPageState extends State<MoviesPage> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(IconlyLight.arrow_left_2),
+          ),
           title: Text(widget.type.getTypeText),
           elevation: 0.0,
         ),

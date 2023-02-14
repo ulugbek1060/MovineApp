@@ -16,3 +16,4 @@ const home =  'Home';
 const explore =  'Explore';
 const myList =  'My List';
 const profile =  'Profile';
+const movies =  'Movies';

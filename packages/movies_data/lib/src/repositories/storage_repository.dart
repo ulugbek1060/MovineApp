@@ -35,7 +35,13 @@ class StorageRepository {
 
   /// Saves a [movie].
   Future<void> saveMovies(MovieItem movie) => _favoritesStorage.saveMovie(
-        MovieItemEntity(movie.id, movie.posterPath, movie.title, movie.rate),
+        MovieItemEntity(
+          id: movie.id,
+          posterPath: movie.posterPath,
+          title: movie.title,
+          rating: movie.rate,
+          backdropPath: movie.backdropPath,
+        ),
       );
 
   /// Saves [List] of genres.

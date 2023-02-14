@@ -45,109 +45,109 @@ class HomeState extends Equatable {
 }
 
 class NowPlayingMoviesState extends Equatable {
-  final List<MovieItem> nowPlayingMovies;
-  final bool isLoading;
+  final List<MovieItem> movies;
+  final Status status;
   final Object? error;
 
   const NowPlayingMoviesState(
-      {required this.nowPlayingMovies, required this.isLoading, this.error});
+      {required this.movies, required this.status, this.error});
 
   NowPlayingMoviesState.initial()
-      : this(nowPlayingMovies: [], isLoading: false, error: null);
+      : this(movies: [], status: Status.empty, error: null);
 
   NowPlayingMoviesState copyWith({
-    List<MovieItem>? nowPlayingMovies,
-    bool? isLoading,
+    List<MovieItem>? movies,
+    Status? status,
     Object? error,
   }) {
     return NowPlayingMoviesState(
-      nowPlayingMovies: nowPlayingMovies ?? this.nowPlayingMovies,
-      isLoading: isLoading ?? this.isLoading,
+      movies: movies ?? this.movies,
+      status: status ?? this.status,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [nowPlayingMovies, isLoading, error];
+  List<Object?> get props => [movies, status, error];
 }
 
 class PopularMoviesState extends Equatable {
-  final List<MovieItem> popularMovies;
-  final bool isLoading;
+  final List<MovieItem> movies;
+  final Status status;
   final Object? error;
 
   const PopularMoviesState(
-      {required this.popularMovies, required this.isLoading, this.error});
+      {required this.movies, required this.status, this.error});
 
   PopularMoviesState.initial()
-      : this(popularMovies: [], isLoading: false, error: null);
+      : this(movies: [], status: Status.empty, error: null);
 
   PopularMoviesState copyWith({
-    List<MovieItem>? popularMovies,
-    bool? isLoading,
+    List<MovieItem>? movies,
+    Status? status,
     Object? error,
   }) {
     return PopularMoviesState(
-      popularMovies: popularMovies ?? this.popularMovies,
-      isLoading: isLoading ?? this.isLoading,
+      movies: movies ?? this.movies,
+      status: status ?? this.status,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [popularMovies, isLoading, error];
+  List<Object?> get props => [movies, status, error];
 }
 
 class TopRatedMoviesState extends Equatable {
-  final List<MovieItem> topRatedMovies;
-  final bool isLoading;
+  final List<MovieItem> movies;
+  final Status status;
   final Object? error;
 
   const TopRatedMoviesState(
-      {required this.topRatedMovies, required this.isLoading, this.error});
+      {required this.movies, required this.status, this.error});
 
   TopRatedMoviesState.initial()
-      : this(topRatedMovies: [], isLoading: false, error: null);
+      : this(movies: [], status: Status.empty, error: null);
 
   TopRatedMoviesState copyWith({
-    List<MovieItem>? topRatedMovies,
-    bool? isLoading,
+    List<MovieItem>? movies,
+    Status? status,
     Object? error,
   }) {
     return TopRatedMoviesState(
-      topRatedMovies: topRatedMovies ?? this.topRatedMovies,
-      isLoading: isLoading ?? this.isLoading,
+      movies: movies ?? this.movies,
+      status: status ?? this.status,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [topRatedMovies, isLoading, error];
+  List<Object?> get props => [movies, status, error];
 }
 
 class UpcomingMoviesState extends Equatable {
-  final List<MovieItem> upcomingMovies;
-  final bool isLoading;
+  final List<MovieItem> movies;
+  final Status status;
   final Object? error;
 
   const UpcomingMoviesState(
-      {required this.upcomingMovies, required this.isLoading, this.error});
+      {required this.movies, required this.status, this.error});
 
   UpcomingMoviesState.initial()
-      : this(upcomingMovies: [], isLoading: false, error: null);
+      : this(movies: [], status: Status.empty, error: null);
 
   UpcomingMoviesState copyWith({
-    List<MovieItem>? upcomingMovies,
-    bool? isLoading,
+    List<MovieItem>? movies,
+    Status? status,
     Object? error,
   }) {
     return UpcomingMoviesState(
-      upcomingMovies: upcomingMovies ?? this.upcomingMovies,
-      isLoading: isLoading ?? this.isLoading,
+      movies: movies ?? this.movies,
+      status: status ?? this.status,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [upcomingMovies, isLoading, error];
+  List<Object?> get props => [movies, status, error];
 }

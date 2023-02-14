@@ -6,33 +6,23 @@ class MovieItem extends Equatable {
   final String title;
   final String rate;
   final String posterPath;
+  final String backdropPath;
 
   MovieItem({
     required this.id,
     required this.title,
     required this.rate,
     required this.posterPath,
+    required this.backdropPath,
   });
 
   MovieItem.fromStorage(MovieItemEntity entity)
       : this.id = entity.id,
         this.title = entity.title,
         this.posterPath = entity.posterPath,
-        this.rate = entity.rating;
+        this.rate = entity.rating,
+        this.backdropPath = entity.backdropPath ?? '';
 
   @override
-  String toString() => {
-        'id': id,
-        'title': title,
-        'rate': rate,
-        'posterPath': posterPath,
-      }.toString();
-
-  @override
-  List<Object?> get props => [
-        id,
-        title,
-        rate,
-        posterPath,
-      ];
+  List<Object?> get props => [id, title, rate, posterPath, backdropPath];
 }

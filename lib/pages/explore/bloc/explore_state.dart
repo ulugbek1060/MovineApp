@@ -6,46 +6,83 @@ abstract class ExploreState extends Equatable {}
 class ExploreByQueryState extends ExploreState {
   final String? query;
   final List<MovieItem> movies;
+  final int page;
+  final bool hasReached;
   final Status status;
 
-  ExploreByQueryState({this.query, required this.movies, required this.status});
+  ExploreByQueryState(
+      {required this.page,
+      required this.hasReached,
+      this.query,
+      required this.movies,
+      required this.status});
+
+  ExploreByQueryState.initial()
+      : this(
+            page: 1,
+            hasReached: false,
+            query: null,
+            movies: [],
+            status: Status.success);
 
   ExploreByQueryState copyWith({
     String? query,
     List<MovieItem>? movies,
+    int? page,
+    bool? hasReached,
     Status? status,
   }) {
     return ExploreByQueryState(
         query: query ?? this.query,
+        page: page ?? this.page,
+        hasReached: hasReached ?? this.hasReached,
         movies: [...this.movies, ...movies ?? []],
         status: status ?? this.status);
   }
 
   @override
-  List<Object?> get props => [query, movies, status];
+  List<Object?> get props => [query, page, hasReached, movies, status];
 }
 
 class ExploreByFilterState extends ExploreState {
   final Filter? filter;
   final List<MovieItem> movies;
+  final int page;
+  final bool hasReached;
   final Status status;
 
   ExploreByFilterState(
-      {this.filter, required this.movies, required this.status});
+      {required this.page,
+      required this.hasReached,
+      this.filter,
+      required this.movies,
+      required this.status});
+
+  ExploreByFilterState.initial()
+      : this(
+            page: 1,
+            hasReached: false,
+            filter: null,
+            movies: [],
+            status: Status.success);
 
   ExploreByFilterState copyWith({
     Filter? filter,
     List<MovieItem>? movies,
+    int? page,
+    bool? hasReached,
     Status? status,
   }) {
     return ExploreByFilterState(
         filter: filter ?? this.filter,
+        page: page ?? this.page,
+        hasReached: hasReached ?? this.hasReached,
         movies: [...this.movies, ...movies ?? []],
         status: status ?? this.status);
   }
 
   @override
-  List<Object?> get props => [filter, movies, status];
+  List<Object?> get props => [filter, page, hasReached, movies, status];
 }
 
 class Filter extends Equatable {

@@ -9,6 +9,7 @@ const latest = 'latest';
 const nowPlaying = 'now_playing';
 const popular = 'popular';
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
+const originalImageUrl = 'https://image.tmdb.org/t/p/original';
 
 enum MovieType { TOP_RATED, UPCOMING, LATEST, NOW_PLAYING, POPULAR }
 
@@ -58,11 +59,12 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-        (element) => MovieItem(
+            (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
+          backdropPath: originalImageUrl + element.backdropPath.toString(),
         ),
       );
 
@@ -77,7 +79,6 @@ class MoviesRepository {
     required int page,
   }) async {
     try {
-
       await Future.delayed(Duration(seconds: 2));
 
       final result = await movieApiService.getMoviesByQuery(
@@ -86,14 +87,14 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-        (element) => MovieItem(
+            (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
+          backdropPath: originalImageUrl + element.backdropPath.toString(),
         ),
       );
-
 
       return MoviesList(movies: movies.toList(), page: result.page);
     } catch (error) {
@@ -121,6 +122,7 @@ class MoviesRepository {
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
+          backdropPath: originalImageUrl + element.backdropPath.toString(),
         ),
       );
 
@@ -137,7 +139,7 @@ class MoviesRepository {
         id: movie.id.toString(),
         title: movie.originalTitle.toString(),
         poserPath: imageUrl + movie.posterPath.toString(),
-        backdropPath: imageUrl + movie.backdropPath.toString(),
+        backdropPath: originalImageUrl + movie.backdropPath.toString(),
         quality: '4k',
         duration: movie.runtime.toString(),
         rating: movie.voteAverage.toString(),
@@ -174,11 +176,12 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-        (element) => MovieItem(
+            (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
           posterPath: imageUrl + element.posterPath.toString(),
+          backdropPath: originalImageUrl + element.backdropPath.toString(),
         ),
       );
 

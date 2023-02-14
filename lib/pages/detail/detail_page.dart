@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
@@ -14,10 +15,7 @@ class DetailPage extends StatelessWidget {
   static Route<void> route(String movieId) =>
       MaterialPageRoute(builder: (_) => DetailPage(movieId: movieId));
 
-  const DetailPage({
-    Key? key,
-    required this.movieId,
-  }) : super(key: key);
+  const DetailPage({Key? key, required this.movieId}) : super(key: key);
 
   MoviesRepository movieRepository(BuildContext context) =>
       RepositoryProvider.of<MoviesRepository>(context);
@@ -47,8 +45,16 @@ class MovieDetailView extends StatelessWidget {
     Navigator.of(context).push(DetailPage.route(movieId));
   }
 
-  void addToFavorite(BuildContext context, MovieItem item) {
-    context.read<DetailMovieBloc>().add(BookmarkEvent(item: item));
+  void addToFavorite(BuildContext context, MovieDetail movie) {
+    context.read<DetailMovieBloc>().add(BookmarkEvent(
+          item: MovieItem(
+            id: movie.id,
+            title: movie.title,
+            rate: movie.rating,
+            posterPath: movie.poserPath,
+            backdropPath: movie.backdropPath,
+          ),
+        ));
   }
 
   @override
@@ -77,24 +83,16 @@ class MovieDetailView extends StatelessWidget {
         if (movie != null) {
           return CustomScrollView(
             slivers: [
-              CustomSliverAppbar(
+              CustomSliverAppBar(
                 movie: movie,
                 actions: [
                   IconButton(
                     onPressed: () {
-                      addToFavorite(
-                        context,
-                        MovieItem(
-                          id: movie.id,
-                          title: movie.title,
-                          rate: movie.rating,
-                          posterPath: movie.poserPath,
-                        ),
-                      );
+                      addToFavorite(context, movie);
                     },
                     icon: state.isMarked
-                        ? const Icon(Icons.bookmark)
-                        : const Icon(Icons.bookmark_border),
+                        ? const Icon(IconlyBold.bookmark)
+                        : const Icon(IconlyLight.bookmark),
                   )
                 ],
               ),
@@ -283,31 +281,53 @@ class SliverPaddingContainer extends SliverToBoxAdapter {
         );
 }
 
-class CustomSliverAppbar extends SliverAppBar {
-  final MovieDetail movie;
+class CustomSliverAppBar extends StatelessWidget {
+  const CustomSliverAppBar(
+      {Key? key, required this.movie, required this.actions})
+      : super(key: key);
 
-  CustomSliverAppbar({
-    super.key,
-    required this.movie,
-    required List<Widget> actions,
-  }) : super(
-          expandedHeight: 300,
-          pinned: true,
-          elevation: 0,
-          actions: actions,
-          flexibleSpace: FlexibleSpaceBar(
-            background: DecoratedBox(
-              position: DecorationPosition.foreground,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [AppColors.primaryColor, Colors.transparent]),
-              ),
-              child: Image.network(movie.poserPath, fit: BoxFit.cover),
-            ),
-            centerTitle: true,
-            title: Text(movie.title, overflow: TextOverflow.ellipsis),
+  final MovieDetail movie;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: const Icon(IconlyLight.arrow_left_2),
+      ),
+      expandedHeight: 300,
+      pinned: true,
+      elevation: 0,
+      actions: actions,
+      flexibleSpace: FlexibleSpaceBar(
+        background: DecoratedBox(
+          position: DecorationPosition.foreground,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                colors: [AppColors.primaryColor, Colors.transparent]),
           ),
-        );
+          child: CachedNetworkImage(
+            imageUrl: movie.backdropPath,
+            placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                )),
+            errorWidget: (context, url, error) => Icon(
+              IconlyBold.image,
+              size: 100,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        centerTitle: true,
+        title: Text(movie.title, overflow: TextOverflow.ellipsis),
+      ),
+    );
+  }
 }

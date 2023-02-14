@@ -33,7 +33,6 @@ class AppSearchBar extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
-                  key: const Key('_text_input_field'),
                   style: AppTypography.labelMedium,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   decoration: InputDecoration(

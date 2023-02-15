@@ -59,7 +59,7 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-            (element) => MovieItem(
+        (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
@@ -87,7 +87,7 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-            (element) => MovieItem(
+        (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
@@ -176,7 +176,7 @@ class MoviesRepository {
       );
 
       final movies = result.results!.map(
-            (element) => MovieItem(
+        (element) => MovieItem(
           id: element.id.toString(),
           title: element.title.toString(),
           rate: element.voteAverage.toString(),
@@ -198,6 +198,7 @@ class MoviesRepository {
         id: videos.id.toString(),
         videos: videos.results!
             .map((e) => VideoItem(
+                  name: e.name.toString(),
                   id: e.id.toString(),
                   size: e.size.toString(),
                   key: e.key.toString(),

@@ -50,9 +50,14 @@ class _ProgressIndicator extends StatelessWidget {
   }
 }
 
+
 class _MainPage extends StatelessWidget {
   const _MainPage({Key? key, required this.genres}) : super(key: key);
   final List<GenreItem> genres;
+
+  double getHeight() {
+    return 800;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +79,8 @@ class _MainPage extends StatelessWidget {
                 ),
                 tabs: genres.map((genre) => Tab(text: genre.name)).toList(),
               ),
-            )
+            ),
+
           ];
         },
         body: TabBarView(
@@ -162,3 +168,5 @@ class TabPainter extends BoxPainter {
     canvas.drawRRect(roundedRectangle, paint);
   }
 }
+
+

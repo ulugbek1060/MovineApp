@@ -15,7 +15,7 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
   DetailMovieBloc({
     required this.moviesRepository,
     required this.storageRepository,
-  }) : super(const DetailMovieState.initialState()) {
+  }) : super(DetailMovieState.initialState()) {
     on<FetchedMovieEvent>(_onFetchMovieDetailEvent);
     on<BookmarkEvent>(_onBookmarkEvent);
   }
@@ -35,9 +35,13 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       final isMarked =
           await storageRepository.checkWhetherIsMarkedOrNot(movie.id);
 
+      final videos =
+          await moviesRepository.getVideosByMovieId(movieId: movie.id);
+
       emit(state.copyWith(
         status: Status.success,
         movie: movie,
+        videos: videos.videos,
         movies: movies.movies,
         isMarked: isMarked,
       ));
@@ -50,7 +54,6 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     BookmarkEvent event,
     Emitter<DetailMovieState> emit,
   ) async {
-    logger(state.isMarked);
     if (state.isMarked) {
       storageRepository.deleteMovie(event.item.id);
       emit(state.copyWith(isMarked: false));

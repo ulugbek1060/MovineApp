@@ -20,3 +20,4 @@ const profile = 'Profile';
 const movies = 'Movies';
 const tryAgain = 'Try again';
 const errorMessage = 'Something went wrong!';
+const emptyMessage = 'Your List is Empty';

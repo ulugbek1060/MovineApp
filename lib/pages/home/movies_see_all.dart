@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconly/iconly.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -67,7 +65,7 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(IconlyLight.arrow_left_2),
+            icon: const Icon(Icons.arrow_back_sharp),
           ),
           title: Text(widget.type.getTypeText),
           elevation: 0.0,

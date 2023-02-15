@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/explore/explore_page.dart';
-import 'package:movie_app/pages/favorites/favorites_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/movies/movies_page.dart';
+import 'package:movie_app/pages/mylist/my_list_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
 import 'package:movie_app/utils/strings.dart';
 
@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const ExplorePage(),
     const MoviesPage(),
-    const FavoritesPage(),
+    const MyListPage(),
     const ProfilePage(),
   ];
 
@@ -79,8 +79,8 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 4
-                ? const Icon(IconlyBold.user_2)
-                : const Icon(IconlyLight.user),
+                ? const Icon(IconlyBold.profile)
+                : const Icon(IconlyLight.profile),
             label: profile,
           )
         ],

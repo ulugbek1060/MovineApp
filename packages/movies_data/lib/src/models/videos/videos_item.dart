@@ -10,33 +10,26 @@ class Videos extends Equatable {
   });
 
   @override
-  String toString() => {
-        'id': id,
-        'videos': videos,
-      }.toString();
-
-  @override
   List<Object?> get props => [id, videos];
 }
 
-class VideoItem extends Equatable{
+class VideoItem extends Equatable {
   final String id;
   final String size;
   final String key;
+  final String name;
 
   VideoItem({
+    required this.name,
     required this.id,
     required this.size,
     required this.key,
   });
 
-  @override
-  String toString() => {
-        'id': id,
-        'key': key,
-        'size': size,
-      }.toString();
+  bool compareKey(String? key) {
+    return key == this.key;
+  }
 
   @override
-  List<Object?> get props => [id, key, size];
+  List<Object?> get props => [id, key, size, name];
 }

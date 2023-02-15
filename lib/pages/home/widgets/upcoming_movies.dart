@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
+import 'package:movie_app/pages/videoplayer/player_page.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
-import 'package:movie_app/pages/widgets/movies_item_page.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
+import 'package:movie_app/theme/app_colors.dart';
+import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -73,10 +77,6 @@ class _MoviesView extends StatelessWidget {
 
   final PageController pageController;
 
-  void navigateToDetail(BuildContext context, String movieId) {
-    Navigator.of(context).push(DetailPage.route(movieId));
-  }
-
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -84,16 +84,100 @@ class _MoviesView extends StatelessWidget {
       itemCount: movies.length,
       itemBuilder: (context, index) {
         final movie = movies[index];
-        return MovieItemPage(
-          onPressed: () {
-            navigateToDetail(context, movies[index].id);
-          },
-          onBookmarkPressed: () {},
-          title: movie.title,
-          posterPath: movie.backdropPath,
-          rating: movie.rate,
-        );
+        return _MovieItemPage(movie: movie,);
       },
     );
   }
 }
+
+
+class _MovieItemPage extends StatelessWidget {
+
+  const _MovieItemPage({Key? key, required this.movie}) : super(key: key);
+  final MovieItem movie;
+
+  void navigateToPlayer(BuildContext context, String movieId) {
+    Navigator.of(context).push(PlayerPage.route(movieId: movieId));
+  }
+
+  void navigateToDetail(BuildContext context, String movieId) {
+    Navigator.of(context).push(DetailPage.route(movieId));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        navigateToDetail(context, movie.id);
+      },
+      child: Stack(
+        children: [
+          SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: movie.backdropPath,
+              placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                  )),
+              errorWidget: (context, url, error) => Icon(
+                IconlyBold.image,
+                size: 100,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.transparent, AppColors.primaryColor]),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(20),
+            height: double.infinity,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.title,
+                  style: AppTypography.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        navigateToPlayer(context, movie.id);
+                      },
+                      icon: const Icon(Icons.play_circle),
+                      label: const Text('Play'),
+                      style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+                    ),
+                    const SizedBox(width: 12),
+                    OutlinedButton.icon(
+                      onPressed: (){},
+                      icon: const Icon(Icons.add,
+                          color: AppColors.onPrimaryColor),
+                      label:
+                      const Text('My List', style: AppTypography.bodyText1),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+

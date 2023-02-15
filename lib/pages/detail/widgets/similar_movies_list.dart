@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 
 class SimilarMoviesList extends StatelessWidget {
-  final void Function(String movieId) navigate;
-
-  const SimilarMoviesList({
-    Key? key,
-    required this.navigate,
-  }) : super(key: key);
+  const SimilarMoviesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +13,8 @@ class SimilarMoviesList extends StatelessWidget {
       buildWhen: (prev, current) => prev.movies != current.movies,
       builder: (context, state) {
         final movies = state.movies;
-        if (movies == null) {
-          return Container();
+        if (movies.isEmpty) {
+          return const SliverToBoxAdapter(child: EmptyView());
         }
         return SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -29,7 +25,7 @@ class SimilarMoviesList extends StatelessWidget {
           ),
           delegate: SliverChildBuilderDelegate(
             (context, index) => MovieItemCard(movie: movies[index]),
-            childCount: state.movies!.length,
+            childCount: state.movies.length,
           ),
         );
       },

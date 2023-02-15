@@ -32,15 +32,13 @@ class GenreItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           // gradient: AppColors.gradient,
         ),
-        child: Center(
-          child: Text(
-            genre,
-            style: AppTypography.bodyText1.copyWith(
-              fontWeight: FontWeight.w500,
-              color: selected
-                  ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.secondary,
-            ),
+        child: Text(
+          genre,
+          style: AppTypography.bodyText1.copyWith(
+            fontWeight: FontWeight.w500,
+            color: selected
+                ? Theme.of(context).colorScheme.onPrimary
+                : Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),

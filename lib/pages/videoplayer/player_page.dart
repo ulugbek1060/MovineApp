@@ -114,6 +114,7 @@ class _YoutubeViewState extends State<_YoutubeView> {
             onEnterFullScreen: () {
               SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
                 SystemUiOverlay.top,
+                SystemUiOverlay.bottom,
               ]);
             },
             player: YoutubePlayer(

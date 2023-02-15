@@ -72,7 +72,7 @@ class AppSearchBar extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    _showDialog(context);
+                    // _showDialog(context);
                   },
                   icon: Icon(
                     IconlyBold.filter,

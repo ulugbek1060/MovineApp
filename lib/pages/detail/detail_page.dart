@@ -4,9 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
 import 'package:movie_app/pages/detail/widgets/similar_movies_list.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
+import 'package:movie_app/pages/widgets/error_view.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_shape.dart';
 import 'package:movie_app/theme/app_typography.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
 class DetailPage extends StatelessWidget {
@@ -32,14 +36,50 @@ class DetailPage extends StatelessWidget {
           moviesRepository: movieRepository(context),
           storageRepository: storageRepository(context),
         )..add(FetchedMovieEvent(movieId: movieId)),
-        child: const MovieDetailView(),
+        child: MovieDetailView(onRetry: () {
+          context
+              .read<DetailMovieBloc>()
+              .add(FetchedMovieEvent(movieId: movieId));
+        }),
       ),
     );
   }
 }
 
 class MovieDetailView extends StatelessWidget {
-  const MovieDetailView({Key? key}) : super(key: key);
+  const MovieDetailView({Key? key, required this.onRetry}) : super(key: key);
+
+  final void Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DetailMovieBloc, DetailMovieState>(
+      builder: (context, state) {
+        return _buildComponents(state);
+      },
+    );
+  }
+
+  Widget _buildComponents(DetailMovieState state) {
+    switch (state.status) {
+      case Status.success:
+        return _DetailView(movie: state.movie!, isMarked: state.isMarked);
+      case Status.pending:
+        return const ProgressView();
+      case Status.empty:
+        return const EmptyView();
+      case Status.error:
+        return ErrorView(onRetry: onRetry);
+    }
+  }
+}
+
+class _DetailView extends StatelessWidget {
+  const _DetailView({Key? key, required this.movie, required this.isMarked})
+      : super(key: key);
+
+  final MovieDetail movie;
+  final bool isMarked;
 
   void navigate(BuildContext context, String movieId) {
     Navigator.of(context).push(DetailPage.route(movieId));
@@ -47,103 +87,74 @@ class MovieDetailView extends StatelessWidget {
 
   void addToFavorite(BuildContext context, MovieDetail movie) {
     context.read<DetailMovieBloc>().add(BookmarkEvent(
-          item: MovieItem(
+        item: MovieItem(
             id: movie.id,
             title: movie.title,
             rate: movie.rating,
             posterPath: movie.poserPath,
-            backdropPath: movie.backdropPath,
-          ),
-        ));
+            backdropPath: movie.backdropPath)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailMovieBloc, DetailMovieState>(
-      builder: (context, state) {
-        final movie = state.movie;
-
-        ///TODO:Need to initialize progress indicator
-        if (state.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.secondaryColor,
+    return CustomScrollView(
+      slivers: [
+        CustomSliverAppBar(
+          movie: movie,
+          actions: [
+            IconButton(
+              onPressed: () {
+                addToFavorite(context, movie);
+              },
+              icon: isMarked
+                  ? const Icon(IconlyBold.bookmark)
+                  : const Icon(IconlyLight.bookmark),
+            )
+          ],
+        ),
+        SliverPaddingContainer(
+          top: 25,
+          left: 20,
+          right: 20,
+          child: _timeAndRating(
+            time: movie.duration,
+            rating: movie.rating,
+          ),
+        ),
+        SliverPaddingContainer(
+          top: 16,
+          left: 20,
+          right: 20,
+          child: _releaseDateAndGenre(
+            releaseDate: movie.releaseData,
+            genres: movie.genres,
+          ),
+        ),
+        SliverPaddingContainer(
+          top: 16,
+          left: 20,
+          right: 20,
+          child: Text(
+            movie.overview,
+            style: AppTypography.bodyText2.copyWith(
+              fontSize: 14,
             ),
-          );
-        }
-
-        ///TODO: create error widget
-        if (state.error != null && movie == null) {
-          return Container(
-            child: Text('Fail'),
-          );
-        }
-
-        ///TODO: movie must not be null
-        if (movie != null) {
-          return CustomScrollView(
-            slivers: [
-              CustomSliverAppBar(
-                movie: movie,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      addToFavorite(context, movie);
-                    },
-                    icon: state.isMarked
-                        ? const Icon(IconlyBold.bookmark)
-                        : const Icon(IconlyLight.bookmark),
-                  )
-                ],
-              ),
-              SliverPaddingContainer(
-                top: 25,
-                left: 20,
-                right: 20,
-                child: _timeAndRating(
-                  time: movie.duration,
-                  rating: movie.rating,
-                ),
-              ),
-              SliverPaddingContainer(
-                top: 16,
-                left: 20,
-                right: 20,
-                child: _releaseDateAndGenre(
-                  releaseDate: movie.releaseData,
-                  genres: movie.genres,
-                ),
-              ),
-              SliverPaddingContainer(
-                top: 16,
-                left: 20,
-                right: 20,
-                child: Text(
-                  movie.overview,
-                  style: AppTypography.bodyText2.copyWith(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 20,
-                  right: 20,
-                  bottom: 20,
-                ),
-                sliver: SimilarMoviesList(
-                  navigate: (movieId) {
-                    navigate(context, movieId);
-                  },
-                ),
-              )
-            ],
-          );
-        } else {
-          return Container();
-        }
-      },
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
+            bottom: 20,
+          ),
+          sliver: SimilarMoviesList(
+            navigate: (movieId) {
+              navigate(context, movieId);
+            },
+          ),
+        )
+      ],
     );
   }
 
@@ -313,10 +324,7 @@ class CustomSliverAppBar extends StatelessWidget {
           ),
           child: CachedNetworkImage(
             imageUrl: movie.backdropPath,
-            placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                )),
+            placeholder: (context, url) => const ProgressView(),
             errorWidget: (context, url, error) => Icon(
               IconlyBold.image,
               size: 100,

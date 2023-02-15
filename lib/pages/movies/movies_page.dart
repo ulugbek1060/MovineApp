@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/movies/widgets/movies_grid_list.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _MoviesPageState extends State<MoviesPage> {
     } else if (snapshot.hasData) {
       return _MainPage(genres: snapshot.data ?? []);
     } else {
-      return const _EmptyPage();
+      return const EmptyView();
     }
   }
 }
@@ -82,15 +83,6 @@ class _MainPage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _EmptyPage extends StatelessWidget {
-  const _EmptyPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 

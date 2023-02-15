@@ -42,7 +42,7 @@ class MovieItemCard extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.all(6.0),
+              margin: const EdgeInsets.all(8.0),
               child: Container(
                 padding: const EdgeInsets.all(4.0),
                 decoration: BoxDecoration(

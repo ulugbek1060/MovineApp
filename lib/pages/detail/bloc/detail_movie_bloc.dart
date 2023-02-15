@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
 part 'detail_movie_state.dart';
 
 part 'detail_movie_event.dart';
 
-///TODO: create checker whether is market or not.
 class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
   final MoviesRepository moviesRepository;
   final StorageRepository storageRepository;
@@ -25,7 +25,8 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     Emitter<DetailMovieState> emit,
   ) async {
     try {
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(status: Status.pending));
+
       final movie = await moviesRepository.getMovieDetail(event.movieId);
 
       final movies =
@@ -35,13 +36,13 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
           await storageRepository.checkWhetherIsMarkedOrNot(movie.id);
 
       emit(state.copyWith(
-        isLoading: false,
+        status: Status.success,
         movie: movie,
         movies: movies.movies,
         isMarked: isMarked,
       ));
     } catch (error) {
-      emit(state.copyWith(isLoading: false, error: error));
+      emit(state.copyWith(status: Status.error, error: error));
     }
   }
 

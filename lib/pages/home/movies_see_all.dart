@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
@@ -100,20 +101,12 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
                   onTryAgain: () => _pagingController.retryLastFailedRequest(),
                 ),
                 firstPageProgressIndicatorBuilder: (_) => Container(
-                  margin: const EdgeInsets.all(16),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.secondaryColor,
-                    ),
-                  ),
+                  margin: const EdgeInsets.all(16.0),
+                  child: const ProgressView(),
                 ),
                 newPageProgressIndicatorBuilder: (_) => Container(
-                  margin: const EdgeInsets.all(16),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.secondaryColor,
-                    ),
-                  ),
+                  margin: const EdgeInsets.all(16.0),
+                  child: const ProgressView(),
                 ),
                 // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
                 // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),

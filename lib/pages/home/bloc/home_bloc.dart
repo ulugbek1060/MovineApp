@@ -33,7 +33,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         type: MovieType.UPCOMING,
       );
 
-      final movies = result.movies;
+      final movies = result.movies ?? [];
+
+      if (movies.isEmpty) {
+        emit(state.copyWith(
+            upcomingState: upcomingState.copyWith(
+                status: Status.empty, movies: movies, error: null)));
+        return;
+      }
 
       emit(state.copyWith(
           upcomingState: upcomingState.copyWith(
@@ -58,8 +65,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         type: MovieType.NOW_PLAYING,
       );
 
-      final movies = result.movies;
+      final movies = result.movies ?? [];
 
+      if (movies.isEmpty) {
+        emit(state.copyWith(
+            nowPlayingState: nowPlayingState.copyWith(
+                status: Status.empty, movies: movies, error: null)));
+        return;
+      }
       emit(state.copyWith(
           nowPlayingState: nowPlayingState.copyWith(
               status: Status.success, movies: movies, error: null)));
@@ -83,7 +96,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         type: MovieType.POPULAR,
       );
 
-      final movies = result.movies;
+      final movies = result.movies ?? [];
+
+      if (movies.isEmpty) {
+        emit(state.copyWith(
+            popularState: popularState.copyWith(
+                status: Status.empty, movies: movies, error: null)));
+        return;
+      }
 
       emit(state.copyWith(
           popularState: popularState.copyWith(
@@ -108,7 +128,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         type: MovieType.TOP_RATED,
       );
 
-      final movies = result.movies;
+      final movies = result.movies ?? [];
+
+      if (movies.isEmpty) {
+        emit(state.copyWith(
+            topRatedState: topRatedState.copyWith(
+                status: Status.empty, movies: movies, error: null)));
+        return;
+      }
 
       emit(state.copyWith(
           topRatedState: topRatedState.copyWith(

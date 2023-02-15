@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
+import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movies_item_page.dart';
-import 'package:movie_app/theme/app_typography.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -35,48 +37,29 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
         buildWhen: (prev, current) =>
             prev.upcomingState != current.upcomingState,
         builder: (context, homeState) {
-          return _buildComponents(homeState.upcomingState);
+          return _buildComponents(
+              state: homeState.upcomingState,
+              retry: () {
+                context.read<HomeBloc>().add(FetchUpcomingMoviesEvent());
+              });
         });
   }
 
-  Widget _buildComponents(UpcomingMoviesState state) {
+  Widget _buildComponents(
+      {required UpcomingMoviesState state, required OnRetry retry}) {
     switch (state.status) {
       case Status.success:
         return _MoviesView(
-            movies: state.movies, pageController: _pageController);
+          movies: state.movies,
+          pageController: _pageController,
+        );
       case Status.pending:
-        return const _PendingView();
+        return const ProgressView();
       case Status.error:
-        return _ErrorView(error: state.error);
+        return ErrorView(onRetry: retry);
       case Status.empty:
-        return Container();
+        return const EmptyView();
     }
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({Key? key, required this.error}) : super(key: key);
-  final Object? error;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(error?.toString() ?? 'Something went wrong!',
-          style: AppTypography.titleLarge),
-    );
-  }
-}
-
-class _PendingView extends StatelessWidget {
-  const _PendingView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-    );
   }
 }
 

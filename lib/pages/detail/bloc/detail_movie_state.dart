@@ -4,11 +4,11 @@ class DetailMovieState extends Equatable {
   final MovieDetail? movie;
   final bool isMarked;
   final List<MovieItem>? movies;
-  final bool isLoading;
+  final Status status;
   final Object? error;
 
   const DetailMovieState({
-    required this.isLoading,
+    required this.status,
     required this.isMarked,
     this.movies,
     this.error,
@@ -16,10 +16,10 @@ class DetailMovieState extends Equatable {
   });
 
   const DetailMovieState.initialState()
-      : this(isLoading: false, isMarked: false);
+      : this(status: Status.empty, isMarked: false);
 
   DetailMovieState copyWith({
-    bool? isLoading,
+    Status? status,
     List<MovieItem>? movies,
     bool? isMarked,
     Object? error,
@@ -29,18 +29,11 @@ class DetailMovieState extends Equatable {
       movie: movie ?? this.movie,
       movies: movies ?? this.movies,
       isMarked: isMarked ?? this.isMarked,
-      isLoading: isLoading ?? this.isLoading,
+      status: status ?? this.status,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [movie, movies, isMarked, isLoading, error];
-
-  @override
-  String toString() => {
-        'isLoading': isLoading,
-        'movie': movie,
-        'error': error,
-      }.toString();
+  List<Object?> get props => [movie, movies, isMarked, status, error];
 }

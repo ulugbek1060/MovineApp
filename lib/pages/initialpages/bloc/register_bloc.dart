@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart'
     show AuthRepository, GenreItem, MoviesRepository, StorageRepository, logger;
 
@@ -15,7 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final StorageRepository storageRepository;
   final MoviesRepository moviesRepository;
 
-  late StreamSubscription<List<GenreItem>> _streamSubscription;
+  StreamSubscription<List<GenreItem>>? _streamSubscription;
 
   RegisterBloc({
     required this.authRepository,
@@ -28,7 +29,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<_RefreshEvent>(_onRefreshEvent);
 
     _streamSubscription = storageRepository.getSavedGenres().listen((genres) {
-      logger(genres);
       add(_RefreshEvent(genres));
     });
   }
@@ -42,19 +42,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Future<void> _onFetchGenresEvent(
       FetchGenresEvent event, Emitter<RegisterState> emit) async {
-    emit(state.copyWith(isLoading: true));
-
-    await Future.delayed(const Duration(seconds: 3));
+    emit(state.copyWith(status: Status.pending));
 
     try {
-      // from remote
       final genres = await moviesRepository.getGenres();
-      // save to local
       await storageRepository.saveListOfGenres({...genres});
 
-      emit(state.copyWith(isLoading: false));
+      emit(state.copyWith(status: Status.success));
     } catch (error) {
-      emit(state.copyWith(isLoading: false, error: error));
+      emit(state.copyWith(status: Status.error, error: error));
     }
   }
 
@@ -70,7 +66,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   @override
   Future<void> close() {
-    _streamSubscription.cancel();
+    _streamSubscription?.cancel();
     return super.close();
   }
 }

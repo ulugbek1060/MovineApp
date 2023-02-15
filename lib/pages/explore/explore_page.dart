@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
 import 'package:movie_app/pages/explore/widgets/app_search_bar.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
@@ -86,14 +88,7 @@ class _ExploreViewState extends State<_ExploreView> {
   List<Widget> _buildComponents(ExploreState state) {
     if (state is ExploreByQueryState) {
       if (state.status == Status.pending && state.page == 1) {
-        return [
-          SliverFillRemaining(
-            child: Center(
-                child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
-            )),
-          ),
-        ];
+        return const [SliverFillRemaining(child: ProgressView())];
       }
       return [
         _MoviesSliverGrid(movies: state.movies),
@@ -101,30 +96,14 @@ class _ExploreViewState extends State<_ExploreView> {
       ];
     } else if (state is ExploreByFilterState) {
       if (state.status == Status.pending && state.page == 1) {
-        return [
-          SliverFillRemaining(
-            child: Center(
-                child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
-            )),
-          ),
-        ];
+        return const [SliverFillRemaining(child: ProgressView())];
       }
       return [
         _MoviesSliverGrid(movies: state.movies),
         _SliverProgressBar(isLoading: state.status == Status.pending),
       ];
     }
-    return const [
-      SliverFillRemaining(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 80),
-            child: Text('This is a centered Text'),
-          ),
-        ),
-      ),
-    ];
+    return const [SliverFillRemaining(child: EmptyView())];
   }
 }
 
@@ -164,11 +143,7 @@ class _SliverProgressBar extends StatelessWidget {
         ? SliverToBoxAdapter(
             child: Container(
               margin: const EdgeInsets.all(8.0),
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
+              child: const ProgressView(),
             ),
           )
         : const SliverToBoxAdapter(

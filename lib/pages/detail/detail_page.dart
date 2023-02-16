@@ -10,10 +10,8 @@ import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_shape.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
-import 'dart:math' as math;
 
 class DetailPage extends StatelessWidget {
   final String movieId;
@@ -119,18 +117,62 @@ class _DetailViewState extends State<_DetailView>
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        CustomSliverAppBar(
-          movie: widget.movie,
+        SliverAppBar.medium(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_sharp,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
+          title: Text(
+            widget.movie.title,
+            style: Theme.of(context).textTheme.titleLarge,
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                IconlyLight.send,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
             IconButton(
               onPressed: () {
                 addToFavorite(context, widget.movie);
               },
               icon: widget.isMarked
-                  ? const Icon(IconlyBold.bookmark)
-                  : const Icon(IconlyLight.bookmark),
-            )
+                  ? Icon(
+                      IconlyBold.bookmark,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    )
+                  : Icon(
+                      IconlyLight.bookmark,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+            ),
           ],
+        ),
+        SliverPaddingContainer(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: CachedNetworkImage(
+                imageUrl: widget.movie.backdropPath,
+                placeholder: (context, url) => const ProgressView(),
+                errorWidget: (context, url, error) => Icon(
+                  IconlyBold.image,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ),
         SliverPaddingContainer(
           top: 25,
@@ -156,25 +198,28 @@ class _DetailViewState extends State<_DetailView>
           right: 20,
           child: Text(
             widget.movie.overview,
-            style: AppTypography.bodyText2.copyWith(
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         SliverPersistentHeader(
           pinned: true,
           delegate: _SliverAppBarDelegate(
-              minHeight: 60,
-              maxHeight: 60,
-              child: TabBar(
-                onTap: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                controller: _tabController,
-                tabs: const [Tab(text: 'Videos'), Tab(text: 'Similar Movies')],
-              )),
+            TabBar(
+              unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
+              labelColor: Theme.of(context).colorScheme.secondary,
+              indicatorColor: Theme.of(context).colorScheme.secondary,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'Videos'),
+                Tab(text: 'Similar Movies'),
+              ],
+            ),
+          ),
         ),
         if (_currentIndex == 0)
           const SliverPadding(
@@ -210,14 +255,14 @@ class _DetailViewState extends State<_DetailView>
         const SizedBox(width: 10),
         Text(
           '$time minutes',
-          style: AppTypography.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(width: 10),
         const Icon(IconlyBold.star, color: Colors.amber, size: 18),
         const SizedBox(width: 10),
         Text(
           '$rating (IMDb)',
-          style: AppTypography.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
     );
@@ -237,11 +282,8 @@ class _DetailViewState extends State<_DetailView>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Release date: ',
-                style: AppTypography.bodyText1.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                releaseDate,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(width: 5),
               Expanded(
@@ -249,9 +291,7 @@ class _DetailViewState extends State<_DetailView>
                   releaseDate,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: AppTypography.bodyText2.copyWith(
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               )
             ],
@@ -266,10 +306,7 @@ class _DetailViewState extends State<_DetailView>
             children: [
               Text(
                 'Genre',
-                style: AppTypography.bodyText1.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),
               Wrap(
@@ -294,7 +331,7 @@ class _DetailViewState extends State<_DetailView>
                         ),
                         child: Text(
                           text,
-                          style: AppTypography.bodyText1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     )
@@ -308,111 +345,58 @@ class _DetailViewState extends State<_DetailView>
   }
 }
 
-class SliverPaddingContainer extends SliverToBoxAdapter {
+class SliverPaddingContainer extends StatelessWidget {
+  const SliverPaddingContainer(
+      {Key? key,
+      this.top = 0.0,
+      this.bottom = 0.0,
+      this.right = 0.0,
+      this.left = 0.0,
+      required this.child})
+      : super(key: key);
+
   final double top;
   final double right;
   final double left;
   final double bottom;
-
-  SliverPaddingContainer({
-    super.key,
-    this.top = 0,
-    this.right = 0,
-    this.bottom = 0,
-    this.left = 0,
-    required Widget child,
-  }) : super(
-          child: Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: top,
-                left: left,
-                right: right,
-                bottom: bottom,
-              ),
-              child: child,
-            ),
-          ),
-        );
-}
-
-class CustomSliverAppBar extends StatelessWidget {
-  const CustomSliverAppBar(
-      {Key? key, required this.movie, required this.actions})
-      : super(key: key);
-
-  final MovieDetail movie;
-  final List<Widget> actions;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      leading: IconButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: const Icon(Icons.arrow_back_sharp),
+    return SliverPadding(
+      padding: EdgeInsets.only(
+        top: top,
+        left: left,
+        right: right,
+        bottom: bottom,
       ),
-      expandedHeight: 300,
-      pinned: true,
-      elevation: 0,
-      actions: actions,
-      flexibleSpace: FlexibleSpaceBar(
-        background: DecoratedBox(
-          position: DecorationPosition.foreground,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.center,
-                colors: [AppColors.primaryColor, Colors.transparent]),
-          ),
-          child: CachedNetworkImage(
-            imageUrl: movie.backdropPath,
-            placeholder: (context, url) => const ProgressView(),
-            errorWidget: (context, url, error) => Icon(
-              IconlyBold.image,
-              size: 100,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-        centerTitle: true,
-        title: Text(movie.title, overflow: TextOverflow.ellipsis),
+      sliver: SliverToBoxAdapter(
+        child: child,
       ),
     );
   }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
+  _SliverAppBarDelegate(this._tabBar);
 
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
+  final TabBar _tabBar;
 
   @override
-  double get minExtent => minHeight;
+  double get minExtent => _tabBar.preferredSize.height;
 
   @override
-  double get maxExtent => math.max(maxHeight, minHeight);
+  double get maxExtent => _tabBar.preferredSize.height;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(
-        child: Container(
-            color: Theme.of(context).colorScheme.primary, child: child));
+    return Container(
+        color: Theme.of(context).colorScheme.background, child: _tabBar);
   }
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
+    return true;
   }
 }

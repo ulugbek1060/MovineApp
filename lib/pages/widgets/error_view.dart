@@ -19,8 +19,8 @@ class ErrorView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(IconlyBold.paper_negative,
-              size: 100, color: Theme.of(context).colorScheme.onSurface),
-          Text(message ?? errorMessage, style: AppTypography.titleLarge),
+              size: 65, color: Theme.of(context).colorScheme.onSurface),
+          Text(message ?? errorMessage, style: AppTypography.bodyLarge),
           const SizedBox(height: 8.0),
           ElevatedButton(onPressed: onRetry, child: const Text(tryAgain))
         ],

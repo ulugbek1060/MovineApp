@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
+import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_colors.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesGridView extends StatefulWidget {
@@ -78,13 +78,13 @@ class _MoviesGridViewState extends State<MoviesGridView> {
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MovieItem>(
             itemBuilder: (context, movie, index) => MovieItemCard(movie: movie),
-            firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
-              error: _pagingController.error,
-              onTryAgain: () => _pagingController.refresh(),
+            firstPageErrorIndicatorBuilder: (_) => ErrorView(
+              message: _pagingController.error,
+              onRetry: () => _pagingController.refresh(),
             ),
-            newPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
-              error: _pagingController.error,
-              onTryAgain: () => _pagingController.retryLastFailedRequest(),
+            newPageErrorIndicatorBuilder: (_) => ErrorView(
+              message: _pagingController.error,
+              onRetry: () => _pagingController.refresh(),
             ),
             firstPageProgressIndicatorBuilder: (_) => Container(
               margin: const EdgeInsets.all(16),
@@ -107,34 +107,4 @@ class _MoviesGridViewState extends State<MoviesGridView> {
           ),
         ),
       );
-}
-
-class _FirstPageErrorIndicator extends StatelessWidget {
-  final Object error;
-  final void Function() onTryAgain;
-
-  const _FirstPageErrorIndicator({
-    required this.error,
-    required this.onTryAgain,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(8),
-            child: Text(
-              '$error',
-              style: AppTypography.bodyText2,
-            ),
-          ),
-          ElevatedButton(onPressed: onTryAgain, child: const Text('Tyr again')),
-        ],
-      ),
-    );
-  }
 }

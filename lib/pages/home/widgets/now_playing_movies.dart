@@ -6,7 +6,6 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';
@@ -30,28 +29,35 @@ class LatestMovies extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(topMovies, style: AppTypography.labelLarge),
+              Text(topMovies, style: Theme.of(context).textTheme.titleMedium),
               GestureDetector(
-                  onTap: () {
-                    navigateToAllMovies(context);
-                  },
-                  child: const Text(seeAll, style: AppTypography.bodyText1))
+                onTap: () {
+                  navigateToAllMovies(context);
+                },
+                child: Text(
+                  seeAll,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.secondary
+                  ),
+                ),
+              )
             ],
           ),
         ),
         SizedBox(
           height: size,
           child: BlocBuilder<HomeBloc, HomeState>(
-              buildWhen: (prev, current) =>
-                  prev.nowPlayingState != current.nowPlayingState,
-              builder: (context, homeState) {
-                return _buildComponents(
-                  state: homeState.nowPlayingState,
-                  retry: () {
-                    context.read<HomeBloc>().add(FetchNowPlayingMoviesEvent());
-                  },
-                );
-              }),
+            buildWhen: (prev, current) =>
+                prev.nowPlayingState != current.nowPlayingState,
+            builder: (context, homeState) {
+              return _buildComponents(
+                state: homeState.nowPlayingState,
+                retry: () {
+                  context.read<HomeBloc>().add(FetchNowPlayingMoviesEvent());
+                },
+              );
+            },
+          ),
         )
       ],
     );

@@ -6,7 +6,6 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movie_app/utils/strings.dart' show populars, seeAll;
 import 'package:movies_data/movies_data.dart';
@@ -17,7 +16,7 @@ class PopularMovies extends StatelessWidget {
   const PopularMovies({Key? key, required this.size}) : super(key: key);
 
   void navigateToAllMovies(BuildContext context) {
-    Navigator.of(context).push(MoviesSeeAll.route(MovieType.NOW_PLAYING));
+    Navigator.of(context).push(MoviesSeeAll.route(MovieType.POPULAR));
   }
 
   @override
@@ -26,17 +25,25 @@ class PopularMovies extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
-            margin: const EdgeInsets.all(20),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(populars, style: AppTypography.labelLarge),
-                  GestureDetector(
-                      onTap: () {
-                        navigateToAllMovies(context);
-                      },
-                      child: const Text(seeAll, style: AppTypography.bodyText1))
-                ])),
+          margin: const EdgeInsets.all(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(populars, style: Theme.of(context).textTheme.titleMedium),
+              GestureDetector(
+                onTap: () {
+                  navigateToAllMovies(context);
+                },
+                child: Text(
+                  seeAll,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
         SizedBox(
           height: size,
           child: BlocBuilder<HomeBloc, HomeState>(

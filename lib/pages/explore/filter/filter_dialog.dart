@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/explore/filter/filter_view_model.dart';
+import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/genre_item_widget.dart';
 import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
@@ -60,7 +61,7 @@ class _FilterDialogState extends State<FilterDialog> {
       case FilterStatus.loading:
         return const _FilterLoading();
       case FilterStatus.error:
-        return const _FilterError();
+        return const ErrorView();
     }
   }
 }
@@ -120,7 +121,7 @@ class _GenresListState extends State<_GenresList> {
             child: const SizedBox(height: 4.0, width: 50.0),
           ),
           const SizedBox(height: 8.0),
-          const Text('Filter', style: AppTypography.headline1),
+          Text('Filter', style: Theme.of(context).textTheme.titleLarge),
 
           const SizedBox(height: 8.0),
           Padding(
@@ -209,7 +210,7 @@ class _GenresListState extends State<_GenresList> {
                       margin: const EdgeInsets.all(2.0),
                       child: Text(
                         'Reset',
-                        style: AppTypography.bodyText1.copyWith(
+                        style: AppTypography.bodyMedium.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -224,7 +225,7 @@ class _GenresListState extends State<_GenresList> {
                       margin: const EdgeInsets.all(2.0),
                       child: Text(
                         'Apply',
-                        style: AppTypography.bodyText1.copyWith(
+                        style: AppTypography.bodyMedium.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -235,20 +236,6 @@ class _GenresListState extends State<_GenresList> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _FilterError extends StatelessWidget {
-  const _FilterError({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Something went wrong!',
-        style: AppTypography.bodyText2,
       ),
     );
   }

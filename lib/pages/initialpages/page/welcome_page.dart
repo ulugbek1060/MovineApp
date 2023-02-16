@@ -28,37 +28,28 @@ class OnBoardingPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _welcomeText(),
+              AnimatedTextKit(
+                isRepeatingAnimation: false,
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    welcomeText,
+                    textStyle: Theme.of(context).textTheme.titleLarge,
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
-              _content(),
+              Text(
+                welcomeContent,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 30),
               _submitButton(context)
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _welcomeText() {
-    return AnimatedTextKit(
-      isRepeatingAnimation: false,
-      animatedTexts: [
-        TypewriterAnimatedText(
-          welcomeText,
-          textStyle:
-              AppTypography.headline1.copyWith(fontWeight: FontWeight.w700),
-          speed: const Duration(milliseconds: 100),
-        ),
-      ],
-    );
-  }
-
-  Widget _content() {
-    return const Text(
-      welcomeContent,
-      style: AppTypography.headline2,
-      textAlign: TextAlign.center,
     );
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/movies/widgets/movies_grid_list.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
+import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesPage extends StatefulWidget {
@@ -28,7 +30,7 @@ class _MoviesPageState extends State<MoviesPage> {
 
   Widget _buildComponent(AsyncSnapshot<List<GenreItem>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return const _ProgressIndicator();
+      return const ProgressView();
     } else if (snapshot.hasData) {
       return _MainPage(genres: snapshot.data ?? []);
     } else {
@@ -36,20 +38,6 @@ class _MoviesPageState extends State<MoviesPage> {
     }
   }
 }
-
-class _ProgressIndicator extends StatelessWidget {
-  const _ProgressIndicator({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-    );
-  }
-}
-
 
 class _MainPage extends StatelessWidget {
   const _MainPage({Key? key, required this.genres}) : super(key: key);
@@ -71,16 +59,16 @@ class _MainPage extends StatelessWidget {
               pinned: true,
               floating: true,
               snap: true,
-              title: const Text('Find Movies'),
+              elevation: 0.0,
+              title: const Text(movies),
               bottom: TabBar(
                 isScrollable: true,
-                indicator: TabIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+                unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
+                labelColor: Theme.of(context).colorScheme.onPrimary,
+                indicatorColor: Theme.of(context).colorScheme.secondary,
                 tabs: genres.map((genre) => Tab(text: genre.name)).toList(),
               ),
             ),
-
           ];
         },
         body: TabBarView(
@@ -151,7 +139,7 @@ class TabPainter extends BoxPainter {
     final configWidth = configuration.size?.width ?? 1.0;
     final configHeight = configuration.size?.height ?? 1.0;
     final center = Offset(
-      (offset.dx + (configWidth / 4) + 5),
+      (offset.dx + (configWidth / 4)),
       (configHeight - (configHeight * 0.1)),
     );
     var roundedRectangle = RRect.fromRectAndRadius(

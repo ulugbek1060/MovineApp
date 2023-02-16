@@ -14,7 +14,7 @@ class EmptyView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(IconlyBold.document,
-              size: 100, color: Theme.of(context).colorScheme.onSurface),
+              size: 65, color: Theme.of(context).colorScheme.onSurface),
           const SizedBox(height: 20),
           const Text(emptyMessage, style: AppTypography.titleLarge),
         ],

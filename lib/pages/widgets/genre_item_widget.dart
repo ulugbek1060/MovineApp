@@ -34,7 +34,7 @@ class GenreItemWidget extends StatelessWidget {
         ),
         child: Text(
           genre,
-          style: AppTypography.bodyText1.copyWith(
+          style: AppTypography.bodyMedium.copyWith(
             fontWeight: FontWeight.w500,
             color: selected
                 ? Theme.of(context).colorScheme.onPrimary

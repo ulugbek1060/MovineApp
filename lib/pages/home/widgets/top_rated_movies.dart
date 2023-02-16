@@ -6,10 +6,9 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
-import 'package:movie_app/utils/strings.dart' show seeAll, top_rated;
-import 'package:movies_data/movies_data.dart';
+import 'package:movie_app/utils/strings.dart'show topRated , seeAll;
+import 'package:movies_data/movies_data.dart' hide topRated;
 
 class TopRatedMovies extends StatelessWidget {
   final double size;
@@ -17,7 +16,7 @@ class TopRatedMovies extends StatelessWidget {
   const TopRatedMovies({Key? key, required this.size}) : super(key: key);
 
   void navigateToAllMovies(BuildContext context) {
-    Navigator.of(context).push(MoviesSeeAll.route(MovieType.NOW_PLAYING));
+    Navigator.of(context).push(MoviesSeeAll.route(MovieType.TOP_RATED));
   }
 
   @override
@@ -30,12 +29,18 @@ class TopRatedMovies extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(top_rated, style: AppTypography.labelLarge),
+              Text(topRated, style: Theme.of(context).textTheme.titleMedium),
               GestureDetector(
-                  onTap: () {
-                    navigateToAllMovies(context);
-                  },
-                  child: const Text(seeAll, style: AppTypography.bodyText1))
+                onTap: () {
+                  navigateToAllMovies(context);
+                },
+                child: Text(
+                  seeAll,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary
+                  ),
+                ),
+              )
             ],
           ),
         ),

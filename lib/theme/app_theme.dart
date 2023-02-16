@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/theme/app_colors.dart';
+import 'package:movie_app/theme/app_typography.dart';
 
+///
+///  All Buttons text style is [bodyMedium]
+///
 class AppTheme {
-//   ElevatedButton(
-//   style: ElevatedButton.styleFrom(
-//     primary: Colors.red, // background
-//     onPrimary: Colors.white, // foreground
-//   ),
-//   onPressed: () { },
-//   child: Text('ElevatedButton with custom foreground/background'),
-// )
   static final flatButtonStyle = TextButton.styleFrom(
     padding: const EdgeInsets.symmetric(horizontal: 16.0),
     shape: const RoundedRectangleBorder(
@@ -34,11 +30,52 @@ class AppTheme {
     ),
   );
 
-  static final themeData = ThemeData(
+  static final lightThemeData = ThemeData(
+    useMaterial3: true,
     primarySwatch: AppColors.primarySwatch,
+    splashColor: AppColors.primarySwatch,
+    scaffoldBackgroundColor: AppColors.backgroundColor,
     fontFamily: 'Urbanist',
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundColor,
+      iconTheme: const IconThemeData(
+        color: AppColors.onBackgroundColor,
+      ),
+      titleTextStyle: AppTypography.titleLarge.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+    ),
+    textTheme: TextTheme(
+      bodyLarge: AppTypography.bodyLarge.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      bodyMedium: AppTypography.bodyMedium.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      bodySmall: AppTypography.bodySmall.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      labelLarge: AppTypography.labelLarge.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      labelMedium: AppTypography.labelMedium.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      labelSmall: AppTypography.labelSmall.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      titleLarge: AppTypography.titleLarge.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      titleMedium: AppTypography.titleMedium.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+      titleSmall: AppTypography.titleSmall.copyWith(
+        color: AppColors.onPrimaryColor,
+      ),
+    ),
     colorScheme: const ColorScheme(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primary: AppColors.primaryColor,
       onPrimary: AppColors.onPrimaryColor,
       secondary: AppColors.secondaryColor,
@@ -53,43 +90,71 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
     textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
     outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
-    bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Colors.black.withOpacity(0)),
+    bottomSheetTheme:
+        BottomSheetThemeData(backgroundColor: Colors.black.withOpacity(0)),
+  );
+
+  static final darkThemeData = ThemeData(
+    useMaterial3: true,
+    primarySwatch: AppColors.darkPrimarySwatch,
+    splashColor: AppColors.darkPrimaryColor,
+    scaffoldBackgroundColor: AppColors.darkBackgroundColor,
+    fontFamily: 'Urbanist',
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.darkBackgroundColor,
+      iconTheme: const IconThemeData(
+        color: AppColors.darkOnBackgroundColor,
+      ),
+      titleTextStyle: AppTypography.titleLarge.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+    ),
+    textTheme: TextTheme(
+      bodyLarge: AppTypography.bodyLarge.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      bodyMedium: AppTypography.bodyMedium.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      bodySmall: AppTypography.bodySmall.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      labelLarge: AppTypography.labelLarge.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      labelMedium: AppTypography.labelMedium.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      labelSmall: AppTypography.labelSmall.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      titleLarge: AppTypography.titleLarge.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      titleMedium: AppTypography.titleMedium.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+      titleSmall: AppTypography.titleSmall.copyWith(
+        color: AppColors.darkOnPrimaryColor,
+      ),
+    ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.dark,
+      primary: AppColors.darkPrimaryColor,
+      onPrimary: AppColors.darkOnPrimaryColor,
+      secondary: AppColors.darkSecondaryColor,
+      onSecondary: AppColors.darkOnSecondaryColor,
+      background: AppColors.darkBackgroundColor,
+      onBackground: AppColors.darkOnBackgroundColor,
+      error: AppColors.darkErrorColor,
+      onError: AppColors.darkOnErrorColor,
+      surface: AppColors.darkSurfaceColor,
+      onSurface: AppColors.darkOnSurfaceColor,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(style: raisedButtonStyle),
+    textButtonTheme: TextButtonThemeData(style: flatButtonStyle),
+    outlinedButtonTheme: OutlinedButtonThemeData(style: outlineButtonStyle),
+    bottomSheetTheme:
+        BottomSheetThemeData(backgroundColor: Colors.black.withOpacity(0)),
   );
 }
-
-
-
-//  static void configure(ThemeName themeName) {
-//     _themeName = themeName;
-//   }
-//
-//   ThemeData get appTheme {
-//     switch (_themeName) {
-//       case ThemeName.DARK:
-//         return _buildDarkTheme();
-//       default: // Flavor.PRO:
-//         return _buildLightTheme();
-//     }
-//   }
-
-// ThemeData _buildDarkTheme() {
-//     const Color primaryColor = const Color(0xFF3B3B48);
-//     final ThemeData base = new ThemeData.dark();
-//     return base.copyWith(
-//       primaryColor: primaryColor,
-//       buttonColor: primaryColor,
-//       indicatorColor: const Color(0xFF3F3F4C),
-//       accentColor: Colors.blueAccent,
-//       canvasColor: const Color(0xFF2B2B2B),
-//       scaffoldBackgroundColor: const Color(0xFF2E2E3B),
-//       backgroundColor: const Color(0xFF2E2E3B),
-//       errorColor: const Color(0xFFB00020),
-//       buttonTheme: const ButtonThemeData(
-//         textTheme: ButtonTextTheme.primary,
-//       ),
-//       textTheme: _buildTextTheme(base.textTheme),
-//       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-//       accentTextTheme: _buildTextTheme(base.accentTextTheme),
-//     );
-//   }

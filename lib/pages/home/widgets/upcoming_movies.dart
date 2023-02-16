@@ -9,8 +9,8 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
+import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';
 
 class UpcomingMovies extends StatefulWidget {
@@ -84,15 +84,15 @@ class _MoviesView extends StatelessWidget {
       itemCount: movies.length,
       itemBuilder: (context, index) {
         final movie = movies[index];
-        return _MovieItemPage(movie: movie,);
+        return _MovieItemPage(
+          movie: movie,
+        );
       },
     );
   }
 }
 
-
 class _MovieItemPage extends StatelessWidget {
-
   const _MovieItemPage({Key? key, required this.movie}) : super(key: key);
   final MovieItem movie;
 
@@ -119,8 +119,8 @@ class _MovieItemPage extends StatelessWidget {
               imageUrl: movie.backdropPath,
               placeholder: (context, url) => Center(
                   child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondary,
-                  )),
+                color: Theme.of(context).colorScheme.secondary,
+              )),
               errorWidget: (context, url, error) => Icon(
                 IconlyBold.image,
                 size: 100,
@@ -134,9 +134,10 @@ class _MovieItemPage extends StatelessWidget {
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.transparent, AppColors.primaryColor]),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomLeft,
+                colors: [Colors.transparent, AppColors.darkPrimaryColor],
+              ),
             ),
           ),
           Container(
@@ -149,7 +150,9 @@ class _MovieItemPage extends StatelessWidget {
               children: [
                 Text(
                   movie.title,
-                  style: AppTypography.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -158,17 +161,30 @@ class _MovieItemPage extends StatelessWidget {
                       onPressed: () {
                         navigateToPlayer(context, movie.id);
                       },
-                      icon: const Icon(Icons.play_circle),
-                      label: const Text('Play'),
-                      style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+                      icon: const Icon(Icons.play_circle, color: Colors.white),
+                      label: Text(
+                        play,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     OutlinedButton.icon(
-                      onPressed: (){},
-                      icon: const Icon(Icons.add,
-                          color: AppColors.onPrimaryColor),
-                      label:
-                      const Text('My List', style: AppTypography.bodyText1),
+                      onPressed: () {},
+                      icon: const Icon(Icons.add, color: Colors.white),
+                      label: Text(
+                        'My List',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white, width: 2),
+                      ),
                     )
                   ],
                 )
@@ -180,4 +196,3 @@ class _MovieItemPage extends StatelessWidget {
     );
   }
 }
-

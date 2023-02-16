@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:movie_app/app/bloc/authentication_bloc.dart';
-import 'package:movie_app/pages/initialpages/page/genres_selection_page.dart';
 import 'package:movie_app/pages/initialpages/page/welcome_page.dart';
 import 'package:movie_app/pages/main/main_page.dart';
 import 'package:movie_app/pages/splash/splash_screen.dart';
@@ -77,7 +76,9 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.themeData,
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
+      themeMode: ThemeMode.system,
       // localizationsDelegates: AppLocalizations.localizationsDelegates,
       // supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {
@@ -87,21 +88,15 @@ class _AppViewState extends State<AppView> {
             switch (state.status) {
               case AuthenticationStatus.unknown:
                 _navigator.pushAndRemoveUntil<void>(
-                  SplashPage.route(),
-                  (route) => false,
-                );
+                    SplashPage.route(), (route) => false);
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  OnBoardingPage.route(),
-                  (route) => false,
-                );
+                    OnBoardingPage.route(), (route) => false);
                 break;
               case AuthenticationStatus.authenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  MainPage.route(),
-                  (route) => false,
-                );
+                    MainPage.route(), (route) => false);
                 break;
             }
           },

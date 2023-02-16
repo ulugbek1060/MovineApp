@@ -5,7 +5,6 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/genre_item_widget.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';
@@ -92,7 +91,7 @@ class _SelectionView extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.all(12.0),
-          child: const Text(style: AppTypography.bodyText1, choseFavoriteGenre),
+          child: Text(style: Theme.of(context).textTheme.bodyMedium, choseFavoriteGenre),
         ),
         const SizedBox(height: 20),
         Expanded(
@@ -121,9 +120,7 @@ class _SelectionView extends StatelessWidget {
                     margin: const EdgeInsets.all(2.0),
                     child: Text(
                       skip,
-                      style: AppTypography.bodyText1.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium
                     ),
                   ),
                 ),
@@ -138,9 +135,7 @@ class _SelectionView extends StatelessWidget {
                     margin: const EdgeInsets.all(2.0),
                     child: Text(
                       continui,
-                      style: AppTypography.bodyText1.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ),

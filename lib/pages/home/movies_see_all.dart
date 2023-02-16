@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_typography.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesSeeAll extends StatefulWidget {
@@ -135,7 +134,7 @@ class _FirstPageErrorIndicator extends StatelessWidget {
             margin: const EdgeInsets.all(8),
             child: Text(
               '$error',
-              style: AppTypography.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           ElevatedButton(onPressed: onTryAgain, child: const Text('Tyr again')),

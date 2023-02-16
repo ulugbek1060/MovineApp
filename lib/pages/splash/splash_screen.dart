@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_app/theme/app_typography.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -19,9 +18,9 @@ class SplashPage extends StatelessWidget {
           children: [
             SvgPicture.asset('assets/images/logo.svg'),
             const SizedBox(width: 15),
-            const Text(
+            Text(
               'Movie',
-              style: AppTypography.headline1,
+              style: Theme.of(context).textTheme.titleLarge,
             )
           ],
         ),

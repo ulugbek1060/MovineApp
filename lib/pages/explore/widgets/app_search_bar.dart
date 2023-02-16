@@ -3,16 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
 import 'package:movie_app/pages/explore/filter/filter_dialog.dart';
-import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class AppSearchBar extends StatelessWidget {
   const AppSearchBar({Key? key}) : super(key: key);
 
-  void _showDialog(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const FilterDialog(),
-      );
+  // void _showDialog(BuildContext context) => showModalBottomSheet(
+  //       context: context,
+  //       builder: (_) => const FilterDialog(),
+  //     );
 
   void _onSubmitQuery(BuildContext context, String value) {
     if (value.isEmpty) return;
@@ -39,7 +38,7 @@ class AppSearchBar extends StatelessWidget {
                     filled: true,
                     hoverColor: Colors.transparent,
                     contentPadding: const EdgeInsets.all(4.0),
-                    fillColor: AppColors.onSurfaceColor,
+                    fillColor: Theme.of(context).colorScheme.secondary.withAlpha(50),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12.0),
@@ -47,11 +46,11 @@ class AppSearchBar extends StatelessWidget {
                     hintStyle: AppTypography.labelMedium.copyWith(
                       color: Colors.grey,
                     ),
-                    prefixIcon: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         IconlyLight.search,
-                        color: AppColors.onPrimaryColor,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     hintText: 'Search',

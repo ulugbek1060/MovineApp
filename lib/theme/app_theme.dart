@@ -7,6 +7,7 @@ import 'package:movie_app/theme/app_typography.dart';
 ///
 class AppTheme {
   static final flatButtonStyle = TextButton.styleFrom(
+    textStyle: AppTypography.labelMedium,
     padding: const EdgeInsets.symmetric(horizontal: 16.0),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -14,7 +15,9 @@ class AppTheme {
   );
 
   static final raisedButtonStyle = ElevatedButton.styleFrom(
+    foregroundColor: Colors.white,
     backgroundColor: AppColors.secondaryColor,
+    textStyle: AppTypography.labelMedium,
     minimumSize: const Size(88, 36),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     shape: const RoundedRectangleBorder(
@@ -23,6 +26,7 @@ class AppTheme {
   );
 
   static final outlineButtonStyle = OutlinedButton.styleFrom(
+    textStyle: AppTypography.labelMedium,
     side: const BorderSide(color: AppColors.onPrimaryColor, width: 2),
     padding: const EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
@@ -37,6 +41,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.backgroundColor,
     fontFamily: 'Urbanist',
     appBarTheme: AppBarTheme(
+      // systemOverlayStyle: SystemUiOverlayStyle.light,
       backgroundColor: AppColors.backgroundColor,
       iconTheme: const IconThemeData(
         color: AppColors.onBackgroundColor,
@@ -101,6 +106,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.darkBackgroundColor,
     fontFamily: 'Urbanist',
     appBarTheme: AppBarTheme(
+      // systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: AppColors.darkBackgroundColor,
       iconTheme: const IconThemeData(
         color: AppColors.darkOnBackgroundColor,

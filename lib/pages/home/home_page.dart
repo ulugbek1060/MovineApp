@@ -34,6 +34,7 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
+      color: Theme.of(context).colorScheme.onPrimary,
       onRefresh: () async {
         context.read<HomeBloc>()
           ..add(FetchUpcomingMoviesEvent())

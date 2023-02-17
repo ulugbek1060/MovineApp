@@ -72,6 +72,7 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: RefreshIndicator(
+            color: Theme.of(context).colorScheme.onPrimary,
             onRefresh: () async {
               _pagingController.refresh();
             },

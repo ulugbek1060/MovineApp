@@ -61,10 +61,7 @@ class OnBoardingPage extends StatelessWidget {
           Navigator.of(context).push(GenresSelectionPage.route());
         },
         style: AppTheme.raisedButtonStyle,
-        child: const Text(
-          getStarted,
-          style: AppTypography.labelMedium,
-        ),
+        child: const Text(getStarted),
       ),
     );
   }

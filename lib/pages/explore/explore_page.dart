@@ -70,6 +70,7 @@ class _ExploreViewState extends State<_ExploreView> {
         },
         builder: (context, state) {
           return RefreshIndicator(
+            color: Theme.of(context).colorScheme.onPrimary,
             onRefresh: refresh,
             child: CustomScrollView(
               controller: _scrollController,

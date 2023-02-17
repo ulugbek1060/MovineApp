@@ -64,6 +64,7 @@ class _MoviesGridViewState extends State<MoviesGridView> {
 
   @override
   Widget build(BuildContext context) => RefreshIndicator(
+    color: Theme.of(context).colorScheme.onPrimary,
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: PagedGridView<int, MovieItem>(
           showNewPageProgressIndicatorAsGridChild: false,

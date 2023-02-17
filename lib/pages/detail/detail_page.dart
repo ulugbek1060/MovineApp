@@ -29,38 +29,31 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: BlocProvider(
-        create: (_) => DetailMovieBloc(
-          moviesRepository: movieRepository(context),
-          storageRepository: storageRepository(context),
-        )..add(FetchedMovieEvent(movieId: movieId)),
-        child: MovieDetailView(onRetry: () {
-          context
-              .read<DetailMovieBloc>()
-              .add(FetchedMovieEvent(movieId: movieId));
-        }),
+    return BlocProvider(
+      create: (_) => DetailMovieBloc(
+        moviesRepository: movieRepository(context),
+        storageRepository: storageRepository(context),
+      )..add(FetchedMovieEvent(movieId: movieId)),
+      child: const Scaffold(
+        body: MovieDetailView(),
       ),
     );
   }
 }
 
 class MovieDetailView extends StatelessWidget {
-  const MovieDetailView({Key? key, required this.onRetry}) : super(key: key);
-
-  final void Function() onRetry;
+  const MovieDetailView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailMovieBloc, DetailMovieState>(
       builder: (context, state) {
-        return _buildComponents(state);
+        return _buildComponents(context, state);
       },
     );
   }
 
-  Widget _buildComponents(DetailMovieState state) {
+  Widget _buildComponents(BuildContext context, DetailMovieState state) {
     switch (state.status) {
       case Status.success:
         return _DetailView(movie: state.movie!, isMarked: state.isMarked);
@@ -69,7 +62,11 @@ class MovieDetailView extends StatelessWidget {
       case Status.empty:
         return const EmptyView();
       case Status.error:
-        return ErrorView(onRetry: onRetry);
+        return ErrorView(onRetry: () {
+          context
+              .read<DetailMovieBloc>()
+              .add(FetchedMovieEvent(movieId: state.movie!.id));
+        });
     }
   }
 }

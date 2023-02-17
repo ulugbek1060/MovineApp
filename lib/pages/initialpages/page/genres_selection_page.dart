@@ -91,7 +91,9 @@ class _SelectionView extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.all(12.0),
-          child: Text(style: Theme.of(context).textTheme.bodyMedium, choseFavoriteGenre),
+          child: Text(
+              style: Theme.of(context).textTheme.bodyMedium,
+              choseFavoriteGenre),
         ),
         const SizedBox(height: 20),
         Expanded(
@@ -118,10 +120,7 @@ class _SelectionView extends StatelessWidget {
                   onPressed: null,
                   child: Container(
                     margin: const EdgeInsets.all(2.0),
-                    child: Text(
-                      skip,
-                      style: Theme.of(context).textTheme.bodyMedium
-                    ),
+                    child: const Text(skip),
                   ),
                 ),
               ),
@@ -133,10 +132,7 @@ class _SelectionView extends StatelessWidget {
                   },
                   child: Container(
                     margin: const EdgeInsets.all(2.0),
-                    child: Text(
-                      continui,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    child: const Text(continui),
                   ),
                 ),
               ),

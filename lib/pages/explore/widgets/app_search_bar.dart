@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
-import 'package:movie_app/pages/explore/filter/filter_dialog.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class AppSearchBar extends StatelessWidget {

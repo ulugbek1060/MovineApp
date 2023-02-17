@@ -42,30 +42,30 @@ class _HomeView extends StatelessWidget {
           ..add(FetchPopularMoviesEvent())
           ..add(FetchTopRatedMoviesEvent());
       },
-      child: const CustomScrollView(
+      child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 350,
-              child: UpcomingMovies(),
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: const UpcomingMovies(),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(
               child: LatestMovies(size: 200),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(
               child: PopularMovies(size: 200),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(
               child: TopRatedMovies(size: 200),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(height: 8),
           )
         ],

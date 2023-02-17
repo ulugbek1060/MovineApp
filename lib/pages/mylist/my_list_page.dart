@@ -5,6 +5,7 @@ import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
+import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -67,12 +68,7 @@ class _ListView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 100 / 150,
-            ),
+            gridDelegate: gridDelegate(context),
             itemCount: movies.length,
             itemBuilder: (context, index) =>
                 MovieItemCard(movie: movies[index])),

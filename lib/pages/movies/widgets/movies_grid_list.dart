@@ -5,6 +5,7 @@ import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/theme/app_colors.dart';
+import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesGridView extends StatefulWidget {
@@ -70,12 +71,7 @@ class _MoviesGridViewState extends State<MoviesGridView> {
           showNewPageProgressIndicatorAsGridChild: false,
           showNewPageErrorIndicatorAsGridChild: false,
           showNoMoreItemsIndicatorAsGridChild: false,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 100 / 150,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 3,
-          ),
+          gridDelegate:  gridDelegate(context),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MovieItem>(
             itemBuilder: (context, movie, index) => MovieItemCard(movie: movie),

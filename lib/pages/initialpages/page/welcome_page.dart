@@ -33,7 +33,9 @@ class OnBoardingPage extends StatelessWidget {
                 animatedTexts: [
                   TypewriterAnimatedText(
                     welcomeText,
-                    textStyle: Theme.of(context).textTheme.titleLarge,
+                    textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white
+                    ),
                     speed: const Duration(milliseconds: 100),
                   ),
                 ],
@@ -41,7 +43,9 @@ class OnBoardingPage extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 welcomeContent,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),

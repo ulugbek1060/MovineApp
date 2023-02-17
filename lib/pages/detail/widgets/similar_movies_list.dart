@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/utils/slive_grid_delegate.dart';
 
 class SimilarMoviesList extends StatelessWidget {
   const SimilarMoviesList({Key? key}) : super(key: key);
@@ -17,12 +18,7 @@ class SimilarMoviesList extends StatelessWidget {
           return const SliverToBoxAdapter(child: EmptyView());
         }
         return SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 100 / 150,
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-          ),
+          gridDelegate: gridDelegate(context),
           delegate: SliverChildBuilderDelegate(
             (context, index) => MovieItemCard(movie: movies[index]),
             childCount: state.movies.length,

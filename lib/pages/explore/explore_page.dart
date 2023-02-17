@@ -5,6 +5,7 @@ import 'package:movie_app/pages/explore/widgets/app_search_bar.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
+import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -116,12 +117,7 @@ class _MoviesSliverGrid extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.all(8.0),
       sliver: SliverGrid(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 100 / 150,
-        ),
+        gridDelegate:  gridDelegate(context),
         delegate: SliverChildBuilderDelegate(
           childCount: movies.length,
           (context, index) => MovieItemCard(movie: movies[index]),

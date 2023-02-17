@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
+import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movies_data/movies_data.dart';
 
 class MoviesSeeAll extends StatefulWidget {
@@ -57,62 +58,59 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_sharp),
-          ),
-          title: Text(widget.type.getTypeText),
-          elevation: 0.0,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back_sharp),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: RefreshIndicator(
-            color: Theme.of(context).colorScheme.onPrimary,
-            onRefresh: () async {
-              _pagingController.refresh();
-            },
-            child: PagedGridView<int, MovieItem>(
-              showNewPageProgressIndicatorAsGridChild: false,
-              showNewPageErrorIndicatorAsGridChild: false,
-              showNoMoreItemsIndicatorAsGridChild: false,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 100 / 150,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
+        title: Text(widget.type.getTypeText),
+        elevation: 0.0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: RefreshIndicator(
+          color: Theme.of(context).colorScheme.onPrimary,
+          onRefresh: () async {
+            _pagingController.refresh();
+          },
+          child: PagedGridView<int, MovieItem>(
+            showNewPageProgressIndicatorAsGridChild: false,
+            showNewPageErrorIndicatorAsGridChild: false,
+            showNoMoreItemsIndicatorAsGridChild: false,
+            gridDelegate:  gridDelegate(context),
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<MovieItem>(
+              itemBuilder: (context, movie, index) =>
+                  MovieItemCard(movie: movie),
+              firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
+                error: _pagingController.error,
+                onTryAgain: () => _pagingController.refresh(),
               ),
-              pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<MovieItem>(
-                itemBuilder: (context, movie, index) =>
-                    MovieItemCard(movie: movie),
-                firstPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
-                  error: _pagingController.error,
-                  onTryAgain: () => _pagingController.refresh(),
-                ),
-                newPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
-                  error: _pagingController.error,
-                  onTryAgain: () => _pagingController.retryLastFailedRequest(),
-                ),
-                firstPageProgressIndicatorBuilder: (_) => Container(
-                  margin: const EdgeInsets.all(16.0),
-                  child: const ProgressView(),
-                ),
-                newPageProgressIndicatorBuilder: (_) => Container(
-                  margin: const EdgeInsets.all(16.0),
-                  child: const ProgressView(),
-                ),
-                // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
-                // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
+              newPageErrorIndicatorBuilder: (_) => _FirstPageErrorIndicator(
+                error: _pagingController.error,
+                onTryAgain: () => _pagingController.retryLastFailedRequest(),
               ),
+              firstPageProgressIndicatorBuilder: (_) => Container(
+                margin: const EdgeInsets.all(16.0),
+                child: const ProgressView(),
+              ),
+              newPageProgressIndicatorBuilder: (_) => Container(
+                margin: const EdgeInsets.all(16.0),
+                child: const ProgressView(),
+              ),
+              // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
+              // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class _FirstPageErrorIndicator extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:movie_app/app/bloc/authentication_bloc.dart';
@@ -14,11 +13,7 @@ class App extends StatefulWidget {
   final SharedPreferences sharedPref;
   final BoxCollection boxCollection;
 
-  const App({
-    super.key,
-    required this.sharedPref,
-    required this.boxCollection,
-  });
+  const App({super.key, required this.sharedPref, required this.boxCollection});
 
   @override
   State<App> createState() => _AppState();

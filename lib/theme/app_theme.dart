@@ -37,7 +37,7 @@ class AppTheme {
   static final lightThemeData = ThemeData(
     useMaterial3: true,
     primarySwatch: AppColors.primarySwatch,
-    splashColor: AppColors.primarySwatch,
+    splashColor: AppColors.secondaryColor,
     scaffoldBackgroundColor: AppColors.backgroundColor,
     fontFamily: 'Urbanist',
     appBarTheme: AppBarTheme(
@@ -102,7 +102,7 @@ class AppTheme {
   static final darkThemeData = ThemeData(
     useMaterial3: true,
     primarySwatch: AppColors.darkPrimarySwatch,
-    splashColor: AppColors.darkPrimaryColor,
+    splashColor: AppColors.darkSecondaryColor,
     scaffoldBackgroundColor: AppColors.darkBackgroundColor,
     fontFamily: 'Urbanist',
     appBarTheme: AppBarTheme(

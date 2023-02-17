@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
 import 'package:movie_app/pages/detail/widgets/similar_movies_list.dart';
-import 'package:movie_app/pages/detail/widgets/videols_list.dart';
+import 'package:movie_app/pages/detail/widgets/videos_list.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
@@ -56,7 +56,7 @@ class MovieDetailView extends StatelessWidget {
   Widget _buildComponents(BuildContext context, DetailMovieState state) {
     switch (state.status) {
       case Status.success:
-        return _DetailView(movie: state.movie!, isMarked: state.isMarked);
+        return _DetailView(state);
       case Status.pending:
         return const ProgressView();
       case Status.empty:
@@ -72,11 +72,9 @@ class MovieDetailView extends StatelessWidget {
 }
 
 class _DetailView extends StatefulWidget {
-  const _DetailView({Key? key, required this.movie, required this.isMarked})
-      : super(key: key);
+  const _DetailView(this.state, {Key? key}) : super(key: key);
 
-  final MovieDetail movie;
-  final bool isMarked;
+  final DetailMovieState state;
 
   @override
   State<_DetailView> createState() => _DetailViewState();
@@ -112,133 +110,148 @@ class _DetailViewState extends State<_DetailView>
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar.medium(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back_sharp,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-          ),
-          title: Text(
-            widget.movie.title,
-            style: Theme.of(context).textTheme.titleLarge,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
+    final movie = widget.state.movie!;
+    final casts = widget.state.casts;
+    final isMarked = widget.state.isMarked;
+    return RefreshIndicator(
+      color: Theme.of(context).colorScheme.onPrimary,
+      onRefresh: () async {
+        context
+            .read<DetailMovieBloc>()
+            .add(FetchedMovieEvent(movieId: movie.id));
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar.medium(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               icon: Icon(
-                IconlyLight.send,
+                Icons.arrow_back_sharp,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
-            IconButton(
-              onPressed: () {
-                addToFavorite(context, widget.movie);
-              },
-              icon: widget.isMarked
-                  ? Icon(
-                      IconlyBold.bookmark,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    )
-                  : Icon(
-                      IconlyLight.bookmark,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+            title: Text(
+              movie.title,
+              style: Theme.of(context).textTheme.titleLarge,
+              overflow: TextOverflow.ellipsis,
             ),
-          ],
-        ),
-        SliverPaddingContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: CachedNetworkImage(
-                imageUrl: widget.movie.backdropPath,
-                placeholder: (context, url) => const ProgressView(),
-                errorWidget: (context, url, error) => Icon(
-                  IconlyBold.image,
-                  size: 100,
-                  color: Theme.of(context).colorScheme.onSurface,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  IconlyLight.send,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
-                fit: BoxFit.cover,
+              ),
+              IconButton(
+                onPressed: () {
+                  addToFavorite(context, movie);
+                },
+                icon: isMarked
+                    ? Icon(
+                        IconlyBold.bookmark,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      )
+                    : Icon(
+                        IconlyLight.bookmark,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+              ),
+            ],
+          ),
+          SliverPaddingContainer(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: CachedNetworkImage(
+                  imageUrl: movie.backdropPath,
+                  placeholder: (context, url) => const ProgressView(),
+                  errorWidget: (context, url, error) => Icon(
+                    IconlyBold.image,
+                    size: 100,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-        ),
-        SliverPaddingContainer(
-          top: 25,
-          left: 20,
-          right: 20,
-          child: _timeAndRating(
-            time: widget.movie.duration,
-            rating: widget.movie.rating,
-          ),
-        ),
-        SliverPaddingContainer(
-          top: 16,
-          left: 20,
-          right: 20,
-          child: _releaseDateAndGenre(
-            releaseDate: widget.movie.releaseData,
-            genres: widget.movie.genres,
-          ),
-        ),
-        SliverPaddingContainer(
-          top: 16,
-          left: 20,
-          right: 20,
-          child: Text(
-            widget.movie.overview,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: _SliverAppBarDelegate(
-            TabBar(
-              unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
-              labelColor: Theme.of(context).colorScheme.secondary,
-              indicatorColor: Theme.of(context).colorScheme.secondary,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              controller: _tabController,
-              tabs: const [
-                Tab(text: 'Videos'),
-                Tab(text: 'Similar Movies'),
-              ],
+          SliverPaddingContainer(
+            top: 25,
+            left: 20,
+            right: 20,
+            child: _timeAndRating(
+              time: movie.duration,
+              rating: movie.rating,
             ),
           ),
-        ),
-        if (_currentIndex == 0)
-          const SliverPadding(
-            key: ValueKey('videos.1'),
-            padding: EdgeInsets.only(
-              top: 20,
-              bottom: 20,
+          SliverPaddingContainer(
+            top: 16,
+            left: 20,
+            right: 20,
+            child: _releaseDateAndGenre(
+              releaseDate: movie.releaseData,
+              genres: movie.genres,
             ),
-            sliver: VideosList(),
           ),
-        if (_currentIndex == 1)
-          const SliverPadding(
-            key: ValueKey('movies.1'),
-            padding: EdgeInsets.only(
-              top: 20,
-              left: 8,
-              right: 8,
-              bottom: 20,
+          SliverPaddingContainer(
+            top: 16,
+            left: 20,
+            right: 20,
+            child: Text(
+              movie.overview,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-            sliver: SimilarMoviesList(),
           ),
-      ],
+          SliverPaddingContainer(
+              top: 16,
+              bottom: 16,
+              child: _CastsView(casts)),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(
+              TabBar(
+                unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
+                labelColor: Theme.of(context).colorScheme.secondary,
+                indicatorColor: Theme.of(context).colorScheme.secondary,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: 'Videos'),
+                  Tab(text: 'Similar Movies'),
+                ],
+              ),
+            ),
+          ),
+          if (_currentIndex == 0)
+            const SliverPadding(
+              key: ValueKey('videos.1'),
+              padding: EdgeInsets.only(
+                top: 20,
+                bottom: 20,
+              ),
+              sliver: VideosList(),
+            ),
+          if (_currentIndex == 1)
+            const SliverPadding(
+              key: ValueKey('movies.1'),
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 8,
+                right: 8,
+                bottom: 20,
+              ),
+              sliver: SimilarMoviesList(),
+            ),
+        ],
+      ),
     );
   }
 
@@ -337,6 +350,46 @@ class _DetailViewState extends State<_DetailView>
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CastsView extends StatelessWidget {
+  const _CastsView(this.casts, {Key? key}) : super(key: key);
+
+  final List<CastItem> casts;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: casts.length,
+        itemBuilder: (context, index) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              height: 65,
+              width: 65,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(casts[index].profilePath!),
+              ),
+            ),
+            SizedBox(
+              width: 100,
+              height: 20,
+              child: Text(
+                casts[index].originalName ?? '',
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

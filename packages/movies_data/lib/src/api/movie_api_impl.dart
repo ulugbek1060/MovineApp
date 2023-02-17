@@ -1,5 +1,6 @@
 import 'package:movies_api/movies_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies_api/src/models/cast/Cast_response.dart';
 import 'dart:convert' as convert;
 
 import 'package:movies_api/src/models/genre/genres.dart';
@@ -171,6 +172,24 @@ class MovieApiServiceImpl extends MovieApi {
     if (response.statusCode == 200) {
       final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
       return VideosResponse.fromJson(json);
+    } else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    } else {
+      throw FailedException();
+    }
+  }
+
+  @override
+  Future<CastResponse> getCastByMovieId({
+    required String movieId,
+    String language = 'us-US',
+  }) async {
+    var queries = {'api_key': apiKey, 'language': language};
+    final url = Uri.https(base_url, '/3/movie/$movieId/credits', queries);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final json = convert.jsonDecode(response.body) as Map<String, dynamic>;
+      return CastResponse.fromJson(json);
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     } else {

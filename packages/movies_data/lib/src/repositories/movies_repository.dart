@@ -1,5 +1,6 @@
 import 'package:movies_api/movies_api.dart';
 import 'package:movies_data/movies_data.dart';
+import 'package:movies_data/src/models/cast/cast_item.dart';
 import 'package:movies_data/src/models/models.dart';
 import 'package:movies_data/src/api/movie_api_impl.dart';
 
@@ -186,6 +187,29 @@ class MoviesRepository {
       );
 
       return MoviesList(movies: movies.toList(), page: result.page);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<List<CastItem>> getCastsById({required String movieId}) async {
+    try {
+      final result = await movieApiService.getCastByMovieId(movieId: movieId);
+      final casts =
+          result.cast?.where((element) => element.profilePath != null) ?? [];
+      return casts
+          .map((e) => CastItem(
+                gender: e.gender,
+                id: e.id,
+                originalName: e.originalName,
+                popularity: e.popularity,
+                profilePath: '$imageUrl${e.profilePath}',
+                castId: e.castId,
+                character: e.character,
+                creditId: e.creditId,
+                order: e.order,
+              ))
+          .toList();
     } catch (error) {
       throw error;
     }

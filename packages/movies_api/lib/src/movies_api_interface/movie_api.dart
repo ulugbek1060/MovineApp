@@ -1,3 +1,4 @@
+import 'package:movies_api/src/models/cast/Cast_response.dart';
 import 'package:movies_api/src/models/genre/genres.dart';
 import 'package:movies_api/src/models/models.dart';
 
@@ -32,6 +33,10 @@ abstract class MovieApi {
     required int page,
     String language,
   });
+
+  /// Fetches actors and producers by movie id returns [CastResponse]
+  Future<CastResponse> getCastByMovieId(
+      {required String movieId, String language});
 
   ///
   /// Fetches movie by ID

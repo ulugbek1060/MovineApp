@@ -38,11 +38,14 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       final videos =
           await moviesRepository.getVideosByMovieId(movieId: movie.id);
 
+      final casts = await moviesRepository.getCastsById(movieId: event.movieId);
+
       emit(state.copyWith(
         status: Status.success,
         movie: movie,
         videos: videos.videos,
         movies: movies.movies,
+        casts: casts,
         isMarked: isMarked,
       ));
     } catch (error) {

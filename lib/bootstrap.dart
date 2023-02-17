@@ -18,10 +18,7 @@ void bootstrap({
   Bloc.observer = AppBlocObserver();
 
   runZonedGuarded(
-    () => runApp(App(
-      sharedPref: sharedPref,
-      boxCollection: boxCollection,
-    )),
+    () => runApp(App(sharedPref: sharedPref, boxCollection: boxCollection)),
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }

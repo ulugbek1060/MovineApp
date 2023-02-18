@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:movies_data/movies_data.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:storage_api/storage_api.dart';
 
@@ -45,11 +44,6 @@ class FavoritesStorageApiImpl extends FavoritesStorageApi {
 
   @override
   Future<void> clearAll() async {
-    // delete one or more entries
-    // await catsBox.delete('loki');
-    // await catsBox.deleteAll(['loki', 'fluffy']);
-
-    // ...or clear the whole box at once
     await collectionBox.clear();
     _moviesStreamController.add([]);
   }

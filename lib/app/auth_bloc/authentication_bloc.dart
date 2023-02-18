@@ -15,7 +15,7 @@ class AuthenticationBloc
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
-  AuthenticationBloc({required AuthRepository authRepository})
+  AuthenticationBloc(AuthRepository authRepository)
       : _auThRepository = authRepository,
         super(const AuthenticationState.unknown()) {
     on<_AuthenticationStatusChanged>(_onAuthenticationStateChanged);

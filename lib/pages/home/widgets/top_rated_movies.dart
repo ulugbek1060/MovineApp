@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/l10n/l10n.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
 import 'package:movie_app/pages/home/movies_see_all.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
@@ -7,7 +8,6 @@ import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/status.dart';
-import 'package:movie_app/utils/strings.dart'show topRated , seeAll;
 import 'package:movies_data/movies_data.dart' hide topRated;
 
 class TopRatedMovies extends StatelessWidget {
@@ -29,13 +29,13 @@ class TopRatedMovies extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(topRated, style: Theme.of(context).textTheme.titleMedium),
+              Text(context.l10n.topRated, style: Theme.of(context).textTheme.titleMedium),
               GestureDetector(
                 onTap: () {
                   navigateToAllMovies(context);
                 },
                 child: Text(
-                  seeAll,
+                  context.l10n.seeAll,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.secondary
                   ),

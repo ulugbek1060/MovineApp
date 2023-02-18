@@ -166,10 +166,8 @@ class MoviesRepository {
     }
   }
 
-  Future<MoviesList> getSimilarMovies({
-    required String movieId,
-    int? page,
-  }) async {
+  Future<MoviesList> getSimilarMovies(
+      {required String movieId, int? page}) async {
     try {
       final result = await movieApiService.getSimilarMovies(
         movieId: movieId,

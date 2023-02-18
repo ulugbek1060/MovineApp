@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/l10n/l10n.dart';
 import 'package:movie_app/pages/detail/bloc/detail_movie_bloc.dart';
 import 'package:movie_app/pages/detail/widgets/similar_movies_list.dart';
 import 'package:movie_app/pages/detail/widgets/videos_list.dart';
@@ -193,7 +194,7 @@ class _DetailViewState extends State<_DetailView>
             left: 20,
             right: 20,
             child: _releaseDateAndGenre(
-              releaseDate: movie.releaseData,
+              date: movie.releaseData,
               genres: movie.genres,
             ),
           ),
@@ -223,16 +224,15 @@ class _DetailViewState extends State<_DetailView>
                   });
                 },
                 controller: _tabController,
-                tabs: const [
-                  Tab(text: 'Videos'),
-                  Tab(text: 'Similar Movies'),
+                tabs: [
+                  Tab(text: context.l10n.videos),
+                  Tab(text: context.l10n.similarMovies),
                 ],
               ),
             ),
           ),
           if (_currentIndex == 0)
             const SliverPadding(
-              key: ValueKey('videos.1'),
               padding: EdgeInsets.only(
                 top: 20,
                 bottom: 20,
@@ -241,7 +241,6 @@ class _DetailViewState extends State<_DetailView>
             ),
           if (_currentIndex == 1)
             const SliverPadding(
-              key: ValueKey('movies.1'),
               padding: EdgeInsets.only(
                 top: 20,
                 left: 8,
@@ -264,14 +263,14 @@ class _DetailViewState extends State<_DetailView>
         const Icon(IconlyBold.time_circle, color: Colors.blue, size: 18),
         const SizedBox(width: 10),
         Text(
-          '$time minutes',
+          context.l10n.minutes(time),
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(width: 10),
         const Icon(IconlyBold.star, color: Colors.amber, size: 18),
         const SizedBox(width: 10),
         Text(
-          '$rating (IMDb)',
+          context.l10n.imdb(rating),
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
@@ -280,7 +279,7 @@ class _DetailViewState extends State<_DetailView>
 
   Widget _releaseDateAndGenre({
     required List<String> genres,
-    required String releaseDate,
+    required String date,
   }) {
     return SizedBox(
       width: double.infinity,
@@ -288,23 +287,9 @@ class _DetailViewState extends State<_DetailView>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Release Date section
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                releaseDate,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(width: 5),
-              Expanded(
-                child: Text(
-                  releaseDate,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              )
-            ],
+          Text(
+            context.l10n.releaseDate(date),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
 
           const SizedBox(height: 5),
@@ -315,7 +300,7 @@ class _DetailViewState extends State<_DetailView>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Genre',
+                context.l10n.genre,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),

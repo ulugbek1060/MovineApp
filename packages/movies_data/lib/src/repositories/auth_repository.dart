@@ -9,7 +9,7 @@ enum AuthenticationStatus { unknown, unauthenticated, authenticated }
 class AuthRepository {
   final SharedPreferences sharedPreferences;
 
-  AuthRepository({required this.sharedPreferences});
+  AuthRepository(this.sharedPreferences);
 
   final _controller = StreamController<AuthenticationStatus>();
 

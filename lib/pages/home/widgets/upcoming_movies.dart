@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/l10n/l10n.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/bloc/home_bloc.dart';
 import 'package:movie_app/pages/videoplayer/player_page.dart';
@@ -10,7 +11,6 @@ import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/utils/status.dart';
-import 'package:movie_app/utils/strings.dart';
 import 'package:movies_data/movies_data.dart';
 
 class UpcomingMovies extends StatefulWidget {
@@ -163,7 +163,7 @@ class _MovieItemPage extends StatelessWidget {
                       },
                       icon: const Icon(Icons.play_circle, color: Colors.white),
                       label: Text(
-                        play,
+                        context.l10n.play,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.white,
                             ),
@@ -177,7 +177,7 @@ class _MovieItemPage extends StatelessWidget {
                       onPressed: () {},
                       icon: const Icon(Icons.add, color: Colors.white),
                       label: Text(
-                        'My List',
+                        context.l10n.myList,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.white,
                             ),

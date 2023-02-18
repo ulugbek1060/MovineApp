@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:storage_api/storage_api.dart';
 
 class GenresStorageApiImpl extends GenresStorageApi {
+
   GenresStorageApiImpl({
     required this.boxCollection,
     required String collectionName,

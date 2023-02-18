@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/l10n/l10n.dart';
 import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/movies/movies_page.dart';
 import 'package:movie_app/pages/mylist/my_list_page.dart';
 import 'package:movie_app/pages/profile/profile_screen.dart';
-import 'package:movie_app/utils/strings.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -56,31 +56,31 @@ class _MainPageState extends State<MainPage> {
             icon: _selectedIndex == 0
                 ? const Icon(IconlyBold.home)
                 : const Icon(IconlyLight.home),
-            label: home,
+            label: context.l10n.home,
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 1
                 ? const Icon(IconlyBold.discovery)
                 : const Icon(IconlyLight.discovery),
-            label: explore,
+            label: context.l10n.explore,
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 2
                 ? const Icon(IconlyBold.play)
                 : const Icon(IconlyLight.play),
-            label: movies,
+            label: context.l10n.movies,
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 3
                 ? const Icon(IconlyBold.bookmark)
                 : const Icon(IconlyLight.bookmark),
-            label: myList,
+            label: context.l10n.myList,
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 4
                 ? const Icon(IconlyBold.profile)
                 : const Icon(IconlyLight.profile),
-            label: profile,
+            label: context.l10n.profile,
           )
         ],
       ),

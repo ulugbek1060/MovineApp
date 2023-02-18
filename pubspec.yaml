@@ -57,6 +57,11 @@ dependencies:
   redux: ^5.0.0
   rxdart: ^0.27.7
   youtube_player_flutter: ^8.1.2
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  provider: ^6.0.5
+
   
 
 dev_dependencies:
@@ -75,7 +80,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true # Add this line
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:movie_app/l10n/l10n.dart';
 import 'package:movie_app/pages/explore/bloc/explore_bloc.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
@@ -52,7 +53,7 @@ class AppSearchBar extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
-                    hintText: 'Search',
+                    hintText: context.l10n.search,
                   ),
                   onSubmitted: (value) {
                     _onSubmitQuery(context, value);

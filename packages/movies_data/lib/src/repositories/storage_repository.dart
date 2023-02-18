@@ -11,7 +11,7 @@ class StorageRepository {
   final FavoritesStorageApi _favoritesStorage;
   final GenresStorageApi _genresStorage;
 
-  StorageRepository({required BoxCollection boxCollection})
+  StorageRepository(BoxCollection boxCollection)
       : this._favoritesStorage = FavoritesStorageApiImpl(
           boxCollection: boxCollection,
           collectionName: collectionFavorites,

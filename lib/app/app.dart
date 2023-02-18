@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:movie_app/app/bloc/authentication_bloc.dart';
+import 'package:movie_app/app/auth_bloc/authentication_bloc.dart';
+import 'package:movie_app/app/config_bloc/config_bloc.dart';
 import 'package:movie_app/pages/initialpages/page/welcome_page.dart';
 import 'package:movie_app/pages/main/main_page.dart';
 import 'package:movie_app/pages/splash/splash_screen.dart';
 import 'package:movie_app/theme/app_theme.dart';
 import 'package:movies_data/movies_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatefulWidget {
   final SharedPreferences sharedPref;
@@ -23,11 +25,13 @@ class _AppState extends State<App> {
   late final AuthRepository authRepository;
   late final MoviesRepository movieRepository;
   late final StorageRepository storageRepository;
+  late final ConfigRepository configRepository;
 
   @override
   void initState() {
-    authRepository = AuthRepository(sharedPreferences: widget.sharedPref);
-    storageRepository = StorageRepository(boxCollection: widget.boxCollection);
+    authRepository = AuthRepository(widget.sharedPref);
+    storageRepository = StorageRepository(widget.boxCollection);
+    configRepository = ConfigRepository(widget.sharedPref);
     movieRepository = MoviesRepository();
     super.initState();
   }
@@ -45,10 +49,14 @@ class _AppState extends State<App> {
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
         RepositoryProvider<StorageRepository>(create: (_) => storageRepository),
+        RepositoryProvider<ConfigRepository>(create: (_) => configRepository),
         RepositoryProvider<MoviesRepository>(create: (_) => movieRepository),
       ],
-      child: BlocProvider(
-        create: (_) => AuthenticationBloc(authRepository: authRepository),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AuthenticationBloc(authRepository)),
+          BlocProvider(create: (_) => ConfigBloc(configRepository)),
+        ],
         child: const AppView(),
       ),
     );
@@ -75,8 +83,9 @@ class _AppViewState extends State<AppView> {
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       themeMode: ThemeMode.system,
-      // localizationsDelegates: AppLocalizations.localizationsDelegates,
-      // supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: Locale('en'),
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listenWhen: (previous, current) => previous.status != current.status,

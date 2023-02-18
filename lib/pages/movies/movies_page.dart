@@ -43,10 +43,6 @@ class _MainPage extends StatelessWidget {
   const _MainPage({Key? key, required this.genres}) : super(key: key);
   final List<GenreItem> genres;
 
-  double getHeight() {
-    return 800;
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

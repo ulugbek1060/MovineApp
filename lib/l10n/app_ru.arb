@@ -27,5 +27,6 @@
   "similarMovies": "Похожие фильмы",
   "search": "Поиск",
   "darkMode": "Темный режим",
-  "language": "Язык"
+  "language": "Язык",
+  "changeLanguage": "Изменить язык"
 }

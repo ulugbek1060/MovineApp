@@ -27,5 +27,6 @@
   "similarMovies": "Similar Movies",
   "search": "Search",
   "darkMode": "Dark Mode",
-  "language": "Language"
+  "language": "Language",
+  "changeLanguage": "Change language"
 }

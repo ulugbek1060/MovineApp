@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movies_data/movies_data.dart';
@@ -67,40 +68,30 @@ class _MoviesGridViewState extends State<MoviesGridView> {
   Widget build(BuildContext context) => RefreshIndicator(
         color: Theme.of(context).colorScheme.onPrimary,
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedGridView<int, MovieItem>(
-          showNewPageProgressIndicatorAsGridChild: false,
-          showNewPageErrorIndicatorAsGridChild: false,
-          showNoMoreItemsIndicatorAsGridChild: false,
-          gridDelegate:  gridDelegate(context),
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<MovieItem>(
-            itemBuilder: (context, movie, index) => MovieItemCard(movie: movie),
-            firstPageErrorIndicatorBuilder: (_) => ErrorView(
-              message: _pagingController.error,
-              onRetry: () => _pagingController.refresh(),
-            ),
-            newPageErrorIndicatorBuilder: (_) => ErrorView(
-              message: _pagingController.error,
-              onRetry: () => _pagingController.refresh(),
-            ),
-            firstPageProgressIndicatorBuilder: (_) => Container(
-              margin: const EdgeInsets.all(16),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.secondaryColor,
-                ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: PagedGridView<int, MovieItem>(
+            showNewPageProgressIndicatorAsGridChild: false,
+            showNewPageErrorIndicatorAsGridChild: false,
+            showNoMoreItemsIndicatorAsGridChild: false,
+            gridDelegate: gridDelegate(context),
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<MovieItem>(
+              itemBuilder: (context, movie, index) =>
+                  MovieItemCard(movie: movie),
+              firstPageErrorIndicatorBuilder: (_) => ErrorView(
+                message: _pagingController.error,
+                onRetry: () => _pagingController.refresh(),
               ),
-            ),
-            newPageProgressIndicatorBuilder: (_) => Container(
-              margin: const EdgeInsets.all(16),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.secondaryColor,
-                ),
+              newPageErrorIndicatorBuilder: (_) => ErrorView(
+                message: _pagingController.error,
+                onRetry: () => _pagingController.refresh(),
               ),
+              firstPageProgressIndicatorBuilder: (_) => const ProgressView(),
+              newPageProgressIndicatorBuilder: (_) => const ProgressView(),
+              // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
+              // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
             ),
-            // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
-            // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
           ),
         ),
       );

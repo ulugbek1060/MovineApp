@@ -22,24 +22,24 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  late final AuthRepository authRepository;
-  late final MoviesRepository movieRepository;
-  late final StorageRepository storageRepository;
-  late final ConfigRepository configRepository;
+  late final AuthRepository _authRepository;
+  late final MoviesRepository _movieRepository;
+  late final StorageRepository _storageRepository;
+  late final ConfigRepository _configRepository;
 
   @override
   void initState() {
-    authRepository = AuthRepository(widget.sharedPref);
-    storageRepository = StorageRepository(widget.boxCollection);
-    configRepository = ConfigRepository(widget.sharedPref);
-    movieRepository = MoviesRepository();
+    _authRepository = AuthRepository(widget.sharedPref);
+    _storageRepository = StorageRepository(widget.boxCollection);
+    _configRepository = ConfigRepository(widget.sharedPref);
+    _movieRepository = MoviesRepository();
     super.initState();
   }
 
   @override
   void dispose() {
-    authRepository.dispose();
-    storageRepository.close();
+    _authRepository.dispose();
+    _storageRepository.close();
     super.dispose();
   }
 
@@ -47,15 +47,16 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(create: (_) => authRepository),
-        RepositoryProvider<StorageRepository>(create: (_) => storageRepository),
-        RepositoryProvider<ConfigRepository>(create: (_) => configRepository),
-        RepositoryProvider<MoviesRepository>(create: (_) => movieRepository),
+        RepositoryProvider<AuthRepository>(create: (_) => _authRepository),
+        RepositoryProvider<StorageRepository>(
+            create: (_) => _storageRepository),
+        RepositoryProvider<ConfigRepository>(create: (_) => _configRepository),
+        RepositoryProvider<MoviesRepository>(create: (_) => _movieRepository),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AuthenticationBloc(authRepository)),
-          BlocProvider(create: (_) => ConfigBloc(configRepository)),
+          BlocProvider(create: (_) => AuthenticationBloc(_authRepository)),
+          BlocProvider(create: (_) => ConfigBloc(_configRepository)..add(GetInitialAppState())),
         ],
         child: const AppView(),
       ),
@@ -77,38 +78,43 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
-      themeMode: ThemeMode.system,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: Locale('en'),
-      builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
-          listenWhen: (previous, current) => previous.status != current.status,
-          listener: (context, state) {
-            switch (state.status) {
-              case AuthenticationStatus.unknown:
-                _navigator.pushAndRemoveUntil<void>(
-                    SplashPage.route(), (route) => false);
-                break;
-              case AuthenticationStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    OnBoardingPage.route(), (route) => false);
-                break;
-              case AuthenticationStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    MainPage.route(), (route) => false);
-                break;
-            }
+    return BlocBuilder<ConfigBloc, ConfigState>(
+      builder: (context, state) {
+        return MaterialApp(
+          navigatorKey: _navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightThemeData,
+          darkTheme: AppTheme.darkThemeData,
+          themeMode: state.darkTheme ? ThemeMode.dark : ThemeMode.light,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale(state.langCode),
+          builder: (context, child) {
+            return BlocListener<AuthenticationBloc, AuthenticationState>(
+              listenWhen: (previous, current) =>
+                  previous.status != current.status,
+              listener: (context, state) {
+                switch (state.status) {
+                  case AuthenticationStatus.unknown:
+                    _navigator.pushAndRemoveUntil<void>(
+                        SplashPage.route(), (route) => false);
+                    break;
+                  case AuthenticationStatus.unauthenticated:
+                    _navigator.pushAndRemoveUntil<void>(
+                        OnBoardingPage.route(), (route) => false);
+                    break;
+                  case AuthenticationStatus.authenticated:
+                    _navigator.pushAndRemoveUntil<void>(
+                        MainPage.route(), (route) => false);
+                    break;
+                }
+              },
+              child: child,
+            );
           },
-          child: child,
+          onGenerateRoute: (_) => SplashPage.route(),
         );
       },
-      onGenerateRoute: (_) => SplashPage.route(),
     );
   }
 }

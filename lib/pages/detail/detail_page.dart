@@ -13,6 +13,7 @@ import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_shape.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailPage extends StatelessWidget {
   final String movieId;
@@ -109,6 +110,10 @@ class _DetailViewState extends State<_DetailView>
             backdropPath: movie.backdropPath)));
   }
 
+  Future<void> share() async {
+    await Share.share(widget.state.movie!.title);
+  }
+
   @override
   Widget build(BuildContext context) {
     final movie = widget.state.movie!;
@@ -140,7 +145,7 @@ class _DetailViewState extends State<_DetailView>
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: share,
                 icon: Icon(
                   IconlyLight.send,
                   color: Theme.of(context).colorScheme.onBackground,
@@ -207,10 +212,7 @@ class _DetailViewState extends State<_DetailView>
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-          SliverPaddingContainer(
-              top: 16,
-              bottom: 16,
-              child: _CastsView(casts)),
+          SliverPaddingContainer(top: 16, bottom: 16, child: _CastsView(casts)),
           SliverPersistentHeader(
             pinned: true,
             delegate: _SliverAppBarDelegate(

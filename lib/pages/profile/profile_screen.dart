@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/app/config_bloc/config_bloc.dart';
 import 'package:movie_app/l10n/l10n.dart';
+import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_typography.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -85,24 +86,33 @@ class _LangDialog extends StatelessWidget {
             context.l10n.changeLanguage,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          content: ToggleButtons(
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-            selectedBorderColor: Theme.of(context).colorScheme.secondary,
-            direction: Axis.horizontal,
-            selectedColor: Colors.white,
-            fillColor: Colors.red[200],
-            color: Colors.red[400],
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 80.0,
-            ),
-            isSelected: state.languages.values.toList(),
-            onPressed: (index) {
-              final lang = state.languages.keys.elementAt(index);
-              final langCode = state.getLangCode(lang);
-              context.read<ConfigBloc>().add(ChangeLanguageEvent(langCode));
-            },
-            children: state.languages.keys.map((e) => Text(e)).toList(),
+          content: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ToggleButtons(
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                selectedBorderColor: Theme.of(context).colorScheme.secondary,
+                direction: Axis.horizontal,
+                selectedColor: Colors.white,
+                fillColor: AppColors.secondaryColor,
+                color: AppColors.secondaryColor,
+                constraints: const BoxConstraints(
+                  minHeight: 40.0,
+                  minWidth: 80.0,
+                ),
+                isSelected: state.languages.values.toList(),
+                onPressed: (index) {
+                  final lang = state.languages.keys.elementAt(index);
+                  final langCode = state.getLangCode(lang);
+                  context.read<ConfigBloc>().add(ChangeLanguageEvent(langCode));
+                },
+                children: state.languages.keys
+                    .map((e) =>
+                        Text(e, style: Theme.of(context).textTheme.bodyMedium))
+                    .toList(),
+              ),
+            ],
           ),
         );
       },

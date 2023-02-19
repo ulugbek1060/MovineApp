@@ -14,6 +14,7 @@ class MoviesPage extends StatefulWidget {
 }
 
 class _MoviesPageState extends State<MoviesPage> {
+
   Stream<List<GenreItem>> getActiveGenresStream(BuildContext context) {
     return RepositoryProvider.of<StorageRepository>(context).getActiveGenres();
   }

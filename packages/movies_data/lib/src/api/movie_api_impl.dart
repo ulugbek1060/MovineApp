@@ -7,7 +7,6 @@ import 'package:movies_api/src/models/genre/genres.dart';
 import 'package:movies_data/movies_data.dart';
 
 const base_url = 'api.themoviedb.org';
-const apiKey = '';
 
 extension Logger<T> on Uri {
   void logging() {

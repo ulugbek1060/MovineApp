@@ -11,19 +11,8 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/images/logo.svg'),
-            const SizedBox(width: 15),
-            Text(
-              'Movie',
-              style: Theme.of(context).textTheme.titleLarge,
-            )
-          ],
-        ),
+        child: SvgPicture.asset('assets/images/ic_launcher.png'),
       ),
     );
   }

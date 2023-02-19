@@ -36,15 +36,16 @@ class DetailPage extends StatelessWidget {
         moviesRepository: movieRepository(context),
         storageRepository: storageRepository(context),
       )..add(FetchedMovieEvent(movieId: movieId)),
-      child: const Scaffold(
-        body: MovieDetailView(),
+      child: Scaffold(
+        body: MovieDetailView(movieId),
       ),
     );
   }
 }
 
 class MovieDetailView extends StatelessWidget {
-  const MovieDetailView({Key? key}) : super(key: key);
+  const MovieDetailView(this.movieId, {Key? key}) : super(key: key);
+  final String movieId;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class MovieDetailView extends StatelessWidget {
         return ErrorView(onRetry: () {
           context
               .read<DetailMovieBloc>()
-              .add(FetchedMovieEvent(movieId: state.movie!.id));
+              .add(FetchedMovieEvent(movieId: movieId));
         });
     }
   }

@@ -28,5 +28,6 @@
   "search": "Search",
   "darkMode": "Dark Mode",
   "language": "Language",
-  "changeLanguage": "Change language"
+  "changeLanguage": "Change language",
+  "noConnection": "No Connection"
 }

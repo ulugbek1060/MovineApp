@@ -12,7 +12,11 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SvgPicture.asset('assets/images/ic_launcher.png'),
+        child: SizedBox(
+          height: 100,
+          width: 100,
+          child: Image.asset('assets/images/ic_launcher.png'),
+        ),
       ),
     );
   }

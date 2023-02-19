@@ -28,5 +28,6 @@
   "search": "Поиск",
   "darkMode": "Темный режим",
   "language": "Язык",
-  "changeLanguage": "Изменить язык"
+  "changeLanguage": "Изменить язык",
+  "noConnection": "Нет соединения"
 }

@@ -14,7 +14,6 @@ class MoviesPage extends StatefulWidget {
 }
 
 class _MoviesPageState extends State<MoviesPage> {
-
   Stream<List<GenreItem>> getActiveGenresStream(BuildContext context) {
     return RepositoryProvider.of<StorageRepository>(context).getActiveGenres();
   }
@@ -45,36 +44,38 @@ class _MainPage extends StatelessWidget {
   final List<GenreItem> genres;
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: genres.length,
-      child: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              pinned: true,
-              floating: true,
-              snap: true,
-              elevation: 0.0,
-              title: const Text(movies),
-              bottom: TabBar(
-                isScrollable: true,
-                unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
-                labelColor: Theme.of(context).colorScheme.onPrimary,
-                indicatorColor: Theme.of(context).colorScheme.secondary,
-                tabs: genres.map((genre) => Tab(text: genre.name)).toList(),
-              ),
+  Widget build(BuildContext context) => genres.isEmpty
+      ? const EmptyView()
+      : DefaultTabController(
+          length: genres.length,
+          child: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  pinned: true,
+                  floating: true,
+                  snap: true,
+                  elevation: 0.0,
+                  title: const Text(movies),
+                  bottom: TabBar(
+                    isScrollable: true,
+                    unselectedLabelColor:
+                        Theme.of(context).colorScheme.onPrimary,
+                    labelColor: Theme.of(context).colorScheme.onPrimary,
+                    indicatorColor: Theme.of(context).colorScheme.secondary,
+                    tabs: genres.map((genre) => Tab(text: genre.name)).toList(),
+                  ),
+                ),
+              ];
+            },
+            body: TabBarView(
+              children: genres
+                  .map((genre) => MoviesGridView(genreId: genre.id))
+                  .toList(),
             ),
-          ];
-        },
-        body: TabBarView(
-          children:
-              genres.map((genre) => MoviesGridView(genreId: genre.id)).toList(),
-        ),
-      ),
-    );
-  }
+          ),
+        );
 }
 
 class TabIndicator extends Decoration {
@@ -153,5 +154,3 @@ class TabPainter extends BoxPainter {
     canvas.drawRRect(roundedRectangle, paint);
   }
 }
-
-

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movies_data/movies_data.dart';
 
@@ -22,8 +23,16 @@ class _MoviesGridViewState extends State<MoviesGridView> {
   static const _pageSize = 20;
   late PagingController<int, MovieItem> _pagingController;
 
+  var _connectionChecker = false;
+
   @override
   void initState() {
+    InternetConnectionChecker().connectionStatus.then((value) {
+      setState(() {
+        _connectionChecker = value == InternetConnectionStatus.disconnected;
+      });
+    });
+
     _pagingController = PagingController(firstPageKey: 1)
       ..addPageRequestListener((pageKey) {
         _fetchPage(pageKey);
@@ -68,31 +77,41 @@ class _MoviesGridViewState extends State<MoviesGridView> {
   Widget build(BuildContext context) => RefreshIndicator(
         color: Theme.of(context).colorScheme.onPrimary,
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: PagedGridView<int, MovieItem>(
-            showNewPageProgressIndicatorAsGridChild: false,
-            showNewPageErrorIndicatorAsGridChild: false,
-            showNoMoreItemsIndicatorAsGridChild: false,
-            gridDelegate: gridDelegate(context),
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<MovieItem>(
-              itemBuilder: (context, movie, index) =>
-                  MovieItemCard(movie: movie),
-              firstPageErrorIndicatorBuilder: (_) => ErrorView(
-                message: _pagingController.error,
-                onRetry: () => _pagingController.refresh(),
+        child: _connectionChecker
+            ? ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return const NoConnectionView();
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: PagedGridView<int, MovieItem>(
+                  showNewPageProgressIndicatorAsGridChild: false,
+                  showNewPageErrorIndicatorAsGridChild: false,
+                  showNoMoreItemsIndicatorAsGridChild: false,
+                  gridDelegate: gridDelegate(context),
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<MovieItem>(
+                    itemBuilder: (context, movie, index) =>
+                        MovieItemCard(movie: movie),
+                    firstPageErrorIndicatorBuilder: (_) => ErrorView(
+                      message: _pagingController.error,
+                      onRetry: () => _pagingController.refresh(),
+                    ),
+                    newPageErrorIndicatorBuilder: (_) => ErrorView(
+                      message: _pagingController.error,
+                      onRetry: () => _pagingController.refresh(),
+                    ),
+                    firstPageProgressIndicatorBuilder: (_) =>
+                        const ProgressView(),
+                    newPageProgressIndicatorBuilder: (_) =>
+                        const ProgressView(),
+                    // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
+                    // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
+                  ),
+                ),
               ),
-              newPageErrorIndicatorBuilder: (_) => ErrorView(
-                message: _pagingController.error,
-                onRetry: () => _pagingController.refresh(),
-              ),
-              firstPageProgressIndicatorBuilder: (_) => const ProgressView(),
-              newPageProgressIndicatorBuilder: (_) => const ProgressView(),
-              // noItemsFoundIndicatorBuilder: (_) => NoItemsFoundIndicator(),
-              // noMoreItemsIndicatorBuilder: (_) => NoMoreItemsIndicator(),
-            ),
-          ),
-        ),
       );
 }

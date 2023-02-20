@@ -4,7 +4,7 @@
    <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="100" alt="Logo" /></a>
 </p>
 
-<p float="center">
+<p align="center">
   <img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png" width="200" />
 </p>
 

@@ -1,8 +1,8 @@
 import 'package:movies_api/movies_api.dart';
 import 'package:movies_data/movies_data.dart';
-import 'package:movies_data/src/models/cast/cast_item.dart';
 import 'package:movies_data/src/models/models.dart';
 import 'package:movies_data/src/api/movie_api_impl.dart';
+import 'package:movies_data/src/repositories/base_repository.dart';
 
 const topRated = 'top_rated';
 const upcoming = 'upcoming';
@@ -46,189 +46,164 @@ extension GetMovieType on MovieType {
   }
 }
 
-class MoviesRepository {
+class MoviesRepository extends BaseRepository {
   final MovieApi movieApiService = MovieApiServiceImpl();
 
-  Future<MoviesList> getMoviesByType({
+  Future<ResponseState<MoviesList>> getMoviesByType({
     required int page,
     required MovieType type,
-  }) async {
-    try {
-      final result = await movieApiService.getMovieByType(
-        type: type.getType,
-        page: page,
-      );
+  }) =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.getMovieByType(
+          type: type.getType,
+          page: page,
+        );
 
-      final movies = result.results!.map(
-        (element) => MovieItem(
-          id: element.id.toString(),
-          title: element.title.toString(),
-          rate: element.voteAverage.toString(),
-          posterPath: imageUrl + element.posterPath.toString(),
-          backdropPath: originalImageUrl + element.backdropPath.toString(),
-        ),
-      );
+        final movies = result.results!.map(
+          (element) => MovieItem(
+            id: element.id.toString(),
+            title: element.title.toString(),
+            rate: element.voteAverage.toString(),
+            posterPath: imageUrl + element.posterPath.toString(),
+            backdropPath: originalImageUrl + element.backdropPath.toString(),
+          ),
+        );
 
-      return MoviesList(movies: movies.toList(), page: result.page);
-    } catch (error) {
-      throw error;
-    }
-  }
+        return MoviesList(movies: movies.toList(), page: result.page);
+      });
 
-  Future<MoviesList> getMoviesByQuery({
+  Future<ResponseState<MoviesList>> getMoviesByQuery({
     String? query,
     required int page,
-  }) async {
-    try {
-      await Future.delayed(Duration(seconds: 2));
+  }) =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.getMoviesByQuery(
+          query: query,
+          page: page,
+        );
 
-      final result = await movieApiService.getMoviesByQuery(
-        query: query,
-        page: page,
-      );
+        final movies = result.results!.map(
+          (element) => MovieItem(
+            id: element.id.toString(),
+            title: element.title.toString(),
+            rate: element.voteAverage.toString(),
+            posterPath: imageUrl + element.posterPath.toString(),
+            backdropPath: originalImageUrl + element.backdropPath.toString(),
+          ),
+        );
 
-      final movies = result.results!.map(
-        (element) => MovieItem(
-          id: element.id.toString(),
-          title: element.title.toString(),
-          rate: element.voteAverage.toString(),
-          posterPath: imageUrl + element.posterPath.toString(),
-          backdropPath: originalImageUrl + element.backdropPath.toString(),
-        ),
-      );
+        return MoviesList(movies: movies.toList(), page: result.page);
+      });
 
-      return MoviesList(movies: movies.toList(), page: result.page);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  Future<MoviesList> discoverMovies({
+  Future<ResponseState<MoviesList>> discoverMovies({
     required int page,
     String? genreId,
     String? language,
     String? year,
-  }) async {
-    try {
-      final result = await movieApiService.discoverMovies(
-        page: page,
-        genreId: genreId,
-        language: language,
-        year: year,
-      );
+  }) =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.discoverMovies(
+          page: page,
+          genreId: genreId,
+          language: language,
+          year: year,
+        );
 
-      final movies = result.results!.map(
-        (element) => MovieItem(
-          id: element.id.toString(),
-          title: element.title.toString(),
-          rate: element.voteAverage.toString(),
-          posterPath: imageUrl + element.posterPath.toString(),
-          backdropPath: originalImageUrl + element.backdropPath.toString(),
-        ),
-      );
+        final movies = result.results!.map(
+          (element) => MovieItem(
+            id: element.id.toString(),
+            title: element.title.toString(),
+            rate: element.voteAverage.toString(),
+            posterPath: imageUrl + element.posterPath.toString(),
+            backdropPath: originalImageUrl + element.backdropPath.toString(),
+          ),
+        );
 
-      return MoviesList(movies: movies.toList(), page: result.page);
-    } catch (error) {
-      throw error;
-    }
-  }
+        return MoviesList(movies: movies.toList(), page: result.page);
+      });
 
-  Future<MovieDetail> getMovieDetail(String movieId) async {
-    try {
-      final movie = await movieApiService.getMovieDetail(movieId: movieId);
-      return MovieDetail(
-        id: movie.id.toString(),
-        title: movie.originalTitle.toString(),
-        poserPath: imageUrl + movie.posterPath.toString(),
-        backdropPath: originalImageUrl + movie.backdropPath.toString(),
-        quality: '4k',
-        duration: movie.runtime.toString(),
-        rating: movie.voteAverage.toString(),
-        releaseData: movie.releaseDate.toString(),
-        genres: movie.genres!.map((e) => e.name.toString()).toList(),
-        overview: movie.overview.toString(),
-        language: movie.originalLanguage.toString(),
-      );
-    } catch (error) {
-      throw error;
-    }
-  }
+  Future<ResponseState<MovieDetail>> getMovieDetail(String movieId) =>
+      launchWithCatchError(() async {
+        final movie = await movieApiService.getMovieDetail(movieId: movieId);
+        return MovieDetail(
+          id: movie.id.toString(),
+          title: movie.originalTitle.toString(),
+          poserPath: imageUrl + movie.posterPath.toString(),
+          backdropPath: originalImageUrl + movie.backdropPath.toString(),
+          duration: movie.runtime.toString(),
+          rating: movie.voteAverage.toString(),
+          releaseData: movie.releaseDate.toString(),
+          genres: movie.genres!.map((e) => e.name.toString()).toList(),
+          overview: movie.overview.toString(),
+          language: movie.originalLanguage.toString(),
+        );
+      });
 
-  Future<List<GenreItem>> getGenres() async {
-    try {
-      final result = await movieApiService.getAllGenres();
+  Future<ResponseState<List<GenreItem>>> getGenres() =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.getAllGenres();
 
-      return result.genres!
-          .map((e) => GenreItem(id: e.id, name: e.name))
-          .toList();
-    } catch (error) {
-      throw error;
-    }
-  }
+        return result.genres!
+            .map((e) => GenreItem(id: e.id, name: e.name))
+            .toList();
+      });
 
-  Future<MoviesList> getSimilarMovies(
-      {required String movieId, int? page}) async {
-    try {
-      final result = await movieApiService.getSimilarMovies(
-        movieId: movieId,
-        page: page,
-      );
+  Future<ResponseState<MoviesList>> getSimilarMovies(
+          {required String movieId, int? page}) =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.getSimilarMovies(
+          movieId: movieId,
+          page: page,
+        );
 
-      final movies = result.results!.map(
-        (element) => MovieItem(
-          id: element.id.toString(),
-          title: element.title.toString(),
-          rate: element.voteAverage.toString(),
-          posterPath: imageUrl + element.posterPath.toString(),
-          backdropPath: originalImageUrl + element.backdropPath.toString(),
-        ),
-      );
+        final movies = result.results!.map(
+          (element) => MovieItem(
+            id: element.id.toString(),
+            title: element.title.toString(),
+            rate: element.voteAverage.toString(),
+            posterPath: imageUrl + element.posterPath.toString(),
+            backdropPath: originalImageUrl + element.backdropPath.toString(),
+          ),
+        );
 
-      return MoviesList(movies: movies.toList(), page: result.page);
-    } catch (error) {
-      throw error;
-    }
-  }
+        return MoviesList(movies: movies.toList(), page: result.page);
+      });
 
-  Future<List<CastItem>> getCastsById({required String movieId}) async {
-    try {
-      final result = await movieApiService.getCastByMovieId(movieId: movieId);
-      final casts =
-          result.cast?.where((element) => element.profilePath != null) ?? [];
-      return casts
-          .map((e) => CastItem(
-                gender: e.gender,
-                id: e.id,
-                originalName: e.originalName,
-                popularity: e.popularity,
-                profilePath: '$imageUrl${e.profilePath}',
-                castId: e.castId,
-                character: e.character,
-                creditId: e.creditId,
-                order: e.order,
-              ))
-          .toList();
-    } catch (error) {
-      throw error;
-    }
-  }
+  Future<ResponseState<List<CastItem>>> getCastsById(
+          {required String movieId}) =>
+      launchWithCatchError(() async {
+        final result = await movieApiService.getCastByMovieId(movieId: movieId);
+        final casts =
+            result.cast?.where((element) => element.profilePath != null) ?? [];
 
-  Future<Videos> getVideosByMovieId({required String movieId}) async {
-    try {
-      final videos = await movieApiService.getVideoDataById(movieId: movieId);
-      return Videos(
-        id: videos.id.toString(),
-        videos: videos.results!
-            .map((e) => VideoItem(
-                  name: e.name.toString(),
-                  id: e.id.toString(),
-                  size: e.size.toString(),
-                  key: e.key.toString(),
+        return casts
+            .map((e) => CastItem(
+                  gender: e.gender,
+                  id: e.id,
+                  originalName: e.originalName,
+                  popularity: e.popularity,
+                  profilePath: '$imageUrl${e.profilePath}',
+                  castId: e.castId,
+                  character: e.character,
+                  creditId: e.creditId,
+                  order: e.order,
                 ))
-            .toList(),
-      );
-    } catch (error) {
-      throw error;
-    }
-  }
+            .toList();
+      });
+
+  Future<ResponseState<Videos>> getVideosByMovieId({required String movieId}) =>
+      launchWithCatchError(() async {
+        final videos = await movieApiService.getVideoDataById(movieId: movieId);
+        return Videos(
+          id: videos.id.toString(),
+          videos: videos.results!
+              .map((e) => VideoItem(
+                    name: e.name.toString(),
+                    id: e.id.toString(),
+                    size: e.size.toString(),
+                    key: e.key.toString(),
+                  ))
+              .toList(),
+        );
+      });
 }

@@ -4,8 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:movie_app/utils/status.dart';
-import 'package:movies_data/movies_data.dart'
-    show AuthRepository, GenreItem, MoviesRepository, StorageRepository, logger;
+import 'package:movies_data/movies_data.dart';
 
 part 'register_event.dart';
 
@@ -41,16 +40,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Future<void> _onFetchGenresEvent(
-      FetchGenresEvent event, Emitter<RegisterState> emit) async {
+    FetchGenresEvent event,
+    Emitter<RegisterState> emit,
+  ) async {
     emit(state.copyWith(status: Status.pending));
-
-    try {
-      final genres = await moviesRepository.getGenres();
-      await storageRepository.saveListOfGenres({...genres});
-
+    final responseState = await moviesRepository.getGenres();
+    if (responseState is Success) {
+      final data = responseState.successValue;
+      await storageRepository.saveListOfGenres({...data});
       emit(state.copyWith(status: Status.success));
-    } catch (error) {
+    } else if (responseState is Fail) {
+      final error = responseState.errorValue;
       emit(state.copyWith(status: Status.error, error: error));
+    } else if (responseState is NoConnection) {
+      emit(state.copyWith(status: Status.noConnection, error: null));
+    } else {
+      emit(state);
     }
   }
 

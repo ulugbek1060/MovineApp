@@ -8,6 +8,7 @@ import 'package:movie_app/pages/home/bloc/home_bloc.dart';
 import 'package:movie_app/pages/videoplayer/player_page.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/utils/status.dart';
@@ -63,6 +64,8 @@ class _UpcomingMoviesState extends State<UpcomingMovies> {
         return ErrorView(onRetry: retry);
       case Status.empty:
         return const EmptyView();
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

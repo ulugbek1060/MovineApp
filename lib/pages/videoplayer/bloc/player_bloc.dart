@@ -27,22 +27,19 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     FetchVideosEvent event,
     Emitter<PlayerState> emit,
   ) async {
-    if (state.status == Status.pending) return;
-
     emit(state.copyWith(status: Status.pending));
+    final responseState =
+        await repository.getVideosByMovieId(movieId: event.movieId!);
 
-    try {
-      final result =
-          await repository.getVideosByMovieId(movieId: event.movieId!);
-      final isEmpty = result.videos.isEmpty;
-
-      if (isEmpty) {
-        emit(state.copyWith(status: Status.empty));
-      } else {
-        emit(state.copyWith(status: Status.success, videos: result.videos));
-      }
-    } catch (error) {
+    if (responseState is Success) {
+      final data = responseState.successValue;
+      emit(state.copyWith(status: Status.success, videos: data.videos));
+    } else if (responseState is Fail) {
       emit(state.copyWith(status: Status.error));
+    } else if (responseState is NoConnection) {
+      emit(state.copyWith(status: Status.noConnection));
+    } else {
+      emit(state);
     }
   }
 }

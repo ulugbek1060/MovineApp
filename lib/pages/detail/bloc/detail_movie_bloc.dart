@@ -24,32 +24,43 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     FetchedMovieEvent event,
     Emitter<DetailMovieState> emit,
   ) async {
-    try {
-      emit(state.copyWith(status: Status.pending));
+    emit(state.copyWith(status: Status.pending));
 
-      final movie = await moviesRepository.getMovieDetail(event.movieId);
+    final responseState = await moviesRepository.getMovieDetail(event.movieId);
 
-      final movies =
-          await moviesRepository.getSimilarMovies(movieId: event.movieId);
+    if (responseState is Success) {
+      final dataDetailMovie = (responseState as Success<MovieDetail>).data;
 
-      final isMarked =
-          await storageRepository.checkWhetherIsMarkedOrNot(movie.id);
-
-      final videos =
-          await moviesRepository.getVideosByMovieId(movieId: movie.id);
-
-      final casts = await moviesRepository.getCastsById(movieId: event.movieId);
-
+      final similarMovResState = await moviesRepository.getSimilarMovies(
+        movieId: event.movieId,
+      );
+      final isMarked = await storageRepository.checkWhetherIsMarkedOrNot(
+        event.movieId,
+      );
+      final videosResState = await moviesRepository.getVideosByMovieId(
+        movieId: event.movieId,
+      );
+      final castsResState = await moviesRepository.getCastsById(
+        movieId: event.movieId,
+      );
+      final movies = similarMovResState.getValueOrNull()?.movies ?? [];
+      final videos = videosResState.getValueOrNull()?.videos ?? [];
+      final casts = castsResState.getValueOrNull() ?? [];
       emit(state.copyWith(
         status: Status.success,
-        movie: movie,
-        videos: videos.videos,
-        movies: movies.movies,
+        movie: dataDetailMovie,
+        videos: videos,
+        movies: movies,
         casts: casts,
         isMarked: isMarked,
       ));
-    } catch (error) {
+    } else if (responseState is Fail) {
+      final error = (responseState as Fail).error;
       emit(state.copyWith(status: Status.error, error: error));
+    } else if (responseState is NoConnection) {
+      emit(state.copyWith(status: Status.noConnection));
+    } else {
+      emit(DetailMovieState.empty());
     }
   }
 

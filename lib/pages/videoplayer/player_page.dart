@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/videoplayer/bloc/player_bloc.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/pages/widgets/video_item_card.dart';
 import 'package:movie_app/utils/status.dart';
@@ -58,6 +59,8 @@ class _PlayerView extends StatelessWidget {
         return const EmptyView();
       case Status.error:
         return ErrorView(onRetry: () {});
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

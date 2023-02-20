@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/pages/explore/filter/filter_view_model.dart';
+import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/genre_item_widget.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
+import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_typography.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 
 class FilterDialog extends StatefulWidget {
@@ -56,12 +60,16 @@ class _FilterDialogState extends State<FilterDialog> {
 
   Widget _buildComponents(FilterState state) {
     switch (state.status) {
-      case FilterStatus.success:
+      case Status.success:
         return _GenresList(genres: state.genres);
-      case FilterStatus.loading:
-        return const _FilterLoading();
-      case FilterStatus.error:
+      case Status.pending:
+        return const ProgressView();
+      case Status.empty:
+        return const EmptyView();
+      case Status.error:
         return const ErrorView();
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }
@@ -236,19 +244,6 @@ class _GenresListState extends State<_GenresList> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _FilterLoading extends StatelessWidget {
-  const _FilterLoading({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

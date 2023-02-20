@@ -4,6 +4,7 @@ import 'package:movie_app/pages/mylist/bloc/my_list_bloc.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/slive_grid_delegate.dart';
 import 'package:movie_app/utils/status.dart';
@@ -53,6 +54,8 @@ class _MyListView extends StatelessWidget {
         return const EmptyView();
       case Status.error:
         return const ErrorView();
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

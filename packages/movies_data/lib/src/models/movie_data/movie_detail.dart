@@ -5,7 +5,6 @@ class MovieDetail extends Equatable {
   final String title;
   final String poserPath;
   final String backdropPath;
-  final String quality;
   final String duration;
   final String rating;
   final String releaseData;
@@ -18,7 +17,6 @@ class MovieDetail extends Equatable {
     required this.title,
     required this.poserPath,
     required this.backdropPath,
-    required this.quality,
     required this.duration,
     required this.rating,
     required this.releaseData,
@@ -28,27 +26,11 @@ class MovieDetail extends Equatable {
   });
 
   @override
-  String toString() => {
-        'id': id,
-        'title': title,
-        'posterPath': poserPath,
-        'backdropPath': backdropPath,
-        'quality': quality,
-        'duration': duration,
-        'rating': rating,
-        'releaseDate': releaseData,
-        'genres': genres,
-        'overview': overview,
-        'language': language,
-      }.toString();
-
-  @override
   List<Object?> get props => [
         id,
         title,
         poserPath,
         backdropPath,
-        quality,
         duration,
         rating,
         releaseData,

@@ -27,6 +27,14 @@ class DetailMovieState extends Equatable {
             casts: [],
             isMarked: false);
 
+  DetailMovieState.empty()
+      : this(
+            status: Status.empty,
+            movies: [],
+            videos: [],
+            casts: [],
+            isMarked: false);
+
   DetailMovieState copyWith({
     Status? status,
     List<MovieItem>? movies,

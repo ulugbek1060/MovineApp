@@ -6,6 +6,7 @@ import 'package:movie_app/pages/home/movies_see_all.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart' hide topRated;
@@ -73,6 +74,8 @@ class TopRatedMovies extends StatelessWidget {
         return ErrorView(onRetry: retry);
       case Status.empty:
         return const EmptyView();
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

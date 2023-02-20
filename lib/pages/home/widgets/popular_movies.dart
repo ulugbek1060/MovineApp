@@ -6,6 +6,7 @@ import 'package:movie_app/pages/home/movies_see_all.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
@@ -29,7 +30,8 @@ class PopularMovies extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(context.l10n.popular, style: Theme.of(context).textTheme.titleMedium),
+              Text(context.l10n.popular,
+                  style: Theme.of(context).textTheme.titleMedium),
               GestureDetector(
                 onTap: () {
                   navigateToAllMovies(context);
@@ -37,8 +39,7 @@ class PopularMovies extends StatelessWidget {
                 child: Text(
                   context.l10n.seeAll,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.secondary
-                  ),
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               )
             ],
@@ -74,6 +75,8 @@ class PopularMovies extends StatelessWidget {
         return ErrorView(onRetry: retry);
       case Status.empty:
         return const EmptyView();
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

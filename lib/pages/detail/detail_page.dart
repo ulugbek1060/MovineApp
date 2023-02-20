@@ -8,6 +8,7 @@ import 'package:movie_app/pages/detail/widgets/similar_movies_list.dart';
 import 'package:movie_app/pages/detail/widgets/videos_list.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/theme/app_colors.dart';
 import 'package:movie_app/theme/app_shape.dart';
@@ -66,6 +67,12 @@ class MovieDetailView extends StatelessWidget {
         return const EmptyView();
       case Status.error:
         return ErrorView(onRetry: () {
+          context
+              .read<DetailMovieBloc>()
+              .add(FetchedMovieEvent(movieId: movieId));
+        });
+      case Status.noConnection:
+        return NoConnectionView(callback: () {
           context
               .read<DetailMovieBloc>()
               .add(FetchedMovieEvent(movieId: movieId));

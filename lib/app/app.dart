@@ -91,8 +91,7 @@ class _AppViewState extends State<AppView> {
           locale: Locale(state.langCode),
           builder: (context, child) {
             return BlocListener<AuthenticationBloc, AuthenticationState>(
-              listenWhen: (previous, current) =>
-                  previous.status != current.status,
+              listenWhen: (previous, current) => previous.status != current.status,
               listener: (context, state) {
                 switch (state.status) {
                   case AuthenticationStatus.unknown:

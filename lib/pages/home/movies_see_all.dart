@@ -38,18 +38,20 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
     try {
       final repository = RepositoryProvider.of<MoviesRepository>(context);
 
-      final result = await repository.getMoviesByType(
+      final data = await repository.getMoviesByType(
         page: pageKey,
         type: widget.type,
       );
 
-      final movies = result.movies ?? [];
+      final result = data.getValueOrNull();
+
+      final movies = result?.movies ?? [];
       final isLastPage = movies.length < _pageSize;
 
       if (isLastPage) {
         _pagingController.appendLastPage(movies);
       } else {
-        final nextPageKey = (result.page ?? pageKey) + 1;
+        final nextPageKey = (result?.page ?? pageKey) + 1;
         _pagingController.appendPage(movies, nextPageKey);
       }
     } catch (error) {
@@ -82,7 +84,7 @@ class _MoviesSeeAllState extends State<MoviesSeeAll> {
             showNewPageProgressIndicatorAsGridChild: false,
             showNewPageErrorIndicatorAsGridChild: false,
             showNoMoreItemsIndicatorAsGridChild: false,
-            gridDelegate:  gridDelegate(context),
+            gridDelegate: gridDelegate(context),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<MovieItem>(
               itemBuilder: (context, movie, index) =>

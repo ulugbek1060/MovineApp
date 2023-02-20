@@ -41,25 +41,28 @@ class _MoviesGridViewState extends State<MoviesGridView> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    try {
-      final repository = RepositoryProvider.of<MoviesRepository>(context);
+    final repository = RepositoryProvider.of<MoviesRepository>(context);
 
-      final result = await repository.discoverMovies(
-        page: pageKey,
-        genreId: widget.genreId,
-      );
+    final responseState = await repository.discoverMovies(
+      page: pageKey,
+      genreId: widget.genreId,
+    );
+    if (responseState is Success) {
+      final data = responseState.successValue;
 
-      final movies = result.movies ?? [];
+      final movies = data.movies ?? [];
       final isLastPage = movies.length < _pageSize;
 
       if (isLastPage) {
         _pagingController.appendLastPage(movies);
       } else {
-        final nextPageKey = (result.page ?? pageKey) + 1;
+        final nextPageKey = (data.page ?? pageKey) + 1;
         _pagingController.appendPage(movies, nextPageKey);
       }
-    } catch (error) {
-      _pagingController.error = error;
+    } else if (responseState is NoConnection) {
+      _pagingController.error = responseState.errorValue;
+    } else if (responseState is Fail) {
+      _pagingController.error = responseState.errorValue;
     }
   }
 

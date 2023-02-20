@@ -17,7 +17,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   final MoviesRepository repository;
   StreamSubscription? _streamSubscription;
 
-  ExploreBloc({required this.repository}) : super(ExploreByQueryState.initial()) {
+  ExploreBloc({required this.repository})
+      : super(ExploreByQueryState.initial()) {
     on<FetchMoviesEvent>(_onFetchEvent, transformer: droppable());
     on<SearchMoviesEvent>(_onSearchEvent);
     on<ClearStateEvent>(_onClearStateEvent);
@@ -48,8 +49,6 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           .asStream()
           .listen((response) {
         add(_EmitResponseEvent(response));
-      }, onError: (error) {
-        add(_EmitErrorEvent(error));
       });
     } else if (currentState is ExploreByFilterState) {
       if (currentState.hasReached || currentState.status == Status.pending) {
@@ -73,8 +72,6 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           .asStream()
           .listen((response) {
         add(_EmitResponseEvent(response));
-      }, onError: (error) {
-        add(_EmitErrorEvent(error));
       });
     }
   }
@@ -93,14 +90,9 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     _streamSubscription = repository
         .getMoviesByQuery(page: 1, query: event.query)
         .asStream()
-        .listen(
-          (response) {
-        add(_EmitResponseEvent(response));
-      },
-      onError: (error) {
-        add(_EmitErrorEvent(error));
-      },
-    );
+        .listen((response) {
+      add(_EmitResponseEvent(response));
+    });
   }
 
   /// Function refreshes all [ExploreState] and cancelling [StreamSubscription]
@@ -112,7 +104,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       status: Status.pending,
       filter: event.filter,
     ));
-     ///TODO: need to implement.
+
+    ///TODO: need to implement.
   }
 
   Future<void> _onClearStateEvent(
@@ -132,27 +125,42 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   }
 
   Future<void> _onEmitResponseEvent(
-      _EmitResponseEvent event, Emitter<ExploreState> emit) async {
+    _EmitResponseEvent event,
+    Emitter<ExploreState> emit,
+  ) async {
     final currentState = state;
 
-    final result = event.response;
-    final movies = result.movies;
-    final hasReached = movies!.length < defaultPageSize;
+    final responseState = event.responseState;
 
-    if (currentState is ExploreByFilterState) {
-      final nextPage = (result.page ?? currentState.page) + 1;
-      emit(currentState.copyWith(
-          movies: movies,
-          status: Status.success,
-          page: nextPage,
-          hasReached: hasReached));
-    } else if (currentState is ExploreByQueryState) {
-      final nextPage = (result.page ?? currentState.page) + 1;
-      emit(currentState.copyWith(
-          movies: movies,
-          status: Status.success,
-          page: nextPage,
-          hasReached: hasReached));
+    if (responseState is Success) {
+      final data = responseState.successValue;
+      final movies = data.movies ?? [];
+      final hasReached = movies.length < defaultPageSize;
+      if (currentState is ExploreByFilterState) {
+        final nextPage = (data.page ?? currentState.page) + 1;
+        emit(currentState.copyWith(
+            movies: movies,
+            status: Status.success,
+            page: nextPage,
+            hasReached: hasReached));
+      } else if (currentState is ExploreByQueryState) {
+        final nextPage = (data.page ?? currentState.page) + 1;
+        emit(currentState.copyWith(
+            movies: movies,
+            status: Status.success,
+            page: nextPage,
+            hasReached: hasReached));
+      }
+    } else if (responseState is Fail) {
+      add(_EmitErrorEvent());
+    } else if (responseState is NoConnection) {
+      if (currentState is ExploreByFilterState) {
+        emit(currentState.copyWith(status: Status.noConnection));
+      } else if (currentState is ExploreByQueryState) {
+        emit(currentState.copyWith(status: Status.noConnection));
+      }
+    } else {
+      emit(state);
     }
   }
 

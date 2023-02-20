@@ -15,17 +15,16 @@ class HomeState extends Equatable {
 
   HomeState.initial()
       : this(
-          nowPlayingState: NowPlayingMoviesState.initial(),
-          popularState: PopularMoviesState.initial(),
-          topRatedState: TopRatedMoviesState.initial(),
-          upcomingState: UpcomingMoviesState.initial(),
-        );
+      upcomingState: UpcomingMoviesState.initial(),
+      nowPlayingState: NowPlayingMoviesState.initial(),
+      popularState: PopularMoviesState.initial(),
+      topRatedState: TopRatedMoviesState.initial());
 
   HomeState copyWith({
+    UpcomingMoviesState? upcomingState,
     NowPlayingMoviesState? nowPlayingState,
     PopularMoviesState? popularState,
     TopRatedMoviesState? topRatedState,
-    UpcomingMoviesState? upcomingState,
   }) {
     return HomeState(
       nowPlayingState: nowPlayingState ?? this.nowPlayingState,
@@ -44,110 +43,50 @@ class HomeState extends Equatable {
       ];
 }
 
-class NowPlayingMoviesState extends Equatable {
-  final List<MovieItem> movies;
+class UpcomingMoviesState extends Equatable {
   final Status status;
-  final Object? error;
-
-  const NowPlayingMoviesState(
-      {required this.movies, required this.status, this.error});
-
-  NowPlayingMoviesState.initial()
-      : this(movies: [], status: Status.empty, error: null);
-
-  NowPlayingMoviesState copyWith({
-    List<MovieItem>? movies,
-    Status? status,
-    Object? error,
-  }) {
-    return NowPlayingMoviesState(
-      movies: movies ?? this.movies,
-      status: status ?? this.status,
-      error: error ?? this.error,
-    );
+  final List<MovieItem> movies;
+  const UpcomingMoviesState(this.status, this.movies);
+  UpcomingMoviesState.initial():this(Status.empty, []);
+  UpcomingMoviesState copyWith({Status? status, List<MovieItem>? movies}){
+    return UpcomingMoviesState(status ?? this.status, movies ?? this.movies);
   }
-
   @override
-  List<Object?> get props => [movies, status, error];
+  List<Object?> get props => [status, movies];
+}
+
+class NowPlayingMoviesState extends Equatable {
+  final Status status;
+  final List<MovieItem> movies;
+  const NowPlayingMoviesState(this.status, this.movies);
+  NowPlayingMoviesState.initial():this(Status.empty, []);
+  NowPlayingMoviesState copyWith({Status? status, List<MovieItem>? movies}){
+    return NowPlayingMoviesState(status ?? this.status, movies ?? this.movies);
+  }
+  @override
+  List<Object?> get props => [status, movies];
 }
 
 class PopularMoviesState extends Equatable {
-  final List<MovieItem> movies;
   final Status status;
-  final Object? error;
-
-  const PopularMoviesState(
-      {required this.movies, required this.status, this.error});
-
-  PopularMoviesState.initial()
-      : this(movies: [], status: Status.empty, error: null);
-
-  PopularMoviesState copyWith({
-    List<MovieItem>? movies,
-    Status? status,
-    Object? error,
-  }) {
-    return PopularMoviesState(
-      movies: movies ?? this.movies,
-      status: status ?? this.status,
-      error: error ?? this.error,
-    );
+  final List<MovieItem> movies;
+  const PopularMoviesState(this.status, this.movies);
+  PopularMoviesState.initial():this(Status.empty, []);
+  PopularMoviesState copyWith({Status? status, List<MovieItem>? movies}){
+    return PopularMoviesState(status ?? this.status, movies ?? this.movies);
   }
-
   @override
-  List<Object?> get props => [movies, status, error];
+  List<Object?> get props => [status, movies];
 }
 
 class TopRatedMoviesState extends Equatable {
-  final List<MovieItem> movies;
   final Status status;
-  final Object? error;
-
-  const TopRatedMoviesState(
-      {required this.movies, required this.status, this.error});
-
-  TopRatedMoviesState.initial()
-      : this(movies: [], status: Status.empty, error: null);
-
-  TopRatedMoviesState copyWith({
-    List<MovieItem>? movies,
-    Status? status,
-    Object? error,
-  }) {
-    return TopRatedMoviesState(
-      movies: movies ?? this.movies,
-      status: status ?? this.status,
-      error: error ?? this.error,
-    );
-  }
-
-  @override
-  List<Object?> get props => [movies, status, error];
-}
-
-class UpcomingMoviesState extends Equatable {
   final List<MovieItem> movies;
-  final Status status;
-  final Object? error;
-
-  const UpcomingMoviesState(
-      {required this.movies, required this.status, this.error});
-
-  UpcomingMoviesState.initial()
-      : this(movies: [], status: Status.empty, error: null);
-
-  UpcomingMoviesState copyWith({
-    List<MovieItem>? movies,
-    Status? status,
-    Object? error,
-  }) {
-    return UpcomingMoviesState(
-      movies: movies ?? this.movies,
-      status: status ?? this.status,
-      error: error ?? this.error,
-    );
+  const TopRatedMoviesState(this.status, this.movies);
+  TopRatedMoviesState.initial():this(Status.empty, []);
+  TopRatedMoviesState copyWith({Status? status, List<MovieItem>? movies}){
+    return TopRatedMoviesState(status ?? this.status, movies ?? this.movies);
   }
-
   @override
-  List<Object?> get props => [movies, status, error];
+  List<Object?> get props => [status, movies];
 }

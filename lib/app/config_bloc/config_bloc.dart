@@ -12,6 +12,7 @@ class ConfigBloc extends Bloc<ConfigEvent, ConfigState> {
   final ConfigRepository configRepository;
 
   ConfigBloc(this.configRepository) : super(const ConfigState.initial()) {
+
     on<GetInitialAppState>((event, emit) {
       emit(state.copyWith(
           langCode: configRepository.appLang,

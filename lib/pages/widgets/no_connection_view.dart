@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/l10n/l10n.dart';
 
 class NoConnectionView extends StatelessWidget {
-  const NoConnectionView({Key? key}) : super(key: key);
+  const NoConnectionView({Key? key, this.callback}) : super(key: key);
+
+  final VoidCallback? callback;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,12 @@ class NoConnectionView extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
             size: 100,
           ),
-          Text(context.l10n.noConnection)
+          Text(context.l10n.noConnection),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.refresh),
+            onPressed: callback,
+            label: Text(context.l10n.tryAgain),
+          )
         ],
       ),
     );

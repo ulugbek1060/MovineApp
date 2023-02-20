@@ -1,23 +1,24 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum FilterStatus { success, loading, error }
-
 class FilterState extends Equatable {
   final List<GenreItem> genres;
-  final FilterStatus status;
+  final Status status;
 
   const FilterState(this.genres, this.status);
 
-  FilterState.loading() : this([], FilterStatus.loading);
+  FilterState.loading() : this([], Status.pending);
 
   const FilterState.success(List<GenreItem> genres)
-      : this(genres, FilterStatus.success);
+      : this(genres, Status.success);
 
-  FilterState.fail() : this([], FilterStatus.error);
+  FilterState.fail() : this([], Status.error);
+
+  FilterState.noConnection() : this([], Status.noConnection);
 
   @override
   List<Object?> get props => [genres, status];
@@ -38,10 +39,18 @@ class FilterViewModel {
 
   Future<void> loadGenres() async {
     _streamSubscription?.cancel();
-    _streamSubscription = repository.getGenres().asStream().listen((genres) {
-      _genresStreamController.sink.add(FilterState.success(genres));
-    }, onError: (error) {
-      _genresStreamController.sink.add(FilterState.fail());
+    _streamSubscription =
+        repository.getGenres().asStream().listen((responseState) {
+      if (responseState is Success) {
+        _genresStreamController.sink
+            .add(FilterState.success(responseState.successValue));
+      } else if (responseState is Fail) {
+        _genresStreamController.sink.add(FilterState.fail());
+      } else if (responseState is NoConnection) {
+        _genresStreamController.sink.add(FilterState.noConnection());
+      } else {
+        _genresStreamController.sink.add(FilterState.fail());
+      }
     });
   }
 

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
@@ -22,33 +23,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FetchUpcomingMoviesEvent event,
     Emitter<HomeState> emit,
   ) async {
-    final upcomingState = state.upcomingState;
+    final upcomingMovState = state.upcomingState;
 
-    emit(state.copyWith(
-        upcomingState: upcomingState.copyWith(status: Status.pending)));
+    final newUpcomingMovState = upcomingMovState.copyWith(
+      status: Status.pending,
+      movies: upcomingMovState.movies,
+    );
 
-    try {
-      final result = await moviesRepository.getMoviesByType(
-        page: 1,
-        type: MovieType.UPCOMING,
+    emit(state.copyWith(upcomingState: newUpcomingMovState));
+
+    final responseState = await moviesRepository.getMoviesByType(
+      page: 1,
+      type: MovieType.UPCOMING,
+    );
+
+    if (responseState is Success) {
+      final data = (responseState as Success<MoviesList>).data;
+      final movies = data.movies ?? [];
+      final newUpcomingMovState = upcomingMovState.copyWith(
+        status: Status.success,
+        movies: movies,
       );
-
-      final movies = result.movies ?? [];
-
-      if (movies.isEmpty) {
-        emit(state.copyWith(
-            upcomingState: upcomingState.copyWith(
-                status: Status.empty, movies: movies, error: null)));
-        return;
-      }
-
-      emit(state.copyWith(
-          upcomingState: upcomingState.copyWith(
-              status: Status.success, movies: movies, error: null)));
-    } catch (error) {
-      emit(state.copyWith(
-          upcomingState:
-              upcomingState.copyWith(status: Status.error, error: error)));
+      emit(state.copyWith(upcomingState: newUpcomingMovState));
+    } else if (responseState is Fail) {
+      final newUpcomingMovState = upcomingMovState.copyWith(
+        status: Status.error,
+        movies: [],
+      );
+      emit(state.copyWith(upcomingState: newUpcomingMovState));
+    } else if (responseState is NoConnection) {
+      final newUpcomingMovState =
+          upcomingMovState.copyWith(status: Status.noConnection);
+      emit(state.copyWith(upcomingState: newUpcomingMovState));
+    } else {
+      emit(state.copyWith(upcomingState: upcomingMovState));
     }
   }
 
@@ -56,62 +64,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FetchNowPlayingMoviesEvent event,
     Emitter<HomeState> emit,
   ) async {
-    final nowPlayingState = state.nowPlayingState;
-    emit(state.copyWith(
-        nowPlayingState: nowPlayingState.copyWith(status: Status.pending)));
-    try {
-      final result = await moviesRepository.getMoviesByType(
-        page: 1,
-        type: MovieType.NOW_PLAYING,
+    final nowPlayingMovsState = state.nowPlayingState;
+
+    final newNowPlayingMosState = nowPlayingMovsState.copyWith(
+      status: Status.pending,
+      movies: nowPlayingMovsState.movies,
+    );
+
+    emit(state.copyWith(nowPlayingState: newNowPlayingMosState));
+
+    final responseState = await moviesRepository.getMoviesByType(
+      page: 1,
+      type: MovieType.NOW_PLAYING,
+    );
+
+    if (responseState is Success) {
+      final data = (responseState as Success<MoviesList>).data;
+      final movies = data.movies ?? [];
+      final newNowPlayingMosState = nowPlayingMovsState.copyWith(
+        status: Status.success,
+        movies: movies,
       );
-
-      final movies = result.movies ?? [];
-
-      if (movies.isEmpty) {
-        emit(state.copyWith(
-            nowPlayingState: nowPlayingState.copyWith(
-                status: Status.empty, movies: movies, error: null)));
-        return;
-      }
-      emit(state.copyWith(
-          nowPlayingState: nowPlayingState.copyWith(
-              status: Status.success, movies: movies, error: null)));
-    } catch (error) {
-      emit(state.copyWith(
-          nowPlayingState:
-              nowPlayingState.copyWith(status: Status.error, error: error)));
-    }
-  }
-
-  Future<void> _onFetchPopularMovies(
-    FetchPopularMoviesEvent event,
-    Emitter<HomeState> emit,
-  ) async {
-    final popularState = state.popularState;
-    emit(state.copyWith(
-        popularState: popularState.copyWith(status: Status.pending)));
-    try {
-      final result = await moviesRepository.getMoviesByType(
-        page: 1,
-        type: MovieType.POPULAR,
+      emit(state.copyWith(nowPlayingState: newNowPlayingMosState));
+    } else if (responseState is Fail) {
+      final newNowPlayingMosState = nowPlayingMovsState.copyWith(
+        status: Status.error,
+        movies: [],
       );
-
-      final movies = result.movies ?? [];
-
-      if (movies.isEmpty) {
-        emit(state.copyWith(
-            popularState: popularState.copyWith(
-                status: Status.empty, movies: movies, error: null)));
-        return;
-      }
-
-      emit(state.copyWith(
-          popularState: popularState.copyWith(
-              status: Status.success, movies: movies, error: null)));
-    } catch (error) {
-      emit(state.copyWith(
-          popularState:
-              popularState.copyWith(status: Status.error, error: error)));
+      emit(state.copyWith(nowPlayingState: newNowPlayingMosState));
+    } else if (responseState is NoConnection) {
+      final newNowPlayingMosState =
+          nowPlayingMovsState.copyWith(status: Status.noConnection);
+      emit(state.copyWith(nowPlayingState: newNowPlayingMosState));
+    } else {
+      emit(state.copyWith(nowPlayingState: nowPlayingMovsState));
     }
   }
 
@@ -119,31 +105,83 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FetchTopRatedMoviesEvent event,
     Emitter<HomeState> emit,
   ) async {
-    final topRatedState = state.topRatedState;
-    emit(state.copyWith(
-        topRatedState: topRatedState.copyWith(status: Status.pending)));
-    try {
-      final result = await moviesRepository.getMoviesByType(
-        page: 1,
-        type: MovieType.TOP_RATED,
+    final topRatedMosState = state.topRatedState;
+
+    final newTopRatedMovsState = topRatedMosState.copyWith(
+      status: Status.pending,
+      movies: topRatedMosState.movies,
+    );
+
+    emit(state.copyWith(topRatedState: newTopRatedMovsState));
+
+    final responseState = await moviesRepository.getMoviesByType(
+      page: 1,
+      type: MovieType.TOP_RATED,
+    );
+
+    if (responseState is Success) {
+      final data = (responseState as Success<MoviesList>).data;
+      final movies = data.movies ?? [];
+      final newTopRatedMovsState = topRatedMosState.copyWith(
+        status: Status.success,
+        movies: movies,
       );
+      emit(state.copyWith(topRatedState: newTopRatedMovsState));
+    } else if (responseState is Fail) {
+      final newTopRatedMovsState = topRatedMosState.copyWith(
+        status: Status.error,
+        movies: [],
+      );
+      emit(state.copyWith(topRatedState: newTopRatedMovsState));
+    } else if (responseState is NoConnection) {
+      final newTopRatedMovsState = topRatedMosState.copyWith(
+        status: Status.noConnection,
+      );
+      emit(state.copyWith(topRatedState: newTopRatedMovsState));
+    } else {
+      emit(state.copyWith(topRatedState: topRatedMosState));
+    }
+  }
 
-      final movies = result.movies ?? [];
+  Future<void> _onFetchPopularMovies(
+    FetchPopularMoviesEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    final popularMovsState = state.popularState;
 
-      if (movies.isEmpty) {
-        emit(state.copyWith(
-            topRatedState: topRatedState.copyWith(
-                status: Status.empty, movies: movies, error: null)));
-        return;
-      }
+    final newPopularMovsState = popularMovsState.copyWith(
+      status: Status.pending,
+      movies: popularMovsState.movies,
+    );
 
-      emit(state.copyWith(
-          topRatedState: topRatedState.copyWith(
-              status: Status.success, movies: movies, error: null)));
-    } catch (error) {
-      emit(state.copyWith(
-          topRatedState:
-              topRatedState.copyWith(status: Status.error, error: error)));
+    emit(state.copyWith(popularState: newPopularMovsState));
+
+    final responseState = await moviesRepository.getMoviesByType(
+      page: 1,
+      type: MovieType.POPULAR,
+    );
+
+    if (responseState is Success) {
+      final data = (responseState as Success<MoviesList>).data;
+      final movies = data.movies ?? [];
+      final newPopularMovsState = popularMovsState.copyWith(
+        status: Status.success,
+        movies: movies,
+      );
+      emit(state.copyWith(popularState: newPopularMovsState));
+    } else if (responseState is Fail) {
+      final newPopularMovsState = popularMovsState.copyWith(
+        status: Status.error,
+        movies: [],
+      );
+      emit(state.copyWith(popularState: newPopularMovsState));
+    } else if (responseState is NoConnection) {
+      final newPopularMovsState = popularMovsState.copyWith(
+        status: Status.noConnection,
+      );
+      emit(state.copyWith(popularState: newPopularMovsState));
+    } else {
+      emit(state.copyWith(popularState: popularMovsState));
     }
   }
 }

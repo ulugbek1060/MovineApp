@@ -9,6 +9,7 @@ class FetchMoviesEvent extends ExploreEvent {}
 @immutable
 class FilterEvent extends ExploreEvent {
   FilterEvent(this.filter);
+
   final Filter filter;
 }
 
@@ -25,15 +26,14 @@ class ClearStateEvent extends ExploreEvent {}
 /// Internal event from network
 @immutable
 class _EmitResponseEvent extends ExploreEvent {
-  _EmitResponseEvent(this.response);
-
-  final MoviesList response;
+  _EmitResponseEvent(this.responseState);
+  final ResponseState<MoviesList> responseState;
 }
 
 /// Internal event from network
 @immutable
 class _EmitErrorEvent extends ExploreEvent {
-  _EmitErrorEvent(this.error);
+  _EmitErrorEvent({this.error});
 
   final Object? error;
 }

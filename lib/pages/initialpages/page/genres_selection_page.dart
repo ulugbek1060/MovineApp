@@ -4,6 +4,7 @@ import 'package:movie_app/pages/initialpages/bloc/register_bloc.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/error_view.dart';
 import 'package:movie_app/pages/widgets/genre_item_widget.dart';
+import 'package:movie_app/pages/widgets/no_connection_view.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movie_app/utils/strings.dart';
@@ -71,6 +72,8 @@ class _MainView extends StatelessWidget {
         return const EmptyView();
       case Status.error:
         return ErrorView(onRetry: retry);
+      case Status.noConnection:
+        return const NoConnectionView();
     }
   }
 }

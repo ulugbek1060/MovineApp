@@ -46,14 +46,11 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.0.12
   cached_network_image: ^3.2.3
-  flutter_redux: ^0.10.0
-  redux: ^5.0.0
   rxdart: ^0.27.7
   youtube_player_flutter: ^8.1.2
   flutter_localizations:
     sdk: flutter
   intl: any
-  provider: ^6.0.5
   share_plus: ^6.3.1
   movies_data:
     path: packages/movies_data

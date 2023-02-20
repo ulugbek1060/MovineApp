@@ -11,7 +11,9 @@
 This project is a starting point for my first Flutter application.
 
 ## Preview
-![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png)
+<p float="center">
+  <img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png" width="200" />
+</p>
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%202.png)
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%203.png)
 

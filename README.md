@@ -1,7 +1,6 @@
-<p float="left">
-  <img src="/img1.png" width="100" />
-  <a href="https://flutter.dev/" target="blank"><img src="https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg" width="300" alt="Flutter Logo" /></a>
-  <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="200" alt="Logo" /></a>
+<p float="center">
+ <a href="https://flutter.dev/" target="blank"><img src="https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg" width="300" alt="Flutter Logo" /></a>
+   <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="200" alt="Logo" /></a>
 </p>
 
 

@@ -1,11 +1,11 @@
-<p float="center">
+<p align="center">
   <a href="https://dart.dev/" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/dart_logo.png" width="100" alt="Flutter Logo" /></a>
  <a href="https://flutter.dev/" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/flutter%20_logo.png" width="100" alt="Flutter Logo" /></a>
    <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="100" alt="Logo" /></a>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png" width="200" />
+  <img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png" width="500" />
 </p>
 
 # MovieApp

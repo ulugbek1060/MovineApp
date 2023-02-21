@@ -16,7 +16,7 @@ This project is a starting point for my first Flutter application.
 ## Preview
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%202.png)
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%203.png)
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+<img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/ezgif.com-video-to-gif.gif" width="300" height="650" />
 
 Tools that are used in this project are as follows:
 * [`Bloc`](https://bloclibrary.dev/#/) for managing states.

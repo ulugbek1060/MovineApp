@@ -5,7 +5,7 @@ import 'package:movie_app/pages/explore/widgets/app_search_bar.dart';
 import 'package:movie_app/pages/widgets/empty_view.dart';
 import 'package:movie_app/pages/widgets/movie_item_card.dart';
 import 'package:movie_app/pages/widgets/progress_view.dart';
-import 'package:movie_app/utils/slive_grid_delegate.dart';
+import 'package:movie_app/utils/sliver_grid_delegate.dart';
 import 'package:movie_app/utils/status.dart';
 import 'package:movies_data/movies_data.dart';
 

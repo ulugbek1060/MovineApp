@@ -1,23 +1,22 @@
-<p float="center">
- <a href="https://flutter.dev/" target="blank"><img src="https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg" width="300" alt="Flutter Logo" /></a>
-   <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="200" alt="Logo" /></a>
+<p align="center">
+  <a href="https://dart.dev/" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/dart_logo.png" width="100" alt="Flutter Logo" /></a>
+ <a href="https://flutter.dev/" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/flutter%20_logo.png" width="100" alt="Flutter Logo" /></a>
+   <a href="https://github.com/ulugbek1060/MovineApp" target="blank"><img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/logo.png" width="100" alt="Logo" /></a>
 </p>
-
 
 
 
 # MovieApp
 This project is a starting point for my first Flutter application.
 
+<p align="center">
+  <img src="https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png" width="500" />
+</p>
+
 ## Preview
-![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%201.png)
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%202.png)
 ![MovieApp](https://github.com/ulugbek1060/MovineApp/blob/main/preview/Preview%203.png)
-
-
-Help of with
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
 
 Tools that are used in this project are as follows:
 * [`Bloc`](https://bloclibrary.dev/#/) for managing states.
